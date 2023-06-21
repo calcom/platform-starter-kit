@@ -1,3 +1,9 @@
+This SDR demo helps click "next" through available calendars to find the next fair person to book according to the round-robin fairness API
+
+![](https://github.com/calcom/examples/assets/8019099/0f8cd645-8e8d-4a89-8ab7-f3cc1f9d57eb)
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
