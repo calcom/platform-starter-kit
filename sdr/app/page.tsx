@@ -1,3 +1,9 @@
+// TODO:
+// - [ ] force calendar layout
+// - [ ] add fairness API from round robin
+// - [ ] make next and prev button work
+// - [ ] pass parameters into embed i.e. ?name, ?email etc.
+
 import Embed from "@/src/components/Embed";
 
 export default function Home() {
