@@ -5,16 +5,18 @@
 // - [ ] pass parameters into embed i.e. ?name, ?email etc.
 
 import Embed from "@/src/components/Embed";
+import Cal, { getCalApi } from "@calcom/embed-react";
+import { useEffect } from "react";
 
 export default function Home() {
   return (
-    <main className="w-full my-12">
+    <main className="w-full my-12 bg-[#4B2F3B]">
       <Embed />
       <div className="flex gap-2 my-4 w-full justify-center">
-        <button className="border bg-zinc-900 border-zinc-800 p-2 rounded-lg hover:bg-zinc-800 hover:border-zinc-700">
+        <button className="border-2 text-sm border-[#ffa41c] bg-transparent py-3 px-5 hover:bg-[#ffa41c] hover:text-black">
           Previous
         </button>
-        <button className="border bg-zinc-900 border-zinc-800 p-2 rounded-lg hover:bg-zinc-800 hover:border-zinc-700">
+        <button className="bg-gradient-to-r text-sm from-[#ffa41c] to-[#ffcc1c] text-black  py-3 px-5 font-medium ">
           Next
         </button>
       </div>
