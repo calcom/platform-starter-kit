@@ -10,9 +10,16 @@ import { useEffect } from "react";
 
 export default function Home() {
   return (
-    <main className="w-full my-12 bg-[#4B2F3B]">
+    <main className="w-full mt-24 bg-[#4B2F3B]">
+      {/*  <div className="pt-8 px-8 h-[850px] border-8 border-black/20">
+        <iframe
+          src="https://cal.com/team/cal/sales"
+          className="w-full h-full rounded-lg  overflow-hidden"
+        />
+      </div> */}
+
       <Embed />
-      <div className="flex gap-2 my-4 w-full justify-center">
+      <div className="flex mt-3 gap-2 w-full justify-center">
         <button className="border-2 text-sm border-[#ffa41c] bg-transparent py-3 px-5 hover:bg-[#ffa41c] hover:text-black">
           Previous
         </button>
