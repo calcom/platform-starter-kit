@@ -16,6 +16,11 @@ export default function Embed() {
   }, []);
   return (
     <Cal
+      style={{
+        width: "100%",
+        height: "calc(100vh - 72px)",
+        overflow: "scroll",
+      }}
       calLink="team/cal/sales"
       config={{
         name: "John Doe",
