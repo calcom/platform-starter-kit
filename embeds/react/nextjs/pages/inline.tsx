@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
 
   return (
-    <Cal calLink='hariom' config={{
+    <Cal calLink='rick' config={{
 		layout:'column_view'
 	}} />
   )

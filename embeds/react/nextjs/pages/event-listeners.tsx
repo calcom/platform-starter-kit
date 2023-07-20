@@ -24,7 +24,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <h1>You will get an alert when the calLink loads</h1>
+      <h1>You will get link loading status below, powered by `linkReady` event listener</h1>
       <h3>{!linkReadyStatus ? "Loading" : "Loaded"}</h3>
       <button
         onClick={() => {
