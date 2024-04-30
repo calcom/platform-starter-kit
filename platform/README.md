@@ -1,2 +1,0 @@
-# Platform Starter Kit
-
