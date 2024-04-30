@@ -14,7 +14,6 @@ const config = {
     "plugin:@typescript-eslint/stylistic-type-checked",
   ],
   rules: {
-    'unused-imports/no-unused-imports-ts': 2,
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/consistent-type-imports": [
@@ -39,6 +38,14 @@ const config = {
         },
       },
     ],
+    /** 
+     * [@calcom] These rules should error, but since the @calcom/atoms return types are broken we're warning
+    */
+    "@typescript-eslint/no-unsafe-assignment": "warn",
+    "@typescript-eslint/no-unsafe-member-access": "warn",
+    "@typescript-eslint/no-unsafe-return": "warn",
+    "@typescript-eslint/no-unsafe-call": "warn",
+    "@typescript-eslint/no-unsafe-argument": "warn",
   },
 };
 module.exports = config;
