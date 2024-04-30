@@ -76,7 +76,7 @@ export default async function ExpertDetails({
       </div>
       <div className="border-subtle mx-8 mt-12 flex aspect-[2.5/1] flex-col-reverse items-center overflow-x-clip rounded-2xl border bg-muted pb-6 pl-6 pt-6 shadow-sm max-md:pr-6 sm:mx-10 md:grid md:grid-cols-[minmax(440px,1fr)_minmax(0,2.5fr)] lg:mx-12">
         <div className="md:min-w-[96vw] [&_.calcom-atoms]:bg-[transparent]">
-          {Boolean(expert.calAccount) && <ExpertBooker calAccount={expert.calAccount!} expert={expert}/>}
+          {Boolean(expert.calAccount) && <ExpertBooker calAccount={expert.calAccount!} expert={expert} />}
         </div>
       </div>
     </div>
