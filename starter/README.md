@@ -10,7 +10,7 @@
     Build your pixel-perfect booking experience
     <br />
     <a href="https://experts.cal.dev"><strong>Demo</strong></a>
-    <br />
+    ·
     <a href="https://cal.com/docs/platform"><strong>Docs</strong></a>
     <br />
     <br />
