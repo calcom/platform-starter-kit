@@ -1,3 +1,27 @@
+<!-- PROJECT LOGO -->
+<p align="center">
+  <a href="https://github.com/calcom/cal.com">
+   <img src="https://user-images.githubusercontent.com/8019099/210054112-5955e812-a76e-4160-9ddd-58f2c72f1cce.png" alt="Logo">
+  </a>
+
+  <h3 align="center">Cal.com Platform Starter Kit</h3>
+
+  <p align="center">
+    Build your pixel-perfect booking experience
+    <br />
+    <a href="https://experts.cal.dev"><strong>Demo</strong></a>
+    <br />
+    <a href="https://cal.com/docs/platform"><strong>Docs</strong></a>
+    <br />
+    <br />
+    <a href="https://go.cal.com/discord">Discord</a>
+    ·
+    <a href="https://cal.com/platform">Website</a>
+    ·
+    <a href="https://github.com/calcom/cal.com/issues">Issues</a>
+  </p>
+</p>
+
 # Platform Starter Kit Example
 
 Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com Atoms. It was built using the [T3 Stack](https://create.t3.gg/).
