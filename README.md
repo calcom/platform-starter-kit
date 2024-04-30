@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <p align="center">
   <a href="https://github.com/calcom/cal.com">
-   <img src="https://github.com/calcom/examples/assets/8019099/98ca43e7-ff39-459c-9582-6c4301ed8fda" alt="Logo">
+   <img src="https://github.com/calcom/examples/assets/8019099/2e58f8da-a110-4a45-b9a4-dcffb45f9baa" alt="Cal.com Platform">
   </a>
 
   <h3 align="center">Cal.com Platform Examples</h3>
