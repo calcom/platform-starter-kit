@@ -1,11 +1,7 @@
-
-![platform](https://github.com/calcom/examples/assets/8019099/98ca43e7-ff39-459c-9582-6c4301ed8fda)
-
-
 <!-- PROJECT LOGO -->
 <p align="center">
   <a href="https://github.com/calcom/cal.com">
-   <img src="https://user-images.githubusercontent.com/8019099/210054112-5955e812-a76e-4160-9ddd-58f2c72f1cce.png" alt="Logo">
+   <img src="https://github.com/calcom/examples/assets/8019099/98ca43e7-ff39-459c-9582-6c4301ed8fda" alt="Logo">
   </a>
 
   <h3 align="center">Cal.com Platform Examples</h3>
