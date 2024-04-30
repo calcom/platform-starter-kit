@@ -8,9 +8,6 @@ Deploy the example using Vercel:
 
 Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com Atoms. It was built using the [T3 Stack](https://create.t3.gg/).
 
-## How to use
-...
-
 ## What's next? How do I make an app with this?
 
 We try to keep this project as simple as possible, so you can start with Cal.com Platform and the scaffolding we set up for you, and add additional things later when they become necessary.
@@ -26,9 +23,9 @@ If you are not familiar with the different technologies used in this project, pl
 
 ## Learn More about Cal.com Platform
 
-Visit our documentation at [Cal.com/docs](https://cal.com/docs/platform) or join our [Discord](https://go.cal.com/discord).
+Visit our documentation at [cal.com/docs/platform](https://cal.com/docs/platform) or join our [Discord](https://go.cal.com/discord).
 
-Purchase a commercial API key here: [Cal.com/pricing](https://cal.com/pricing).
+Contact sales to purchase a commercial API key here: [cal.com/sales](https://cal.com/sales).
 
 ## Learn More about T3
 
