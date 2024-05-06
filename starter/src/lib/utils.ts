@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { env } from "~/env";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -54,4 +55,13 @@ export const slugify = (str: string, forDisplayingInput?: boolean) => {
   return forDisplayingInput ? s : s.replace(/-+$/, "").replace(/\.*$/, ""); // Remove dashes and period from end
 };
 
+export const stripCalOAuthClientIdFromText = (str: string) => {
+  return str
+    .split(`-${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}`)?.[0]
+    ?.replace(".", " ");
+}
+
+export const stripCalOAuthClientIdFromEmail = (str: string) => {
+  return str.replace(`+${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}`, "");
+}
 export default slugify;

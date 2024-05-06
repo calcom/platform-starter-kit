@@ -28,7 +28,9 @@ export const ExpertBooker = (
     );
   }
   if (isLoadingEvents) {
-    return <Loader className="z-50 animate-spin place-self-center" />;
+    return (<div className="flex justify-center items-center">
+      <Loader className="z-50 animate-spin" />
+    </div>);
   }
   if (!eventTypes?.length) {
     return (
@@ -47,7 +49,7 @@ export const ExpertBooker = (
         toast.success("Booking successful! ");
         router.push(
           // @ts-expect-error types are broken on the data right now
-          `/experts/booking?${new URLSearchParams({ bookingUid: booking.data.uid, expert: props.expert.username }).toString()}`,
+          `/experts/booking?${new URLSearchParams({ bookingUid: booking.data.uid, expert: props.expert.username, fromReschedule: booking.data.fromReschedule }).toString()}`,
         );
       }}
       rescheduleUid={rescheduleUid}
