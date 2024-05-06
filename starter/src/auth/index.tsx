@@ -122,6 +122,7 @@ const {
           console.error(
             `[auth] Invalid sign in submission because of missing credentials: ${credentials.error.errors.map((e) => e.message).join(", ")}`,
           );
+          // return `null` to indicate that the credentials are invalid
           return null;
         }
 
@@ -189,11 +190,7 @@ const {
               headers: {
                 "Content-Type": "application/json",
                 "x-cal-secret-key": env.CAL_SECRET,
-                origin:
-                  env.NODE_ENV === "development"
-                    ? "http://localhost:3000"
-                    : // TODO: Replace this after deployment
-                      "https://platform.cal.dev",
+                origin: env.APP_URL,
               },
               body: JSON.stringify({
                 email: credentials.data.email,
@@ -225,11 +222,7 @@ const {
                 headers: {
                   "Content-Type": "application/json",
                   "x-cal-secret-key": env.CAL_SECRET,
-                  origin:
-                    env.NODE_ENV === "development"
-                      ? "http://localhost:3000"
-                      : // TODO: Replace this after deployment
-                        "https://platform.cal.dev",
+                  origin: env.APP_URL,
                 },
               });
               if (!res.ok) {
@@ -271,11 +264,7 @@ const {
                 headers: {
                   "Content-Type": "application/json",
                   "x-cal-secret-key": env.CAL_SECRET,
-                  origin:
-                    env.NODE_ENV === "development"
-                      ? "http://localhost:3000"
-                      : // TODO: Replace this after deployment
-                        "https://platform.cal.dev",
+                  origin: env.APP_URL,
                 },
               });
               if (!forceRefreshResponse.ok) {

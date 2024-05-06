@@ -28,11 +28,7 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
         "x-cal-secret-key": env.CAL_SECRET,
-        origin:
-          env.NODE_ENV === "development"
-            ? "http://localhost:3000"
-            : // TODO: Replace this after deployment
-              "https://platform.cal.dev",
+        origin: env.APP_URL
       },
       body: JSON.stringify({
         refreshToken: calAccount.refreshToken,

@@ -1,4 +1,6 @@
 import { createEnv } from "@t3-oss/env-nextjs";
+import { vercel } from "@t3-oss/env-nextjs/presets";
+
 import { z } from "zod";
 
 export const env = createEnv({
@@ -7,6 +9,7 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
+    APP_URL: z.string().default("http://localhost:3000"),
     TURSO_DATABASE_URL: z
       .string()
       .refine(
@@ -26,6 +29,8 @@ export const env = createEnv({
       process.env.NODE_ENV === "production"
         ? z.string()
         : z.string().optional(),
+    AUTH_URL: 
+      process.env.NODE_ENV === "development" ? z.string().optional() : z.string(),
 
     /**
      * [@calcom] These are the server environment variables to make our atoms work:
@@ -59,10 +64,12 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    APP_URL: process.env.APP_URL,
     TURSO_DATABASE_URL: process.env.TURSO_DATABASE_URL,
     TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN,
     NODE_ENV: process.env.NODE_ENV,
     AUTH_SECRET: process.env.AUTH_SECRET,
+    AUTH_URL: process.env.AUTH_URL,
     /** [@calcom] Make sure to add the calcom variables to your runtime environment variables, so that you can use them */
     CAL_SECRET: process.env.CAL_SECRET,
     NEXT_PUBLIC_CAL_API_URL: process.env.NEXT_PUBLIC_CAL_API_URL,
@@ -80,4 +87,5 @@ export const env = createEnv({
    * `SOME_VAR=''` will throw an error.
    */
   emptyStringAsUndefined: true,
+  extends: [vercel()],
 });
