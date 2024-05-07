@@ -17,7 +17,7 @@ export const authConfig = {
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   providers: [],
-  pages: { signIn: "/signup" },
+  pages: { signIn: "/login" },
   callbacks: {
     signIn: async ({ user }) => {
       if (user.id) {
