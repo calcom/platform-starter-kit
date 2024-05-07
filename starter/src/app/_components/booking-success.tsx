@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetBooking, useCancelBooking } from "@calcom/atoms";
-import { CheckCircleIcon, CircleX, ExternalLinkIcon, Loader } from "lucide-react";
+import { Check, CheckCircleIcon, CircleX, ExternalLinkIcon, Loader, X } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { BookingStatus } from "node_modules/@calcom/atoms/dist/packages/prisma/enums";
@@ -94,13 +94,17 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
         <div className="flex items-center justify-center space-x-2">
           {bookingStatus.toLowerCase() === "cancelled" && (
             <div className="flex flex-col items-center space-y-4">
-              <CircleX className="h-8 w-8 text-destructive" />
+              <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-destructive/50">
+                <X className="size-6 text-destructive" />
+              </div>
               <CardTitle className="text-2xl">Meeting Cancelled</CardTitle>
             </div>
           )}
           {bookingStatus.toLowerCase() === "accepted" && (
             <div className="flex flex-col items-center space-y-4">
-              <CheckCircleIcon className="h-8 w-8 text-green-500" />
+              <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-success">
+                <Check className="size-6 text-green-600" />
+              </div>
               <CardTitle className="text-2xl">Meeting scheduled successfully</CardTitle>
             </div>
           )}
@@ -205,7 +209,6 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
               <span
                 className={cn(
                   "text-muted-foreground",
-                  bookingStatus.toLowerCase() === "cancelled" && "line-through",
                   bookingPrevious.data?.location !== booking.location && "line-through"
                 )}>
                 {booking?.location === "integrations:daily" ? (
@@ -213,6 +216,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                     <Link
                       className={cn(
                         "inline-flex items-center gap-1",
+                        bookingStatus.toLowerCase() === "cancelled" && "line-through",
                         bookingStatus.toLowerCase() === "cancelled" && "cursor-not-allowed"
                       )}
                       href={
@@ -221,7 +225,6 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                           : (booking?.metadata as { videoCallUrl?: string })?.videoCallUrl ?? "#"
                       }>
                       Online (Cal Video)
-                      <ExternalLinkIcon className="size-4" />
                     </Link>
                   </span>
                 ) : (
