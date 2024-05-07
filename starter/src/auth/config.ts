@@ -45,6 +45,11 @@ export const authConfig = {
         if (isLoggedIn) return NextResponse.redirect(new URL("/dashboard", nextUrl));
         return true;
       }
+      const isOnLogin = nextUrl.pathname.startsWith("/login");
+      if (isOnLogin) {
+        if (isLoggedIn) return NextResponse.redirect(new URL("/dashboard", nextUrl));
+        return true;
+      }
       // we explicitly allow our public pages to be accessed by anyone
       return true;
     },
