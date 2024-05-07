@@ -8,7 +8,6 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    APP_URL: z.string().default("http://localhost:3000"),
     TURSO_DATABASE_URL: z
       .string()
       .refine(
@@ -35,6 +34,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
+    NEXT_PUBLIC_APP_URL: z.string().default("http://localhost:3000"),
     /** [@calcom] These are the server environment variables to make our atoms work:
      * - *NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID*: The OAuth client ID to authenticate our SDK requests. Follow this guide to get it 👇
      * @link: https://cal.com/docs/platform/quick-start#2.-setting-up-an-oauth-client
@@ -53,11 +53,11 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    APP_URL: process.env.APP_URL,
     TURSO_DATABASE_URL: process.env.TURSO_DATABASE_URL,
     TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN,
     NODE_ENV: process.env.NODE_ENV,
     AUTH_SECRET: process.env.AUTH_SECRET,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     /** [@calcom] Make sure to add the calcom variables to your runtime environment variables, so that you can use them */
     CAL_SECRET: process.env.CAL_SECRET,
     NEXT_PUBLIC_CAL_API_URL: process.env.NEXT_PUBLIC_CAL_API_URL,
