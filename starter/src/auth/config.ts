@@ -1,50 +1,52 @@
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import type { DefaultSession, NextAuthConfig } from 'next-auth'
-import { db } from "prisma/client"
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { DefaultSession, NextAuthConfig } from "next-auth";
+import { NextResponse } from "next/server";
+import { db } from "prisma/client";
+import { env } from "~/env";
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session {
-    user: DefaultSession['user'] & {
-      id: string
-      username: string
-    }
+    user: DefaultSession["user"] & {
+      id: string;
+      username: string;
+    };
   }
 }
 
 export const authConfig = {
   adapter: PrismaAdapter(db),
-  session: { strategy: 'jwt' },
+  session: { strategy: "jwt" },
   providers: [],
-  pages: { signIn: '/signup' },
+  pages: { signIn: "/signup" },
   callbacks: {
     signIn: async ({ user }) => {
       if (user.id) {
-        return true
+        return true;
       }
-      return false
+      return false;
     },
     session: async ({ session, token, user: _ }) => {
       if (token?.sub) {
-        session.user.id = token.sub
+        session.user.id = token.sub;
       }
-      return session
+      return session;
     },
     authorized({ auth, request: { nextUrl } }) {
+      console.log("Logging the APP_URL", env.APP_URL);
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
-        return Response.redirect(new URL('/dashboard', nextUrl));
+        return NextResponse.redirect(new URL("/dashboard", nextUrl));
       }
-      const isOnSignup = nextUrl.pathname.startsWith('/signup');
+      const isOnSignup = nextUrl.pathname.startsWith("/signup");
       if (isOnSignup) {
-        if (isLoggedIn) return Response.redirect(new URL('/dashboard', nextUrl));
+        if (isLoggedIn) return NextResponse.redirect(new URL("/dashboard", nextUrl));
         return true;
       }
       return true;
     },
-
   },
-} satisfies NextAuthConfig
+} satisfies NextAuthConfig;
