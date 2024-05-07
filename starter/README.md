@@ -23,6 +23,7 @@
     <a href="https://cal.com/platform">Website</a>
     ·
     <a href="https://github.com/calcom/cal.com/issues">Issues</a>
+
   </p>
 </p>
 
@@ -32,7 +33,7 @@ Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com 
 
 ## Deploy your own
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Ftree%2Fmain%2Fstarter&env=TURSO_DATABASE_URL,TURSO_AUTH_TOKEN,APP_URL,AUTH_SECRET,AUTH_TRUST_HOST,AUTH_URL,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,NEXT_PUBLIC_REFRESH_URL,CAL_SECRET&envDescription=You%20can%20see%20how%20to%20populate%20the%20environment%20variables%20in%20our%20starter%20example%20→&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter%2F.env.example&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal.com%20Experts&demo-description=A%20marketplace%20to%20book%20appointments%20with%20experts&demo-url=https%3A%2F%2Fexperts.cal.com&demo-image=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fassets%2F8019099%2F2e58f8da-a110-4a45-b9a4-dcffb45f9baa)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Ftree%2Fmain%2Fstarter&env=TURSO_DATABASE_URL,TURSO_AUTH_TOKEN,APP_URL,AUTH_SECRET,AUTH_TRUST_HOST,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,NEXT_PUBLIC_REFRESH_URL,CAL_SECRET&envDescription=You%20can%20see%20how%20to%20populate%20the%20environment%20variables%20in%20our%20starter%20example%20→&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter%2F.env.example&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal.com%20Experts&demo-description=A%20marketplace%20to%20book%20appointments%20with%20experts&demo-url=https%3A%2F%2Fexperts.cal.com&demo-image=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fassets%2F8019099%2F2e58f8da-a110-4a45-b9a4-dcffb45f9baa)
 
 ## How to use
 
@@ -40,15 +41,15 @@ Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com 
 
 HTTPS:
 
- ```bash
- git clone https://github.com/calcom/examples.git
- ```
+```bash
+git clone https://github.com/calcom/examples.git
+```
 
- GitHub CLI:
+GitHub CLI:
 
- ```bash
- gh repo clone calcom/examples
- ```
+```bash
+gh repo clone calcom/examples
+```
 
 **2. Move into the Starter**
 
@@ -84,59 +85,59 @@ bun install
 
 **4. Set Environment Variables**
 
-   We provide most environment variables out of the box (including  Cal-related variables).
+We provide most environment variables out of the box (including Cal-related variables).
 
-   So get started by copying the `.env.example`:
+So get started by copying the `.env.example`:
 
-   ```bash
-   cp .env.example .env
-   ```
+```bash
+cp .env.example .env
+```
 
-   *4.1 Database*
+_4.1 Database_
 
-   This project uses SQLite with Turso. You can create one for free at [turso.tech](https://turso.tech/).
+This project uses SQLite with Turso. You can create one for free at [turso.tech](https://turso.tech/).
 
-   Then, get the URL and Access Token from the Turso dashboard and update the respective values in your `.env` file:
+Then, get the URL and Access Token from the Turso dashboard and update the respective values in your `.env` file:
 
-   ```.env
-   # Prisma (Turso Database from https://turso.tech/app)
-   # https://www.prisma.io/docs/orm/overview/databases/turso
-   TURSO_DATABASE_URL="libsql://<your-database-name>.turso.io"
-   TURSO_AUTH_TOKEN="eyJhbGc****"
-   ```
+```.env
+# Prisma (Turso Database from https://turso.tech/app)
+# https://www.prisma.io/docs/orm/overview/databases/turso
+TURSO_DATABASE_URL="libsql://<your-database-name>.turso.io"
+TURSO_AUTH_TOKEN="eyJhbGc****"
+```
 
-   *4.2 Authentication*
+_4.2 Authentication_
 
-   Generate a NextAuth secret and add it to your `.env.` file:
+Generate a NextAuth secret and add it to your `.env.` file:
 
-   ```bash
-   openssl rand -hex 32
-   ```
+```bash
+openssl rand -hex 32
+```
 
-   ```.env
-   # Next Auth
-   # You can generate a new secret on the command line with
-   # openssl rand -base64 32
-   # <https://next-auth.js.org/configuration/options#secret>
-   
-   AUTH_SECRET="SQhGk****"
-   ```
+```.env
+# Next Auth
+# You can generate a new secret on the command line with
+# openssl rand -base64 32
+# <https://next-auth.js.org/configuration/options#secret>
 
-   *4.3 Cal*
+AUTH_SECRET="SQhGk****"
+```
 
-   For **development**, you're all set! We've provided you with our sandbox keys that you can find the `.env.example` file.
+_4.3 Cal_
 
-   For **production**, keep in mind that you'll have to update the `NEXT_PUBLIC_REFRESH_URL` variable to make it point to your deployment, e.g.:
+For **development**, you're all set! We've provided you with our sandbox keys that you can find the `.env.example` file.
 
-   ```.env
-   # 3/ *REFRESH URL.* You have to expose an endpoint that will be used from calcom: https://cal.com/docs/platform/quick-start#4.-backend:-setting-up-refresh-token-endpoint
+For **production**, keep in mind that you'll have to update the `NEXT_PUBLIC_REFRESH_URL` variable to make it point to your deployment, e.g.:
 
-   NEXT_PUBLIC_REFRESH_URL="https://<your-project>.vercel.app/api/cal/refresh"
-   ```
+```.env
+# 3/ *REFRESH URL.* You have to expose an endpoint that will be used from calcom: https://cal.com/docs/platform/quick-start#4.-backend:-setting-up-refresh-token-endpoint
+
+NEXT_PUBLIC_REFRESH_URL="https://<your-project>.vercel.app/api/cal/refresh"
+```
 
 **5. Development Server**
-   From here, you're all set. Just start the development server & get going.
-   **PNPM**
+From here, you're all set. Just start the development server & get going.
+**PNPM**
 
 ```bash
 pnpm dev
