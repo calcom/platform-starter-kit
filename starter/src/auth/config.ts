@@ -45,7 +45,8 @@ export const authConfig = {
         if (isLoggedIn) return NextResponse.redirect(new URL("/dashboard", nextUrl));
         return true;
       }
-      return isLoggedIn;
+      // we explicitly allow our public pages to be accessed by anyone
+      return true;
     },
   },
 } satisfies NextAuthConfig;
