@@ -19,16 +19,16 @@ export async function GET(request: Request) {
       return new Response("Not Found", { status: 404 });
     }
 
-    /** [@calcom] Make a POST request to calcom/atoms' /oauth/<client_id>/refresh endpoint to retrieve a fresh token 
+    /** [@calcom] Make a POST request to calcom/atoms' /oauth/<client_id>/refresh endpoint to retrieve a fresh token
      * ☝️ This endpoint is /oauth/ and not /oauth-clients/ so it's different from the `/force-refresh`
-    */
+     */
     const url = `${env.NEXT_PUBLIC_CAL_API_URL}/oauth/${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}/refresh`;
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-cal-secret-key": env.CAL_SECRET,
-        origin: env.APP_URL
+        origin: env.NEXT_PUBLIC_APP_URL,
       },
       body: JSON.stringify({
         refreshToken: calAccount.refreshToken,
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
 
         -- RESPONSE DETAILS --
         Text:
-        ${await response.text()}`,
+        ${await response.text()}`
       );
       return new Response("Bad Request", { status: 400 });
     }

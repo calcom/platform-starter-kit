@@ -180,7 +180,7 @@ const {
               headers: {
                 "Content-Type": "application/json",
                 "x-cal-secret-key": env.CAL_SECRET,
-                origin: env.APP_URL,
+                origin: env.NEXT_PUBLIC_APP_URL,
               },
               body: JSON.stringify({
                 email: credentials.data.email,
@@ -209,7 +209,7 @@ const {
                 headers: {
                   "Content-Type": "application/json",
                   "x-cal-secret-key": env.CAL_SECRET,
-                  origin: env.APP_URL,
+                  origin: env.NEXT_PUBLIC_APP_URL,
                 },
               });
               if (!res.ok) {
@@ -250,7 +250,7 @@ const {
                 headers: {
                   "Content-Type": "application/json",
                   "x-cal-secret-key": env.CAL_SECRET,
-                  origin: env.APP_URL,
+                  origin: env.NEXT_PUBLIC_APP_URL,
                 },
               });
               if (!forceRefreshResponse.ok) {
