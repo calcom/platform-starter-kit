@@ -1,8 +1,8 @@
+import { db } from "prisma/client";
 import { Balancer } from "react-wrap-balancer";
 import { AutocompleteSearch } from "~/app/_components/autocomplete";
-import { sorting, defaultSort, professions } from "~/lib/constants";
 import ExpertList from "~/app/experts/_components/result";
-import { db } from "prisma/client";
+import { professions } from "~/lib/constants";
 
 export const metadata = {
   title: "Search",
@@ -14,25 +14,23 @@ export default async function ResultsPage({
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
-  const { sort, q: searchValue } = searchParams as Record<string, string>;
-  const { sortKey, reverse } =
-    sorting?.find((item) => item.slug === sort) ?? defaultSort;
+  const { q: searchValue } = searchParams as Record<string, string>;
 
-    const experts = await db.user.findMany({
-      where: {
-        professions: {
-          some: {
-            slug: {
-              equals: searchParams?.profession as string,
-            },
+  const experts = await db.user.findMany({
+    where: {
+      professions: {
+        some: {
+          slug: {
+            equals: searchParams?.profession as string,
           },
         },
       },
-      include: {
-        professions: true,
-        services: true,
-      }
-    });
+    },
+    include: {
+      professions: true,
+      services: true,
+    },
+  });
 
   return (
     <div className="flex flex-1 flex-col">
@@ -41,17 +39,13 @@ export default async function ResultsPage({
           <div className="flex-1">
             <div
               className="flex min-h-96 w-screen flex-col justify-center bg-cover bg-center bg-no-repeat py-20"
-              style={{ backgroundImage: "url('/hero.jpg')" }}
-            >
+              style={{ backgroundImage: "url('/hero.jpg')" }}>
               <div className="container mt-16 flex flex-col items-center justify-center gap-12 px-4 py-6">
                 <h1 className="font-display text-5xl font-extrabold tracking-tight text-white">
                   <Balancer>Find your Cal.com Expert</Balancer>
                 </h1>
                 <div>
-                  <AutocompleteSearch
-                    options={professions}
-                    initialSearch={searchValue}
-                  />
+                  <AutocompleteSearch options={professions} initialSearch={searchValue} />
                 </div>
               </div>
             </div>

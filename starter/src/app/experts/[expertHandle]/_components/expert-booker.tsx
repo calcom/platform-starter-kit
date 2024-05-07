@@ -1,8 +1,8 @@
 "use client";
+
 import { Booker, useEventTypesPublic } from "@calcom/atoms";
 import type { CalAccount, User } from "@prisma/client";
 import { Loader } from "lucide-react";
-
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
@@ -12,25 +12,21 @@ export const ExpertBooker = (
     className?: string;
     calAccount: CalAccount;
     expert: User;
-  } & Partial<BookerProps>,
+  } & Partial<BookerProps>
 ) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const rescheduleUid = searchParams.get("rescheduleUid") ?? undefined;
-  const { isLoading: isLoadingEvents, data: eventTypes } = useEventTypesPublic(
-    props.calAccount.username,
-  );
+  const { isLoading: isLoadingEvents, data: eventTypes } = useEventTypesPublic(props.calAccount.username);
   if (!props.calAccount.username) {
-    return (
-      <div className="w-full text-center">
-        Sorry. We couldn&apos;t find this experts&apos; user.
-      </div>
-    );
+    return <div className="w-full text-center">Sorry. We couldn&apos;t find this experts&apos; user.</div>;
   }
   if (isLoadingEvents) {
-    return (<div className="flex justify-center items-center">
-      <Loader className="z-50 animate-spin" />
-    </div>);
+    return (
+      <div className="flex items-center justify-center">
+        <Loader className="z-50 animate-spin" />
+      </div>
+    );
   }
   if (!eventTypes?.length) {
     return (
@@ -42,14 +38,14 @@ export const ExpertBooker = (
 
   return (
     <Booker
-      eventSlug={eventTypes[0].slug}
+      eventSlug={eventTypes[0]?.slug ?? ""}
       username={props.calAccount.username}
       onCreateBookingSuccess={(booking) => {
         console.log("booking: ", booking, "uid: ", booking.data.uid);
         toast.success("Booking successful! ");
         router.push(
           // @ts-expect-error types are broken on the data right now
-          `/experts/booking?${new URLSearchParams({ bookingUid: booking.data.uid, expert: props.expert.username, fromReschedule: booking.data.fromReschedule }).toString()}`,
+          `/experts/booking?${new URLSearchParams({ bookingUid: booking.data.uid, expert: props.expert.username, fromReschedule: booking.data.fromReschedule }).toString()}`
         );
       }}
       rescheduleUid={rescheduleUid}
