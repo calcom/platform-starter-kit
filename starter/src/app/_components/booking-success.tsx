@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetBooking, useCancelBooking } from "@calcom/atoms";
-import { Check, CheckCircleIcon, CircleX, ExternalLinkIcon, Loader, X } from "lucide-react";
+import { Check, ExternalLinkIcon, Loader, X } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { BookingStatus } from "node_modules/@calcom/atoms/dist/packages/prisma/enums";
