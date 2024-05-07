@@ -1,40 +1,39 @@
-import "server-only";
+import { authConfig } from "./config";
+import { type User } from "@prisma/client";
 import NextAuth from "next-auth";
-import { randomBytes, scrypt, timingSafeEqual } from 'node:crypto'
 import type { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { cache } from "react";
-import { z } from "zod";
-
-import { authConfig } from "./config";
+import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 import { db } from "prisma/client";
-import { type User } from "@prisma/client";
+import { cache } from "react";
+import "server-only";
+import { z } from "zod";
 import { env } from "~/env";
 
 async function hash(password: string) {
   return new Promise<string>((resolve, reject) => {
-    const salt = randomBytes(16).toString('hex')
+    const salt = randomBytes(16).toString("hex");
     scrypt(password, salt, 64, (err, derivedKey) => {
       if (err) {
-        console.error('Error hashing password', err)
-        reject(err)
+        console.error("Error hashing password", err);
+        reject(err);
       }
-      resolve(`${salt}.${derivedKey.toString('hex')}`)
-    })
-  })
+      resolve(`${salt}.${derivedKey.toString("hex")}`);
+    });
+  });
 }
 
 async function compare(password: string, hash: string) {
   return new Promise<boolean>((resolve, reject) => {
-    const [salt, hashKey] = hash.split('.') as [string, string]
+    const [salt, hashKey] = hash.split(".") as [string, string];
     scrypt(password, salt, 64, (err, derivedKey) => {
       if (err) {
-        console.error('Error comparing password', err)
-        reject(err)
+        console.error("Error comparing password", err);
+        reject(err);
       }
-      resolve(timingSafeEqual(Buffer.from(hashKey, 'hex'), derivedKey))
-    })
-  })
+      resolve(timingSafeEqual(Buffer.from(hashKey, "hex"), derivedKey));
+    });
+  });
 }
 
 /** [@calcom] This return type is typed out from the docs
@@ -86,10 +85,12 @@ type CalCreateScheduleResponse = {
       }>
     >;
     timeZone: string;
-    dateOverrides: Array<{ ranges: Array<{
-      start: string;
-      end: string;
-    }> }>;
+    dateOverrides: Array<{
+      ranges: Array<{
+        start: string;
+        end: string;
+      }>;
+    }>;
     isDefault: boolean;
     isLastSchedule: boolean;
     readOnly: boolean;
@@ -120,7 +121,7 @@ const {
 
         if (!credentials.success) {
           console.error(
-            `[auth] Invalid sign in submission because of missing credentials: ${credentials.error.errors.map((e) => e.message).join(", ")}`,
+            `[auth] Invalid sign in submission because of missing credentials: ${credentials.error.errors.map((e) => e.message).join(", ")}`
           );
           // return `null` to indicate that the credentials are invalid
           return null;
@@ -135,19 +136,12 @@ const {
             // if user exists, this comes from our login page, let's check the password
             console.info(`User ${user.id} attempted login with password`);
             if (!user.hashedPassword) {
-              console.debug(
-                `OAuth User ${user.id} attempted signin with password`,
-              );
+              console.debug(`OAuth User ${user.id} attempted signin with password`);
               return null;
             }
-            const pwMatch = await compare(
-              credentials.data.password,
-              user.hashedPassword,
-            );
+            const pwMatch = await compare(credentials.data.password, user.hashedPassword);
             if (!pwMatch) {
-              console.debug(
-                `User ${user.id} attempted login with bad password`,
-              );
+              console.debug(`User ${user.id} attempted login with bad password`);
               return null;
             }
             return { id: user.id, name: user.name };
@@ -163,23 +157,19 @@ const {
               .object({
                 username: z.string().min(1).max(32),
                 name: z.string().min(1).max(32),
-                professions: z.preprocess(
-                  (val) => {
-                    if (typeof val !== "string") return val; // should error
-                    return JSON.parse(val);
-                  },
-                  z.array(z.string())),
-                services: z.preprocess(
-                  (val) => {
-                    if (typeof val !== "string") return val; // should error
-                    return JSON.parse(val);
-                  },
-                  z.array(z.string())),
+                professions: z.preprocess((val) => {
+                  if (typeof val !== "string") return val; // should error
+                  return JSON.parse(val);
+                }, z.array(z.string())),
+                services: z.preprocess((val) => {
+                  if (typeof val !== "string") return val; // should error
+                  return JSON.parse(val);
+                }, z.array(z.string())),
               })
               .safeParse(c);
             if (!signupData.success) {
               console.error(
-                `[auth] Invalid sign in submission because of missing signup data: ${signupData.error.errors.map((e) => e.message).join(", ")}`,
+                `[auth] Invalid sign in submission because of missing signup data: ${signupData.error.errors.map((e) => e.message).join(", ")}`
               );
               return null;
             }
@@ -199,10 +189,7 @@ const {
             });
             let calUser: CalManageUserResponse["data"] | null = null;
             if (response.ok) {
-              const json = (await response.json()) as Omit<
-                CalManageUserResponse,
-                "status"
-              >;
+              const json = (await response.json()) as Omit<CalManageUserResponse, "status">;
               calUser = json.data;
             } else {
               const text = await response.text();
@@ -212,7 +199,7 @@ const {
                 
                 Response text:
                 ${await response.text()}
-                `,
+                `
                 );
               }
               // [@calcom] This means that the user already exists on cal's end but we didn't have them in our db
@@ -233,18 +220,17 @@ const {
                 
                 Response text:
                 ${await res.text()}
-                `,
+                `
                 );
               }
-              const calUsers = (await res.json()) as Omit<
-                CalManageUserResponse,
-                "data"
-              > & { data: Array<CalManageUserResponse["data"]["user"]> };
+              const calUsers = (await res.json()) as Omit<CalManageUserResponse, "data"> & {
+                data: Array<CalManageUserResponse["data"]["user"]>;
+              };
               const fromCal = calUsers.data.find((calUser) => {
                 // [@calcom] the cal email adds `+<clientId>` before the @ in the email, so let's do the same four our matching:
                 const emailAsCal = credentials.data.email.replace(
                   "@",
-                  `+${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}@`,
+                  `+${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}@`
                 );
                 return calUser.email === emailAsCal;
               });
@@ -254,7 +240,7 @@ const {
 
                 ℹ️ This means the user already exists in cal, but we couldn't reconcile it from the response. Here are the emails:
                 ${calUsers.data.map((u) => u.email).join(", ")}
-                `,
+                `
                 );
               }
               // [@calcom] OK, we reconciled the user. Let's force refreshing their tokens so that we can store everything in our db
@@ -275,7 +261,7 @@ const {
                 
                 Response text:
                 ${await forceRefreshResponse.text()}
-                `,
+                `
                 );
               }
               const {
@@ -303,10 +289,7 @@ const {
                 isDefault: true,
               }),
             };
-            const createScheduleResponse = await fetch(
-              createScheduleUrl,
-              createScheduleOptions,
-            );
+            const createScheduleResponse = await fetch(createScheduleUrl, createScheduleOptions);
 
             if (!createScheduleResponse.ok) {
               throw new Error(
@@ -321,12 +304,11 @@ const {
                 -- RESPONSE DETAILS --
                 Text:
                 ${await createScheduleResponse.text()}
-                `,
+                `
               );
             }
 
-            const schedule =
-              (await createScheduleResponse.json()) as CalCreateScheduleResponse;
+            const schedule = (await createScheduleResponse.json()) as CalCreateScheduleResponse;
             calUser.user.defaultScheduleId = schedule.data.id;
 
             /** [@calcom] 3. Finally, create the user in our db with cal's tokens */
@@ -390,9 +372,7 @@ export const currentUser = cache(async () => {
   return user;
 });
 
-export async function SignedIn(props: {
-  children: (props: { user: Session["user"] }) => React.ReactNode;
-}) {
+export async function SignedIn(props: { children: (props: { user: Session["user"] }) => React.ReactNode }) {
   const sesh = await auth();
   return sesh?.user ? <>{props.children({ user: sesh.user })}</> : null;
 }
