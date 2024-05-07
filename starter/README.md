@@ -15,7 +15,6 @@
     <a href="https://cal.com/docs/platform"><strong>Docs</strong></a>
     ·
     <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter&env=TURSO_DATABASE_URL,TURSO_AUTH_TOKEN,AUTH_SECRET,AUTH_TRUST_HOST,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,NEXT_PUBLIC_REFRESH_URL,CAL_SECRET&envDescription=API%20Keys%20for%20the%20database%20(turso)%2C%20authentication%20(nextauth)%20and%20Cal.%20*Note*%3A%20You%20can%20copy%20%26%20paste%20the%20cal-specific%20env%20vars%20from%20our%20demo%20under%20the%20provided%20link&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter%2F.env.example%23L24-L35&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal%20Platform%20Starter&demo-description=A%20marketplace%20to%20book%20experts.%20Scheduling%20is%20handled%20by%20%40calcom%2Fatoms.&demo-url=https%3A%2F%2Fstarter-4m7evv7ji-cal-staging.vercel.app%2F&demo-image=https%3A%2F%2Fcal.com%2Ffavicon.ico"><strong>Deploy on Vercel</strong></a>
-
     <br />
     <br />
     <a href="https://go.cal.com/discord">Discord</a>
