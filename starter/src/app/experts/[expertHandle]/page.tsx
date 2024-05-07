@@ -2,7 +2,6 @@ import { ExpertBooker } from "./_components/expert-booker";
 import Image from "next/image";
 import { db } from "prisma/client";
 import { Badge } from "~/components/ui/badge";
-import { env } from "~/env";
 
 export default async function ExpertDetails({ params }: { params: { expertHandle: string } }) {
   // TODO: replace w/ db call using params.expertHandle
@@ -15,11 +14,6 @@ export default async function ExpertDetails({ params }: { params: { expertHandle
   if (!expert) {
     return <div>Expert not found</div>;
   }
-
-  console.log(
-    "[DEBUG] trying to log the refresh url to test proper env var interpolation: ",
-    env.NEXT_PUBLIC_REFRESH_URL
-  );
 
   return (
     <div className="flex flex-1 flex-col items-center gap-4 overflow-auto">
