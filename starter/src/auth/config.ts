@@ -32,10 +32,6 @@ export const authConfig = {
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {
-      console.log("[AUTH] let's log the domain and so on: ", {
-        APP_URL: env.APP_URL,
-        AUTH_URL: env.AUTH_URL,
-      });
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
       if (isOnDashboard) {

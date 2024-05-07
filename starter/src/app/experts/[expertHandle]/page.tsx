@@ -1,16 +1,10 @@
-import Image from "next/image";
-import { Badge } from "~/components/ui/badge";
-
-
 import { ExpertBooker } from "./_components/expert-booker";
-
+import Image from "next/image";
 import { db } from "prisma/client";
+import { Badge } from "~/components/ui/badge";
+import { env } from "~/env";
 
-export default async function ExpertDetails({
-  params,
-}: {
-  params: { expertHandle: string };
-}) {
+export default async function ExpertDetails({ params }: { params: { expertHandle: string } }) {
   // TODO: replace w/ db call using params.expertHandle
   // const expert = await getExpertBySlug({slug: params.expertHandle});
 
@@ -21,6 +15,11 @@ export default async function ExpertDetails({
   if (!expert) {
     return <div>Expert not found</div>;
   }
+
+  console.log(
+    "[DEBUG] trying to log the refresh url to test proper env var interpolation: ",
+    env.NEXT_PUBLIC_REFRESH_URL
+  );
 
   return (
     <div className="flex flex-1 flex-col items-center gap-4 overflow-auto">
@@ -37,36 +36,26 @@ export default async function ExpertDetails({
             <div className="text-sm leading-6 text-muted-foreground">
               {expert?.professions.map((profession) => profession.name).join(", ")}
             </div>
-            <h1 className="text-2xl font-semibold leading-none tracking-tight">
-              {expert?.name}
-            </h1>
+            <h1 className="text-2xl font-semibold leading-none tracking-tight">{expert?.name}</h1>
           </div>
         </div>
         <div className="flex items-center gap-x-4 sm:gap-x-6">
-        <div className="flex flex-col space-y-1.5 p-6">
-            <div className="text-sm leading-6 text-muted-foreground">
-              Professions
-            </div>
+          <div className="flex flex-col space-y-1.5 p-6">
+            <div className="text-sm leading-6 text-muted-foreground">Professions</div>
             <div className="flex gap-1">
               {expert.professions.slice(0, 2).map((profession, idx) => (
                 <Badge key={idx}>{profession.name}</Badge>
               ))}
-              {expert.professions.length > 2 && (
-                <Badge>+{expert.professions.length - 2} more</Badge>
-              )}
+              {expert.professions.length > 2 && <Badge>+{expert.professions.length - 2} more</Badge>}
             </div>
           </div>
           <div className="flex flex-col space-y-1.5 p-6">
-            <div className="text-sm leading-6 text-muted-foreground">
-              Services
-            </div>
+            <div className="text-sm leading-6 text-muted-foreground">Services</div>
             <div className="flex gap-1">
               {expert.services.slice(0, 2).map((service, idx) => (
                 <Badge key={idx}>{service.name}</Badge>
               ))}
-              {expert.services.length > 2 && (
-                <Badge>+{expert.services.length - 2} more</Badge>
-              )}
+              {expert.services.length > 2 && <Badge>+{expert.services.length - 2} more</Badge>}
             </div>
           </div>
         </div>
