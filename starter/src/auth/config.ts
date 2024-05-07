@@ -45,7 +45,7 @@ export const authConfig = {
         if (isLoggedIn) return NextResponse.redirect(new URL("/dashboard", nextUrl));
         return true;
       }
-      return true;
+      return isLoggedIn;
     },
   },
 } satisfies NextAuthConfig;
