@@ -4,9 +4,6 @@ import { db } from "prisma/client";
 import { Badge } from "~/components/ui/badge";
 
 export default async function ExpertDetails({ params }: { params: { expertHandle: string } }) {
-  // TODO: replace w/ db call using params.expertHandle
-  // const expert = await getExpertBySlug({slug: params.expertHandle});
-
   const expert = await db.user.findUnique({
     where: { username: params.expertHandle },
     include: { calAccount: true, services: true, professions: true },

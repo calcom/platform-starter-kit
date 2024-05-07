@@ -1,9 +1,11 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type useGetBooking } from "@calcom/atoms";
+import { type ClassValue, clsx } from "clsx";
+import dayjs from "dayjs";
+import { twMerge } from "tailwind-merge";
 import { env } from "~/env";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 export const relativeTime = (time: ReturnType<Date["getTime"]>) => {
   const elapsed = Date.now() - time;
@@ -21,14 +23,10 @@ export const relativeTime = (time: ReturnType<Date["getTime"]>) => {
 
   for (const u in units) {
     if (Math.abs(elapsed) > units[u as Unit] || u === "second") {
-      return rtf.format(
-        -Math.sign(elapsed) * Math.round(elapsed / units[u as Unit]),
-        u as Unit,
-      );
+      return rtf.format(-Math.sign(elapsed) * Math.round(elapsed / units[u as Unit]), u as Unit);
     }
   }
 };
-
 
 export const slugify = (str: string, forDisplayingInput?: boolean) => {
   if (!str) {
@@ -56,12 +54,30 @@ export const slugify = (str: string, forDisplayingInput?: boolean) => {
 };
 
 export const stripCalOAuthClientIdFromText = (str: string) => {
-  return str
-    .split(`-${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}`)?.[0]
-    ?.replace(".", " ");
-}
+  return str.split(`-${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}`)?.[0]?.replace(".", " ");
+};
 
 export const stripCalOAuthClientIdFromEmail = (str: string) => {
   return str.replace(`+${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}`, "");
-}
+};
+
+export const composeReadableTimeRange = ({
+  startTime,
+  endTime,
+  timeZone,
+}: {
+  startTime: NonNullable<ReturnType<typeof useGetBooking>["data"]>["startTime"];
+  endTime: NonNullable<ReturnType<typeof useGetBooking>["data"]>["endTime"];
+  timeZone: NonNullable<NonNullable<ReturnType<typeof useGetBooking>["data"]>["user"]>["timeZone"];
+}) => {
+  const weekday = dayjs(startTime).format("dddd");
+  const month = dayjs(startTime).format("MMMM");
+  const dayAsNumber = dayjs(startTime).format("DD");
+  const year = dayjs(startTime).year();
+
+  const from = dayjs(startTime).format(12 === 12 ? "h:mma" : "HH:mm");
+  const until = dayjs(endTime).format(12 === 12 ? "h:mma" : "HH:mm");
+
+  return `${weekday}, ${month} ${dayAsNumber} ${year} | ${from} - ${until} (${timeZone})` as const;
+};
 export default slugify;

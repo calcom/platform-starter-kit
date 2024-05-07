@@ -45,7 +45,7 @@ export const ExpertBooker = (
         toast.success("Booking successful! ");
         router.push(
           // @ts-expect-error types are broken on the data right now
-          `/experts/booking?${new URLSearchParams({ bookingUid: booking.data.uid, expert: props.expert.username, fromReschedule: booking.data.fromReschedule }).toString()}`
+          `/experts/booking?${new URLSearchParams({ bookingUid: booking.data.uid, expert: props.expert.username, ...(booking.data.fromReschedule && { fromReschedule: booking.data.fromReschedule }) }).toString()}`
         );
       }}
       rescheduleUid={rescheduleUid}
