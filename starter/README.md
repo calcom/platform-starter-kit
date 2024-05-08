@@ -58,29 +58,14 @@ cd examples/starter
 
 **3. Install dependencies**
 
-PNPM:
+<!-- note(richard): We require pnpm since we have this version deployed; if we separate example source from our deployed version, we free up the package manager choice. -->
 
-```bash
+> [!IMPORTANT]  
+> **Package Manager:** This repository is deployed as-is and therefore contains a `pnpm-lock.yaml` file. As a result, you currently have to use `pnpm` as your package manager to ensure that the dependencies are installed correctly.
+
+````bash
 pnpm install
-```
 
-NPM:
-
-```bash
-npm install
-```
-
-YARN:
-
-```bash
-yarn install
-```
-
-BUN:
-
-```bash
-bun install
-```
 
 **4. Set Environment Variables**
 
@@ -90,7 +75,7 @@ So get started by copying the `.env.example`:
 
 ```bash
 cp .env.example .env
-```
+````
 
 _4.1 Database_
 
@@ -136,28 +121,9 @@ NEXT_PUBLIC_REFRESH_URL="https://<your-project>.vercel.app/api/cal/refresh"
 
 **5. Development Server**
 From here, you're all set. Just start the development server & get going.
-**PNPM**
 
 ```bash
 pnpm dev
-```
-
-**NPM**
-
-```bash
-npm dev
-```
-
-**YARN**
-
-```bash
-yarn dev
-```
-
-**BUN**
-
-```bash
-bun dev
 ```
 
 ## What's next? How do I make an app with this?
