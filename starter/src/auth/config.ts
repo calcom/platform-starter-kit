@@ -34,20 +34,8 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
       if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return NextResponse.redirect(new URL("/dashboard", nextUrl));
-      }
-      const isOnSignup = nextUrl.pathname.startsWith("/signup");
-      if (isOnSignup) {
-        if (isLoggedIn) return NextResponse.redirect(new URL("/dashboard", nextUrl));
-        return true;
-      }
-      const isOnLogin = nextUrl.pathname.startsWith("/login");
-      if (isOnLogin) {
-        if (isLoggedIn) return NextResponse.redirect(new URL("/dashboard", nextUrl));
-        return true;
+        // so that we return to login page if isLoggedIn is false
+        return isLoggedIn;
       }
       // we explicitly allow our public pages to be accessed by anyone
       return true;
