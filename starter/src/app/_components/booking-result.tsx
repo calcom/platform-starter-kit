@@ -3,7 +3,7 @@
 import { useGetBooking, useCancelBooking } from "@calcom/atoms";
 import { Check, ExternalLinkIcon, Loader, X } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import type { BookingStatus } from "node_modules/@calcom/atoms/dist/packages/prisma/enums";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
@@ -15,11 +15,12 @@ import {
   stripCalOAuthClientIdFromText,
 } from "~/lib/utils";
 
-export const BookingSuccess = () => {
-  const params = useSearchParams();
-  const bookingUid = params.get("bookingUid");
-  const expertUsername = params.get("expert");
-  const fromReschedule = params.get("fromReschedule");
+export const BookingResult = () => {
+  const params = useParams<{ expertHandle: string; bookingUid: string }>();
+  const expertUsername = params.expertHandle;
+  const bookingUid = params.bookingUid;
+  const searchParams = useSearchParams();
+  const fromReschedule = searchParams.get("fromReschedule");
   const { isLoading, data: booking, refetch } = useGetBooking(bookingUid ?? "");
   // TODO: We're doing this to cast the type since @calcom/atoms doesn't type them properly
   const bookingStatus = booking?.status as BookingStatus;
@@ -80,15 +81,6 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
       }
     : null;
 
-  const where = booking.location;
-  const formerWhere = bookingPrevious?.data ? bookingPrevious?.data?.location : null;
-
-  console.log({
-    when: { when, formerWhen },
-    what: { what, formerWhat },
-    where: { where, formerWhere },
-    who: { who, formerWho },
-  });
   return (
     <Card className="w-full max-w-lg">
       <CardHeader className="space-y-4 px-8">
@@ -253,13 +245,25 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
             )}
           </ul>
         </div>
-        {bookingStatus.toLowerCase() !== "cancelled" && <Separator className="mt-8" />}
+        <Separator className="mt-8" />
       </CardContent>
-      {bookingStatus.toLowerCase() !== "cancelled" && (
-        <CardFooter className="flex flex-col px-8">
+      <CardFooter className="flex flex-col px-8">
+        {bookingStatus.toLowerCase() === "cancelled" ? (
           <div>
-            <span>Need to make changes? </span>
+            <span>Want to book {booking?.user?.name}?</span>
             <span>
+              {" "}
+              See{" "}
+              <Link href={`/experts/${expertUsername}`} className="underline">
+                availabilities
+              </Link>
+            </span>
+          </div>
+        ) : (
+          <div>
+            <span>Need to make changes?</span>
+            <span>
+              {" "}
               <Link href={`/experts/${expertUsername}?rescheduleUid=${bookingUid}`} className="underline">
                 Reschedule
               </Link>{" "}
@@ -278,10 +282,10 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
               </div>
             </span>
           </div>
-        </CardFooter>
-      )}
+        )}
+      </CardFooter>
     </Card>
   );
 };
 
-export default BookingSuccess;
+export default BookingResult;
