@@ -63,9 +63,9 @@ cd examples/starter
 > [!IMPORTANT]  
 > **Package Manager:** This repository is deployed as-is and therefore contains a `pnpm-lock.yaml` file. As a result, you currently have to use `pnpm` as your package manager to ensure that the dependencies are installed correctly.
 
-````bash
+```bash
 pnpm install
-
+```
 
 **4. Set Environment Variables**
 
@@ -75,7 +75,7 @@ So get started by copying the `.env.example`:
 
 ```bash
 cp .env.example .env
-````
+```
 
 _4.1 Database_
 
