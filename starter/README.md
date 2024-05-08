@@ -92,7 +92,7 @@ TURSO_AUTH_TOKEN="eyJhbGc****"
 
 _4.2 Authentication_
 
-Generate a NextAuth secret and add it to your `.env.` file:
+Generate a NextAuth secret and add it to your `.env` file:
 
 ```bash
 openssl rand -hex 32
