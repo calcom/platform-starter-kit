@@ -90,6 +90,30 @@ TURSO_DATABASE_URL="libsql://<your-database-name>.turso.io"
 TURSO_AUTH_TOKEN="eyJhbGc****"
 ```
 
+To initialize the database models in your turso database, you have to apply the schema like so:
+
+> [!TIP]
+> Replace `turso-prisma-db` with the name of the database you created on turso. 👇
+
+```bash
+turso db shell turso-prisma-db < .starter/prisma/migrations/20240414212357_init/migration.sql
+```
+
+> [!NOTE]
+> For your database schema changes, please note that the usual Prisma workflows differ. From [Prisma's docs](https://www.prisma.io/docs/orm/overview/databases/turso#how-to-manage-schema-changes):
+>
+> > Prisma Migrate and Introspection workflows are currently not supported when working with Turso. This is because Turso uses HTTP to connect to your database, which Prisma Migrate doesn't support.
+> > To update your database schema:
+> >
+> > 1. Generate a migration file using prisma migrate dev against a local SQLite database:
+> >    `npx prisma migrate dev --name init`
+> > 2. Apply the migration using Turso's CLI:
+> >    `turso db shell turso-prisma-db < ./prisma/migrations/20230922132717_init/migration.sql`
+> >
+> > Replace `20230922132717_init` with the name of your migration.
+> >
+> > For subsequent migrations, repeat the above steps to apply changes to your database. This workflow does not support track the history of applied migrations to your remote database.
+
 _4.2 Authentication_
 
 Generate a NextAuth secret and add it to your `.env` file:

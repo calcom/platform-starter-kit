@@ -3,7 +3,6 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:seed": "NODE_ENV=development prisma db seed",
     "dev": "next dev",
