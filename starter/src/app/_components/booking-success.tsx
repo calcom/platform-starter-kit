@@ -5,6 +5,7 @@ import { Check, ExternalLinkIcon, Loader, X } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { BookingStatus } from "node_modules/@calcom/atoms/dist/packages/prisma/enums";
+import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import {
@@ -115,7 +116,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
         <div className="grid gap-3">
           <ul className="grid gap-3">
             <li className="flex flex-col">
-              <span className="font-semibold">What</span>
+              <span className="space-y-0.5 font-semibold">What</span>
               {formerWhat !== what && (
                 <span className={cn("text-muted-foreground line-through")}>{formerWhat}</span>
               )}
@@ -128,7 +129,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
               </span>
             </li>
             <li className="flex flex-col">
-              <span className="font-semibold">When</span>
+              <span className="space-y-0.5 font-semibold">When</span>
               {formerWhen !== when && (
                 <span className={cn("text-muted-foreground line-through")}>{formerWhen}</span>
               )}
@@ -142,7 +143,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
             </li>
             <li className="flex flex-col">
               <span className="font-semibold">Who</span>
-              <ul>
+              <ul className="space-y-0.5">
                 <li
                   className={cn(
                     "text-muted-foreground",
@@ -155,15 +156,16 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                     key={idx}
                     className={cn(
                       "text-muted-foreground",
-                      bookingStatus.toLowerCase() === "cancelled" && "line-through",
-                      // if the attendee is not in the previous booking, we'll highlight them
-                      formerWho?.attendees?.findIndex((formerAttendee) => formerAttendee === attendee) ===
-                        -1 && "font-semibold italic"
+                      bookingStatus.toLowerCase() === "cancelled" && "line-through"
+                      // // if the attendee is not in the previous booking, we'll highlight them
+                      // formerWho?.attendees?.findIndex((formerAttendee) => formerAttendee === attendee) ===
+                      //   -1 && "font-semibold italic"
                     )}>
-                    {formerWho?.attendees?.findIndex((formerAttendee) => formerAttendee === attendee) === -1
-                      ? "New attendee: "
-                      : ""}
                     {attendee}
+                    {formerWho?.attendees?.findIndex((formerAttendee) => formerAttendee === attendee) ===
+                      -1 && (
+                      <Badge className="ml-2 px-1.5 py-[0.05rem] text-xs font-normal leading-none">New</Badge>
+                    )}
                   </li>
                 ))}
                 {formerWho?.attendees?.map(
@@ -185,7 +187,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
               </ul>
             </li>
             <li className="flex flex-col">
-              <span className="font-semibold">Where</span>
+              <span className="space-y-0.5 font-semibold">Where</span>
               {/* Display the previous location only if it's different from the current booking */}
               {bookingPrevious.data?.location !== booking.location && (
                 <span className={cn("text-muted-foreground")}>
@@ -197,7 +199,6 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                           (bookingPrevious.data?.metadata as { videoCallUrl?: string })?.videoCallUrl ?? "#"
                         }>
                         Online (Cal Video)
-                        <ExternalLinkIcon className="size-4" />
                       </Link>
                     </span>
                   ) : (
@@ -225,6 +226,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                           : (booking?.metadata as { videoCallUrl?: string })?.videoCallUrl ?? "#"
                       }>
                       Online (Cal Video)
+                      <ExternalLinkIcon className="size-4" />
                     </Link>
                   </span>
                 ) : (
@@ -234,7 +236,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
             </li>
             {booking.description && (
               <li className="flex flex-col">
-                <span className="font-semibold">Event Description</span>
+                <span className="space-y-0.5 font-semibold">Event Description</span>
                 {booking.description !== bookingPrevious.data?.description && (
                   <span className={cn("text-muted-foreground line-through")}>
                     {bookingPrevious?.data?.description}
