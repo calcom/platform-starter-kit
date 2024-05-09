@@ -23,7 +23,7 @@ export const BookingResult = () => {
   const fromReschedule = searchParams.get("fromReschedule");
   const { isLoading, data: booking, refetch } = useGetBooking(bookingUid ?? "");
   // TODO: We're doing this to cast the type since @calcom/atoms doesn't type them properly
-  const bookingStatus = booking?.status as BookingStatus;
+  const bookingStatus = booking!.status as BookingStatus;
   const { mutate: cancelBooking } = useCancelBooking({
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     onSuccess: async () => {
