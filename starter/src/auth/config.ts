@@ -1,6 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { DefaultSession, NextAuthConfig } from "next-auth";
-import { NextResponse } from "next/server";
 import { db } from "prisma/client";
 
 declare module "next-auth" {

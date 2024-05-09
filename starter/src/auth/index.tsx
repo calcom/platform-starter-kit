@@ -355,9 +355,12 @@ export const auth = cache(async () => {
     return await uncachedAuth();
   } catch (err) {
     console.error("Error fetching session", err);
-    return null;
+    // throw here instead of returning null so that nextjs navigation keeps working
+    // see https://github.com/vercel/next.js/discussions/64076
+    throw err;
   }
 });
+
 export const currentUser = cache(async () => {
   const sesh = await auth();
   if (!sesh?.user) return null;
