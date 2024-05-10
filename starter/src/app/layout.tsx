@@ -3,7 +3,6 @@ import { Navigation } from "./_components/navigation";
 import { Providers } from "./providers";
 import { TailwindIndicator } from "./tailwind-indicator";
 import { currentUser } from "@/auth";
-import { IS_CALCOM, IS_PRODUCTION } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 
