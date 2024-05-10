@@ -6,7 +6,6 @@
     "target": "es2022",
     "allowJs": true,
     "resolveJsonModule": true,
-    "noImplicitAny": false,
     "moduleDetection": "force",
     "isolatedModules": true,
 
