@@ -5,7 +5,13 @@ export default function Results({ items }: { items: any }) {
   return (
     <>
       {items.map((item: { slug: string; image: string; title: string; description: string }) => (
-        <ResultsCard slug={item.slug} image={item.image} title={item.title} description={item.description} />
+        <ResultsCard
+          key={item.slug}
+          slug={item.slug}
+          image={item.image}
+          title={item.title}
+          description={item.description}
+        />
       ))}
     </>
   );
@@ -26,7 +32,8 @@ function ResultsCard({
     <>
       <Link href={"/" + slug}>
         <Card className="mx-auto max-w-sm overflow-hidden transition-all ease-in-out hover:rotate-1 hover:scale-105 hover:shadow-lg">
-          <img src={image} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={image} alt={title} />
           <CardHeader>
             <CardTitle className="text-xl">{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
