@@ -34,4 +34,4 @@ export const sorting = [
 
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
 export const IS_SANDBOX = process.env.NEXT_PUBLIC_CAL_API_URL === "https://api.cal.dev/v2";
-export const IS_CALCOM = process.env.VERCEL_URL === "experts.cal.com";
+export const IS_CALCOM = process.env.VERCEL_URL === "experts.cal.com" || "experts.cal-staging.com";
