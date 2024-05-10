@@ -54,7 +54,7 @@ const components: { title: string; href: string; description: string }[] = [
 export function Navigation() {
   return (
     <>
-      <div className="pt-20" />
+      <div className="pt-12" />
       <div className="fixed left-0 right-0 top-0 z-50">
         {IS_CALCOM ||
           (!IS_PRODUCTION && (
@@ -65,10 +65,10 @@ export function Navigation() {
               ctaText="Code on GitHub"
             />
           ))}
-        <nav className="flex items-center justify-between border-b bg-white/90 px-8 py-2 backdrop-blur-lg">
+        <nav className="flex items-center justify-between border-b bg-white/95 px-8 py-2 backdrop-blur-lg">
           <span className="flex">
-            <img src="https://cal.com/logo.svg" />
-            <span className="mt-1 text-sm text-white">®</span>
+            <img src="https://cal.com/logo.svg" alt="Cal.com Logo" />
+            <span className="-mt-1 text-sm text-black">®</span>
           </span>
           <NavigationMenu className="rounded-full border-2 border-black p-0.5">
             <NavigationMenuList>
