@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal, AwaitedReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -52,35 +53,54 @@ export default function SidebarItem({ title, items }: { title: string; items: an
               <div className="mb-4">
                 <FormLabel className="text-sm font-light uppercase">{title}</FormLabel>
               </div>
-              {items.map((item) => (
-                <FormField
-                  key={item.id}
-                  control={form.control}
-                  name="items"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.id}
-                        className="group flex cursor-pointer flex-row items-start space-x-3 space-y-0 pb-1 ">
-                        <FormControl>
-                          <Checkbox
-                            className="group-hover:bg-gray-200"
-                            checked={field.value?.includes(item.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, item.id])
-                                : field.onChange(field.value?.filter((value) => value !== item.id));
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className="cursor-pointer font-normal text-gray-700 hover:text-black">
-                          {item.label}
-                        </FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
+              {items.map(
+                (item: {
+                  id: Key | null | undefined;
+                  label:
+                    | string
+                    | number
+                    | bigint
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | Iterable<ReactNode>
+                    | ReactPortal
+                    | Promise<AwaitedReactNode>
+                    | null
+                    | undefined;
+                }) => (
+                  <FormField
+                    key={item.id}
+                    control={form.control}
+                    name="items"
+                    render={({ field }: { field: any }) => {
+                      return (
+                        <FormItem
+                          key={item.id}
+                          className="group flex cursor-pointer flex-row items-start space-x-3 space-y-0 pb-1 ">
+                          <FormControl>
+                            <Checkbox
+                              className="group-hover:bg-gray-200"
+                              checked={field.value?.includes(item.id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, item.id])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value: Key | null | undefined) => value !== item.id
+                                      )
+                                    );
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="cursor-pointer font-normal text-gray-700 hover:text-black">
+                            {item.label}
+                          </FormLabel>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                )
+              )}
               <FormMessage />
             </FormItem>
           )}
