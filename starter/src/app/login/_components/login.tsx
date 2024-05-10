@@ -1,12 +1,12 @@
 "use client";
 
+import { signInWithCredentials } from "@/app/_actions";
+import { ButtonSubmit } from "@/app/_components/submit-button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { signInWithCredentials } from "~/app/_actions";
-import { ButtonSubmit } from "~/app/_components/submit-button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 
 export function LoginForm() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

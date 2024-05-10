@@ -1,12 +1,10 @@
 "use server";
+
+import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
-import { signIn } from "~/auth";
 
-export async function signInWithCredentials(
-  _prevState: { error?: string | null },
-  formData: FormData,
-) {
+export async function signInWithCredentials(_prevState: { error?: string | null }, formData: FormData) {
   try {
     await signIn("credentials", formData);
   } catch (error) {

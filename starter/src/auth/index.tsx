@@ -1,4 +1,5 @@
 import { authConfig } from "./config";
+import { env } from "@/env";
 import { type User } from "@prisma/client";
 import NextAuth from "next-auth";
 import type { Session } from "next-auth";
@@ -8,7 +9,6 @@ import { db } from "prisma/client";
 import { cache } from "react";
 import "server-only";
 import { z } from "zod";
-import { env } from "~/env";
 
 async function hash(password: string) {
   return new Promise<string>((resolve, reject) => {

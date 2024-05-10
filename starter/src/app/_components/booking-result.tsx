@@ -1,19 +1,19 @@
 "use client";
 
-import { useGetBooking, useCancelBooking } from "@calcom/atoms";
-import { Check, ExternalLinkIcon, Loader, X } from "lucide-react";
-import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
-import type { BookingStatus } from "node_modules/@calcom/atoms/dist/packages/prisma/enums";
-import { Badge } from "~/components/ui/badge";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { Separator } from "~/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import {
   cn,
   composeReadableTimeRange,
   stripCalOAuthClientIdFromEmail,
   stripCalOAuthClientIdFromText,
-} from "~/lib/utils";
+} from "@/lib/utils";
+import { useGetBooking, useCancelBooking } from "@calcom/atoms";
+import { Check, ExternalLinkIcon, Loader, X } from "lucide-react";
+import Link from "next/link";
+import { useParams, useSearchParams } from "next/navigation";
+import type { BookingStatus } from "node_modules/@calcom/atoms/dist/packages/prisma/enums";
 
 export const BookingResult = () => {
   const params = useParams<{ expertHandle: string; bookingUid: string }>();

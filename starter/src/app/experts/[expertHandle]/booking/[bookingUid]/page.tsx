@@ -1,5 +1,5 @@
+import { BookingResult } from "@/app/_components/booking-result";
 import { Suspense } from "react";
-import { BookingResult } from "~/app/_components/booking-result";
 
 export default function Booking() {
   return (

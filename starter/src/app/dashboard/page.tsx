@@ -1,20 +1,8 @@
-import {
-  File,
-  ListFilter,
-} from "lucide-react";
-import { OrderDetails } from "~/app/dashboard/components/order-card";
-import { currentUser } from "~/auth";
-
-import { Badge } from "~/components/ui/badge";
-import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { OrderDetails } from "@/app/dashboard/components/order-card";
+import { currentUser } from "@/auth";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -22,19 +10,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-
-import { Progress } from "~/components/ui/progress";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+} from "@/components/ui/dropdown-menu";
+import { Progress } from "@/components/ui/progress";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { File, ListFilter } from "lucide-react";
 
 export default async function Dashboard() {
   const user = await currentUser();
@@ -63,9 +43,7 @@ export default async function Dashboard() {
               <CardTitle className="text-4xl">$1,329</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-xs text-muted-foreground">
-                +25% from last week
-              </div>
+              <div className="text-xs text-muted-foreground">+25% from last week</div>
             </CardContent>
             <CardFooter>
               <Progress value={25} aria-label="25% increase" />
@@ -77,9 +55,7 @@ export default async function Dashboard() {
               <CardTitle className="text-4xl">$5,329</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-xs text-muted-foreground">
-                +10% from last month
-              </div>
+              <div className="text-xs text-muted-foreground">+10% from last month</div>
             </CardContent>
             <CardFooter>
               <Progress value={12} aria-label="12% increase" />
@@ -96,11 +72,7 @@ export default async function Dashboard() {
             <div className="ml-auto flex items-center gap-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-7 gap-1 text-sm"
-                  >
+                  <Button variant="outline" size="sm" className="h-7 gap-1 text-sm">
                     <ListFilter className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only">Filter</span>
                   </Button>
@@ -108,9 +80,7 @@ export default async function Dashboard() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Filter by</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem checked>
-                    Paid
-                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked>Paid</DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem>Declined</DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -124,24 +94,16 @@ export default async function Dashboard() {
             <Card x-chunk="dashboard-05-chunk-3">
               <CardHeader className="px-7">
                 <CardTitle>Bookings</CardTitle>
-                <CardDescription>
-                  Recent bookings from customers.
-                </CardDescription>
+                <CardDescription>Recent bookings from customers.</CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Customer</TableHead>
-                      <TableHead className="hidden sm:table-cell">
-                        Services
-                      </TableHead>
-                      <TableHead className="hidden sm:table-cell">
-                        Status
-                      </TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Date
-                      </TableHead>
+                      <TableHead className="hidden sm:table-cell">Services</TableHead>
+                      <TableHead className="hidden sm:table-cell">Status</TableHead>
+                      <TableHead className="hidden md:table-cell">Date</TableHead>
                       <TableHead className="text-right">Amount</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -149,16 +111,11 @@ export default async function Dashboard() {
                     <TableRow className="bg-accent">
                       <TableCell>
                         <div className="font-medium">Liam Johnson</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          liam@example.com
-                        </div>
+                        <div className="hidden text-sm text-muted-foreground md:inline">liam@example.com</div>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         {user.services.map((service, idx) => (
-                          <Badge
-                            className="mr-2 mt-2"
-                            key={`${idx}-${service.name}`}
-                          >
+                          <Badge className="mr-2 mt-2" key={`${idx}-${service.name}`}>
                             {service.name}
                           </Badge>
                         ))}
@@ -168,9 +125,7 @@ export default async function Dashboard() {
                           Paid
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-23
-                      </TableCell>
+                      <TableCell className="hidden md:table-cell">2023-06-23</TableCell>
                       <TableCell className="text-right">$229.00</TableCell>
                     </TableRow>
                     <TableRow>
@@ -182,10 +137,7 @@ export default async function Dashboard() {
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         {user.services.map((service, idx) => (
-                          <Badge
-                            className="mr-2 mt-2"
-                            key={`${idx}-${service.name}`}
-                          >
+                          <Badge className="mr-2 mt-2" key={`${idx}-${service.name}`}>
                             {service.name}
                           </Badge>
                         ))}
@@ -195,25 +147,18 @@ export default async function Dashboard() {
                           Declined
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-24
-                      </TableCell>
+                      <TableCell className="hidden md:table-cell">2023-06-24</TableCell>
                       <TableCell className="text-right">$50.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <div className="font-medium">Noah Williams</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          noah@example.com
-                        </div>
+                        <div className="hidden text-sm text-muted-foreground md:inline">noah@example.com</div>
                       </TableCell>
-                      {user.services.map(service => service.name)}
+                      {user.services.map((service) => service.name)}
                       <TableCell className="hidden sm:table-cell">
                         {user.services.map((service, idx) => (
-                          <Badge
-                            className="mr-2 mt-2"
-                            key={`${idx}-${service.name}`}
-                          >
+                          <Badge className="mr-2 mt-2" key={`${idx}-${service.name}`}>
                             {service.name}
                           </Badge>
                         ))}
@@ -223,24 +168,17 @@ export default async function Dashboard() {
                           Paid
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-25
-                      </TableCell>
+                      <TableCell className="hidden md:table-cell">2023-06-25</TableCell>
                       <TableCell className="text-right">$50.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <div className="font-medium">Emma Brown</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          emma@example.com
-                        </div>
+                        <div className="hidden text-sm text-muted-foreground md:inline">emma@example.com</div>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         {user.services.map((service, idx) => (
-                          <Badge
-                            className="mr-2 mt-2"
-                            key={`${idx}-${service.name}`}
-                          >
+                          <Badge className="mr-2 mt-2" key={`${idx}-${service.name}`}>
                             {service.name}
                           </Badge>
                         ))}
@@ -250,24 +188,17 @@ export default async function Dashboard() {
                           Paid
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-26
-                      </TableCell>
+                      <TableCell className="hidden md:table-cell">2023-06-26</TableCell>
                       <TableCell className="text-right">$50.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <div className="font-medium">Liam Johnson</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          liam@example.com
-                        </div>
+                        <div className="hidden text-sm text-muted-foreground md:inline">liam@example.com</div>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         {user.services.map((service, idx) => (
-                          <Badge
-                            className="mr-2 mt-2"
-                            key={`${idx}-${service.name}`}
-                          >
+                          <Badge className="mr-2 mt-2" key={`${idx}-${service.name}`}>
                             {service.name}
                           </Badge>
                         ))}
@@ -277,24 +208,17 @@ export default async function Dashboard() {
                           Paid
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-23
-                      </TableCell>
+                      <TableCell className="hidden md:table-cell">2023-06-23</TableCell>
                       <TableCell className="text-right">$50.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <div className="font-medium">Liam Johnson</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          liam@example.com
-                        </div>
+                        <div className="hidden text-sm text-muted-foreground md:inline">liam@example.com</div>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         {user.services.map((service, idx) => (
-                          <Badge
-                            className="mr-2 mt-2"
-                            key={`${idx}-${service.name}`}
-                          >
+                          <Badge className="mr-2 mt-2" key={`${idx}-${service.name}`}>
                             {service.name}
                           </Badge>
                         ))}
@@ -304,9 +228,7 @@ export default async function Dashboard() {
                           Paid
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-23
-                      </TableCell>
+                      <TableCell className="hidden md:table-cell">2023-06-23</TableCell>
                       <TableCell className="text-right">$50.00</TableCell>
                     </TableRow>
                     <TableRow>
@@ -318,10 +240,7 @@ export default async function Dashboard() {
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         {user.services.map((service, idx) => (
-                          <Badge
-                            className="mr-2 mt-2"
-                            key={`${idx}-${service.name}`}
-                          >
+                          <Badge className="mr-2 mt-2" key={`${idx}-${service.name}`}>
                             {service.name}
                           </Badge>
                         ))}
@@ -331,24 +250,17 @@ export default async function Dashboard() {
                           Declined
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-24
-                      </TableCell>
+                      <TableCell className="hidden md:table-cell">2023-06-24</TableCell>
                       <TableCell className="text-right">$50.00</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <div className="font-medium">Emma Brown</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          emma@example.com
-                        </div>
+                        <div className="hidden text-sm text-muted-foreground md:inline">emma@example.com</div>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         {user.services.map((service, idx) => (
-                          <Badge
-                            className="mr-2 mt-2"
-                            key={`${idx}-${service.name}`}
-                          >
+                          <Badge className="mr-2 mt-2" key={`${idx}-${service.name}`}>
                             {service.name}
                           </Badge>
                         ))}
@@ -358,9 +270,7 @@ export default async function Dashboard() {
                           Paid
                         </Badge>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-26
-                      </TableCell>
+                      <TableCell className="hidden md:table-cell">2023-06-26</TableCell>
                       <TableCell className="text-right">$50.00</TableCell>
                     </TableRow>
                   </TableBody>

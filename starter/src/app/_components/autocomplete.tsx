@@ -1,9 +1,5 @@
 "use client";
 
-import { Check } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { forwardRef, useState } from "react";
-
 import {
   Command,
   CommandEmpty,
@@ -11,8 +7,11 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "~/components/ui/command";
-import { cn } from "~/lib/utils";
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { forwardRef, useState } from "react";
 
 export const defaultSort = {
   title: "Relevance",
@@ -80,7 +79,7 @@ export const AutocompleteSearch = forwardRef<HTMLDivElement, AutocompleteSearchP
               <div
                 data-open={open}
                 className={cn(
-                  "bg-background data-[open=true]:animate-in data-[open=true]:fade-in absolute left-0 right-0 top-full rounded-b-md p-0 shadow !duration-150",
+                  "absolute left-0 right-0 top-full rounded-b-md bg-background p-0 shadow !duration-150 data-[open=true]:animate-in data-[open=true]:fade-in",
                   placement === "header" && "border-x border-b"
                 )}>
                 <CommandEmpty>No expert found.</CommandEmpty>

@@ -1,41 +1,22 @@
 "use client";
-import { type useGetBookings } from "@calcom/atoms";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Copy,
-  CreditCard,
-  MoreVertical,
-} from "lucide-react";
 
-import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "~/components/ui/pagination";
-
-import { Separator } from "~/components/ui/separator";
-import { cn } from "~/lib/utils";
+} from "@/components/ui/dropdown-menu";
+import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { type useGetBookings } from "@calcom/atoms";
+import { ChevronLeft, ChevronRight, Copy, CreditCard, MoreVertical } from "lucide-react";
 
 type GetBookingsInput = Parameters<typeof useGetBookings>[number];
-export const OrderDetails = (props: { className?: string; bookings: GetBookingsInput}) => {
+export const OrderDetails = (props: { className?: string; bookings: GetBookingsInput }) => {
   // TODO: Show the upcoming & next booking here
   // const {
   //   isLoading: isLoadingUpcomingBookings,
@@ -63,8 +44,7 @@ export const OrderDetails = (props: { className?: string; bookings: GetBookingsI
             <Button
               size="icon"
               variant="outline"
-              className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-            >
+              className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100">
               <Copy className="h-3 w-3" />
               <span className="sr-only">Copy Booking ID</span>
             </Button>
@@ -137,9 +117,7 @@ export const OrderDetails = (props: { className?: string; bookings: GetBookingsI
           </div>
           <div className="grid auto-rows-max gap-3">
             <div className="font-semibold">Billing Information</div>
-            <div className="text-muted-foreground">
-              Same as shipping address
-            </div>
+            <div className="text-muted-foreground">Same as shipping address</div>
           </div>
         </div>
         <Separator className="my-4" />

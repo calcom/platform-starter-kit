@@ -1,4 +1,4 @@
-import SettingsContent from "~/app/dashboard/settings/_components/settings-content";
+import SettingsContent from "@/app/dashboard/settings/_components/settings-content";
 
 export default function DashboardSettings() {
   return (

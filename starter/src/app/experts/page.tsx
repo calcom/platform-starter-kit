@@ -1,8 +1,8 @@
+import { AutocompleteSearch } from "@/app/_components/autocomplete";
+import ExpertList from "@/app/experts/_components/result";
+import { professions } from "@/lib/constants";
 import { db } from "prisma/client";
 import { Balancer } from "react-wrap-balancer";
-import { AutocompleteSearch } from "~/app/_components/autocomplete";
-import ExpertList from "~/app/experts/_components/result";
-import { professions } from "~/lib/constants";
 
 export const metadata = {
   title: "Search",

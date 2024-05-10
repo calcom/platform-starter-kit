@@ -1,6 +1,6 @@
+import slugify from "@/lib/utils";
 import { Prisma, Service } from "@prisma/client";
 import { db } from "prisma/client";
-import slugify from "~/lib/utils";
 
 const seedServices = [
   {

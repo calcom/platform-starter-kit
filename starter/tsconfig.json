@@ -6,6 +6,7 @@
     "target": "es2022",
     "allowJs": true,
     "resolveJsonModule": true,
+    "noImplicitAny": true,
 
     "moduleDetection": "force",
     "isolatedModules": true,
@@ -27,7 +28,7 @@
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [

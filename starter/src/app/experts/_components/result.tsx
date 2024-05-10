@@ -1,41 +1,24 @@
 "use client";
-import Image from "next/image";
-import { ChevronRightIcon } from "lucide-react";
 
-import { Badge } from "~/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
-import { Separator } from "~/components/ui/separator";
-import { relativeTime } from "~/lib/utils";
-import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { relativeTime } from "@/lib/utils";
 import { type Profession, type Service, type User } from "@prisma/client";
+import { ChevronRightIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function ExpertList(props: { experts: Array<User & {services: Service[] , professions: Profession[]}> }) {
+export default function ExpertList(props: {
+  experts: Array<User & { services: Service[]; professions: Profession[] }>;
+}) {
   return (
     <Card className="border-none shadow-none">
       <CardHeader className="pb-10 text-center">
         {/* so that we place the Separator visually behind the CardTitle */}
         <div className="relative w-full">
-          <div
-            className="absolute inset-0 flex items-center"
-            aria-hidden="true"
-          >
+          <div className="absolute inset-0 flex items-center" aria-hidden="true">
             <Separator orientation="horizontal" />
           </div>
           <div className="relative flex justify-center">
@@ -77,7 +60,9 @@ export default function ExpertList(props: { experts: Array<User & {services: Ser
                       />
                     </Link>
                   </TableCell>
-                  <TableCell className="font-medium"><Link href={`/experts/${result.username}`}>{result.name}</Link></TableCell>
+                  <TableCell className="font-medium">
+                    <Link href={`/experts/${result.username}`}>{result.name}</Link>
+                  </TableCell>
                   <TableCell className="space-x-1 space-y-1">
                     {result.services.map((service, idx) => (
                       <Badge key={idx}>{service.name}</Badge>
@@ -86,21 +71,13 @@ export default function ExpertList(props: { experts: Array<User & {services: Ser
                   <TableCell className="hidden md:table-cell">
                     {result.professions?.[0]?.name ?? "Hair Dresser"}
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    Everywhere
-                  </TableCell>
-                  <TableCell
-                    className="hidden md:table-cell"
-                    suppressHydrationWarning
-                  >
+                  <TableCell className="hidden md:table-cell">Everywhere</TableCell>
+                  <TableCell className="hidden md:table-cell" suppressHydrationWarning>
                     {relativeTime(available)}
                   </TableCell>
                   <TableCell>
                     <Link href={`/experts/${result.username}`}>
-                    <ChevronRightIcon
-                      className="h-5 w-5 flex-none"
-                      aria-hidden="true"
-                    />
+                      <ChevronRightIcon className="h-5 w-5 flex-none" aria-hidden="true" />
                     </Link>
                   </TableCell>
                 </TableRow>

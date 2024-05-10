@@ -1,5 +1,5 @@
+import { env } from "@/env";
 import { db } from "prisma/client";
-import { env } from "~/env";
 
 export const dynamic = "force-dynamic"; // defaults to auto
 export async function GET(request: Request) {

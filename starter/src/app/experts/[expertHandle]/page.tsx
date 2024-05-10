@@ -1,7 +1,7 @@
 import { ExpertBooker } from "./_components/expert-booker";
+import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { db } from "prisma/client";
-import { Badge } from "~/components/ui/badge";
 
 export default async function ExpertDetails({ params }: { params: { expertHandle: string } }) {
   const expert = await db.user.findUnique({

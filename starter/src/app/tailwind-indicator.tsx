@@ -1,4 +1,4 @@
-import { IS_PRODUCTION } from "~/lib/constants";
+import { IS_PRODUCTION } from "@/lib/constants";
 
 export function TailwindIndicator() {
   if (IS_PRODUCTION) return null;
