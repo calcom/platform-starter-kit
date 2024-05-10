@@ -22,7 +22,7 @@ const FormSchema = z.object({
   }),
 });
 
-export default function SidebarItem({ title, items }: { title: string; items: unknown }) {
+export default function SidebarItem({ title, items }: { title: string; items: any }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
