@@ -67,10 +67,11 @@ export function Navigation() {
           ))}
         <nav className="flex items-center justify-between border-b bg-white/95 px-8 py-2 backdrop-blur-lg">
           <span className="flex">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="https://cal.com/logo.svg" alt="Cal.com Logo" />
             <span className="-mt-1 text-sm text-black">®</span>
           </span>
-          <NavigationMenu className="rounded-full border-2 border-black p-0.5">
+          <NavigationMenu className="hidden rounded-full border-2 border-black p-0.5 md:block">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>

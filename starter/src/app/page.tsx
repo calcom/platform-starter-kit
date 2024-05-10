@@ -226,7 +226,7 @@ export default async function Home() {
                   />
                 </aside>
                 <main className="w-full p-4">
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="block grid-cols-3 gap-4 space-x-2 md:grid">
                     <SignupCard />
                     <Results
                       items={[
