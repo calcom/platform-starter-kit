@@ -1,5 +1,4 @@
 import Results from "./_components/results";
-import ResultsCard from "./_components/results-card";
 import SidebarItem from "./_components/sidebarItem";
 import SignupCard from "@/app/_components/signup-card";
 import WelcomeCard from "@/app/_components/welcome-card";
