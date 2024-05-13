@@ -1,13 +1,5 @@
 import { ButtonSubmit } from "@/app/_components/submit-button";
 import { currentUser, signOut } from "@/auth";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -35,7 +27,13 @@ import {
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+  breadcrumbs,
+}: {
+  children: React.ReactNode;
+  breadcrumbs: React.ReactNode;
+}) {
   const user = await currentUser();
   if (!user) return redirect("/login");
   return (
@@ -155,21 +153,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
               </nav>
             </SheetContent>
           </Sheet>
-          <Breadcrumb className="hidden md:flex">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="#">Dashboard</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbPage>
-                <BreadcrumbLink asChild>
-                  <Link href="#">Bookings</Link>
-                </BreadcrumbLink>
-              </BreadcrumbPage>
-            </BreadcrumbList>
-          </Breadcrumb>
+          {/* THIS DOESN'T RENDER */}
+          {breadcrumbs}
           <div className="relative ml-auto flex-1 md:grow-0">
             <div className="flex flex-row items-center gap-4">
               <span className="text-sm text-muted-foreground [width:max-content]">

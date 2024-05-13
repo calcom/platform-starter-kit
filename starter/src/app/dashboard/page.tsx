@@ -1,4 +1,4 @@
-import { OrderDetails } from "@/app/dashboard/components/order-card";
+import { OrderDetails } from "@/app/dashboard/_components/order-card";
 import { currentUser } from "@/auth";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

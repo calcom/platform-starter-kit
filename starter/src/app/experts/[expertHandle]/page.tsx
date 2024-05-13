@@ -3,12 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { db } from "prisma/client";
 
-export default async function ExpertDetails({ params }: { params: { expertHandle: string } }) {
+export default async function ExpertDetails({ params }: { params: { expertUsername: string } }) {
   const expert = await db.user.findUnique({
-    where: { username: params.expertHandle },
+    where: { username: params.expertUsername },
     include: { calAccount: true, services: true, professions: true },
   });
   if (!expert) {
+    console.warn("Expert not found", params.expertUsername);
     return <div>Expert not found</div>;
   }
 

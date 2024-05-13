@@ -16,8 +16,8 @@ import { useParams, useSearchParams } from "next/navigation";
 import type { BookingStatus } from "node_modules/@calcom/atoms/dist/packages/prisma/enums";
 
 export const BookingResult = () => {
-  const params = useParams<{ expertHandle: string; bookingUid: string }>();
-  const expertUsername = params.expertHandle;
+  const params = useParams<{ expertUsername: string; bookingUid: string }>();
+  const expertUsername = params.expertUsername;
   const bookingUid = params.bookingUid;
   const searchParams = useSearchParams();
   const fromReschedule = searchParams.get("fromReschedule");

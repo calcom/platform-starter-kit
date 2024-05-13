@@ -1,9 +1,9 @@
-import Banner from "./_components/banner";
 import { Navigation } from "./_components/navigation";
 import { Providers } from "./providers";
 import { TailwindIndicator } from "./tailwind-indicator";
 import { currentUser } from "@/auth";
 import { cn } from "@/lib/utils";
+import "@/styles/globals.css";
 import "@/styles/globals.css";
 
 /**
@@ -68,12 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           enableSystem
           attribute="class"
           calUserToken={user?.calAccount?.accessToken}>
-          <div className="flex min-h-screen flex-col">
-            {/* Omitting header, so that the search page is Google-style */}
-
-            <Navigation />
-            {children}
-          </div>
+          <div className="flex min-h-screen flex-col">{children}</div>
           <TailwindIndicator />
         </Providers>
         <Toaster />
