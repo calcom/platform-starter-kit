@@ -80,4 +80,14 @@ export const composeReadableTimeRange = ({
 
   return `${weekday}, ${month} ${dayAsNumber} ${year} | ${from} - ${until} (${timeZone})` as const;
 };
+
+export const capitalizeWordsFromSlug = (slug: string) => {
+  return slug
+    .split("-")
+    .map((word) => {
+      // Capitalize the first letter of each word
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+};
 export default slugify;

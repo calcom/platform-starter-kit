@@ -14,13 +14,14 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Home, LineChart, Package, Package2, PanelLeft, ShoppingCart, User, Users2 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { type ReactNode } from "react";
 
 export default async function Layout({
   children,
   breadcrumbs,
 }: {
-  children: React.ReactNode;
-  breadcrumbs: React.ReactNode;
+  children: ReactNode;
+  breadcrumbs: ReactNode;
 }) {
   const user = await currentUser();
   if (!user) return redirect("/login");
@@ -77,7 +78,6 @@ export default async function Layout({
               </nav>
             </SheetContent>
           </Sheet>
-          {/* THIS DOESN'T RENDER */}
           {breadcrumbs}
           <div className="relative ml-auto flex-1 md:grow-0">
             <div className="flex flex-row items-center gap-4">

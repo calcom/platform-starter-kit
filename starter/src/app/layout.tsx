@@ -1,4 +1,3 @@
-import { Navigation } from "./_components/navigation";
 import { Providers } from "./providers";
 import { TailwindIndicator } from "./tailwind-indicator";
 import { currentUser } from "@/auth";
