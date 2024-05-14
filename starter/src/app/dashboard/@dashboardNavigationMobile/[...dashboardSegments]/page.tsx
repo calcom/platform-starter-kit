@@ -46,8 +46,8 @@ export default function DashboardNavigationMobileSlot(props: {
             key={navigationItem.href}
             href={navigationItem.href}
             className={cn(
-              "group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base",
-              pathname === navigationItem.href && "bg-muted text-primary"
+              "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
+              pathname !== navigationItem.href && "text-muted-foreground"
             )}>
             <navigationItem.icon className="size-5 transition-all group-hover:scale-110" />
             {navigationItem.label}
