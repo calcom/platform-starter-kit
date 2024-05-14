@@ -41,7 +41,6 @@ export const ExpertBooker = (
       eventSlug={eventTypes[0]?.slug ?? ""}
       username={props.calAccount.username}
       onCreateBookingSuccess={(booking) => {
-        console.log("booking: ", booking, "uid: ", booking.data.uid);
         toast.success("Booking successful! ");
         router.push(
           `/experts/${props.expert.username}/booking/${booking.data.uid}${booking.data.fromReschedule ? `?${new URLSearchParams({ fromReschedule: booking.data.fromReschedule }).toString()}` : ""}`
