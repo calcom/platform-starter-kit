@@ -5,7 +5,7 @@
     "build": "next build",
     "db:studio": "prisma studio",
     "db:seed": "NODE_ENV=development prisma db seed",
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "NODE_OPTIONS='--max-old-space-size=4096' next lint --fix",
     "start": "next start"
