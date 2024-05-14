@@ -15,8 +15,6 @@ export default function BreadcrumbsSlot(props: {
   };
 }) {
   const { dashboardSegments } = props.params;
-  console.log("dashboardSegments props: ", props);
-  console.log("dashboardSegments: ", dashboardSegments);
   // the last section is always our "BreadcrumbPage", the remaining segments are our "BreadcrumbItems":
   const breadcrumbPage = dashboardSegments.pop();
 
