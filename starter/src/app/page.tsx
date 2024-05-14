@@ -54,7 +54,7 @@ export default async function Home() {
             <Suspense
               fallback={
                 <div className="relative h-max w-full max-w-sm place-self-center">
-                  <div className=" absolute inset-0 z-40  grid rounded-2xl bg-slate-900 text-white">
+                  <div className=" absolute inset-0 z-40 grid rounded-2xl bg-slate-900 text-white">
                     <Loader className="z-50 animate-spin place-self-center" />
                   </div>
                 </div>
