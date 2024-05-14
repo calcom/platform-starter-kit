@@ -14,7 +14,13 @@ import { Home, Package2, PanelLeft, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode } from "react";
 
-export default function ExpertLayout({ children }: { children?: ReactNode }) {
+export default function ExpertLayout({
+  children,
+  breadcrumbs,
+}: {
+  children?: ReactNode;
+  breadcrumbs: ReactNode;
+}) {
   return (
     <div>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -49,25 +55,7 @@ export default function ExpertLayout({ children }: { children?: ReactNode }) {
               </nav>
             </SheetContent>
           </Sheet>
-          <Breadcrumb className="hidden md:flex">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/">Home</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/experts">Search</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Expert</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          {breadcrumbs}
           <div className="flex flex-1 items-center justify-between space-x-4 md:justify-end">
             <AutocompleteSearch options={professions} className="" placement="header" />
             <span>OR</span>

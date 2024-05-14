@@ -1,7 +1,5 @@
 "use client";
 
-import Banner from "./banner";
-import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,7 +9,6 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { IS_CALCOM, IS_PRODUCTION } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import * as React from "react";
@@ -53,86 +50,58 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function Navigation() {
   return (
-    <>
-      <div className="pt-12" />
-      <div className="fixed left-0 right-0 top-0 z-50">
-        {IS_CALCOM ||
-          (!IS_PRODUCTION && (
-            <Banner
-              title="Build your own marketplace"
-              description="Use our Platform Starter Kit to go live in 15 minutes."
-              ctaLink="https://go.cal.com/starter-kit"
-              ctaText="Code on GitHub"
-            />
-          ))}
-        <nav className="flex items-center justify-between border-b bg-white/95 px-8 py-2 backdrop-blur-lg">
-          <span className="flex">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://cal.com/logo.svg" alt="Cal.com Logo" />
-            <span className="-mt-1 text-sm text-black">®</span>
-          </span>
-          <NavigationMenu className="hidden rounded-full border-2 border-black p-0.5 md:block">
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <a
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          href="/">
-                          {/* 
+    <NavigationMenu className="hidden rounded-full border-2 border-black p-0.5 md:block">
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+              <li className="row-span-3">
+                <NavigationMenuLink asChild>
+                  <a
+                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                    href="/">
+                    {/* 
                     <Icons.logo className="h-6 w-6" /> */}
-                          <div className="mb-2 mt-4 text-lg font-medium">shadcn/ui</div>
-                          <p className="text-sm leading-tight text-muted-foreground">
-                            Beautifully designed components that you can copy and paste into your apps.
-                            Accessible. Customizable. Open Source.
-                          </p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                    <ListItem href="/docs" title="Introduction">
-                      Re-usable components built using Radix UI and Tailwind CSS.
-                    </ListItem>
-                    <ListItem href="/docs/installation" title="Installation">
-                      How to install dependencies and structure your app.
-                    </ListItem>
-                    <ListItem href="/docs/primitives/typography" title="Typography">
-                      Styles for headings, paragraphs, lists...etc
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    {components.map((component) => (
-                      <ListItem key={component.title} title={component.title} href={component.href}>
-                        {component.description}
-                      </ListItem>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/docs" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Documentation
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          <div>
-            <Link href="/signup">
-              <Button className="w-full">Sign Up</Button>
-            </Link>
-          </div>
-        </nav>
-      </div>
-    </>
+                    <div className="mb-2 mt-4 text-lg font-medium">shadcn/ui</div>
+                    <p className="text-sm leading-tight text-muted-foreground">
+                      Beautifully designed components that you can copy and paste into your apps. Accessible.
+                      Customizable. Open Source.
+                    </p>
+                  </a>
+                </NavigationMenuLink>
+              </li>
+              <ListItem href="/docs" title="Introduction">
+                Re-usable components built using Radix UI and Tailwind CSS.
+              </ListItem>
+              <ListItem href="/docs/installation" title="Installation">
+                How to install dependencies and structure your app.
+              </ListItem>
+              <ListItem href="/docs/primitives/typography" title="Typography">
+                Styles for headings, paragraphs, lists...etc
+              </ListItem>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+              {components.map((component) => (
+                <ListItem key={component.title} title={component.title} href={component.href}>
+                  {component.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="/docs" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Documentation</NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 }
 
