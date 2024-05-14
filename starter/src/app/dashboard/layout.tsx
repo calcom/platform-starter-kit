@@ -70,34 +70,36 @@ export default async function Layout({
             </Sheet>
             {breadcrumbs}
             <div className="relative ml-auto flex-1 md:grow-0">
-              <div className="flex flex-row items-center gap-4">
-                <span className="text-sm text-muted-foreground [width:max-content]">
-                  Logged in as &quot;{user?.username}&quot;
-                </span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="secondary" size="icon" className="overflow-hidden rounded-full">
-                      <User className="" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Link href="/dashboard/settings">Settings</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuLabel>
-                      <form
-                        action={async () => {
-                          "use server";
-                          await signOut({ redirectTo: "/" });
-                        }}>
-                        <ButtonSubmit className="w-full">Logout</ButtonSubmit>
-                      </form>
-                    </DropdownMenuLabel>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              <div className="flex flex-row items-center justify-end gap-4">
+                <div className="flex flex-row items-center">
+                  <span className="hidden text-sm text-muted-foreground [width:max-content] md:block">
+                    Logged in as &quot;{user?.username}&quot;
+                  </span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="secondary" size="icon" className="overflow-hidden rounded-full">
+                        <User className="" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link href="/dashboard/settings">Settings</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuLabel>
+                        <form
+                          action={async () => {
+                            "use server";
+                            await signOut({ redirectTo: "/" });
+                          }}>
+                          <ButtonSubmit className="w-full">Logout</ButtonSubmit>
+                        </form>
+                      </DropdownMenuLabel>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             </div>
           </header>
