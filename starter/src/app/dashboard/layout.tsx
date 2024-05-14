@@ -1,4 +1,3 @@
-import Banner from "../_components/banner";
 import { ButtonSubmit } from "@/app/_components/submit-button";
 import { currentUser, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { IS_CALCOM, IS_PRODUCTION } from "@/lib/constants";
 import {
   Badge,
   Bell,
@@ -40,22 +38,12 @@ export default async function Layout({
   if (!user) return redirect("/login");
   return (
     <Fragment>
-      {IS_CALCOM ||
-        (!IS_PRODUCTION && (
-          <Banner
-            title="Build your own marketplace"
-            description="Use our Platform Starter Kit to go live in 15 minutes."
-            ctaLink="https://go.cal.com/starter-kit"
-            ctaText="Code on GitHub"
-          />
-        ))}
       <div className="grid min-h-screen w-full lg:grid-cols-[220px_1fr] 2xl:grid-cols-[280px_1fr]">
-        <div className="hidden border-r bg-muted/40 backdrop-blur md:block">
+        <div className="hidden border-r bg-muted/40 md:block">
           <div className="sticky top-0 z-40 flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-              <Link href="/" className="flex items-center gap-2 font-semibold">
-                <Package2 className="h-6 w-6" />
-                <span className="">Acme Inc</span>
+              <Link href="/dashboard" className="flex font-display text-2xl">
+                Cal.com <span className="font-display text-sm">®</span>
               </Link>
               <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
                 <Bell className="h-4 w-4" />
@@ -102,7 +90,7 @@ export default async function Layout({
           </div>
         </div>
         <div className="flex flex-col">
-          <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-muted/40 px-4 backdrop-blur lg:h-[60px] lg:px-6">
+          <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border/40 bg-muted/40 px-4 backdrop-blur-[2px] lg:h-[60px] lg:px-6">
             <Sheet>
               <SheetTrigger asChild>
                 <Button size="icon" variant="outline" className="sm:hidden">
@@ -116,7 +104,7 @@ export default async function Layout({
                     href="#"
                     className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base">
                     <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-                    <span className="sr-only">Acme Inc</span>
+                    <span className="sr-only">Cal.com</span>
                   </Link>
                   <Link
                     href="#"

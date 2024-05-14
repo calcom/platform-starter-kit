@@ -3,17 +3,39 @@ import Results from "./_components/results";
 import SidebarItem from "./_components/sidebarItem";
 import SignupCard from "@/app/_components/signup-card";
 import WelcomeCard from "@/app/_components/welcome-card";
-import { SignedIn, SignedOut } from "@/auth";
+import { SignedIn, SignedOut, currentUser } from "@/auth";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader } from "lucide-react";
+import { Loader, LogIn } from "lucide-react";
+import Link from "next/link";
 import React, { Suspense } from "react";
 import { Balancer } from "react-wrap-balancer";
 
 export default async function Home() {
+  const user = await currentUser();
   return (
     <React.Fragment>
-      <Navigation />
-      <main>
+      <header className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border/40 bg-muted/40 px-4 py-2 backdrop-blur lg:h-[60px] lg:px-6">
+        <Link href="/dashboard" className="flex font-display text-2xl">
+          Cal.com <span className="font-display text-sm">®</span>
+        </Link>
+        <Navigation />
+        <div>
+          {user ? (
+            <Link href="/dashboard">
+              <Button className="w-full">
+                Dashboard
+                <LogIn className="ml-1 size-4" />
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/signup">
+              <Button className="w-full">Sign Up</Button>
+            </Link>
+          )}
+        </div>
+      </header>
+      <main className="flex-1">
         <div
           className="flex min-h-96 flex-col justify-center bg-cover bg-center bg-no-repeat py-20"
           style={{ backgroundImage: "url('/hero.jpg')" }}>

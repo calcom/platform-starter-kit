@@ -1,6 +1,8 @@
+import Banner from "./_components/banner";
 import { Providers } from "./providers";
 import { TailwindIndicator } from "./tailwind-indicator";
 import { currentUser } from "@/auth";
+import { IS_CALCOM, IS_PRODUCTION } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import "@/styles/globals.css";
@@ -67,7 +69,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           enableSystem
           attribute="class"
           calUserToken={user?.calAccount?.accessToken}>
-          <div className="flex min-h-screen flex-col">{children}</div>
+          <div className="flex min-h-screen flex-col">
+            {IS_CALCOM ||
+              (!IS_PRODUCTION && (
+                <Banner
+                  title="Build your own marketplace"
+                  description="Use our Platform Starter Kit to go live in 15 minutes."
+                  ctaLink="https://go.cal.com/starter-kit"
+                  ctaText="Code on GitHub"
+                />
+              ))}
+            {children}
+          </div>
           <TailwindIndicator />
         </Providers>
         <Toaster />
