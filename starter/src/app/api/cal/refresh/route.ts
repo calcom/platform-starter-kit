@@ -28,7 +28,6 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
         "x-cal-secret-key": env.CAL_SECRET,
-        origin: env.NEXT_PUBLIC_APP_URL,
       },
       body: JSON.stringify({
         refreshToken: calAccount.refreshToken,
