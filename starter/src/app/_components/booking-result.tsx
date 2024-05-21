@@ -1,29 +1,30 @@
 "use client";
 
+import { stripCalOAuthClientIdFromEmail, stripCalOAuthClientIdFromText } from "@/cal/utils";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  cn,
-  composeReadableTimeRange,
-  stripCalOAuthClientIdFromEmail,
-  stripCalOAuthClientIdFromText,
-} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useGetBooking, useCancelBooking } from "@calcom/atoms";
+import dayjs from "dayjs";
 import { Check, ExternalLinkIcon, Loader, X } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import type { BookingStatus } from "node_modules/@calcom/atoms/dist/packages/prisma/enums";
 
-export const BookingResult = () => {
+export const BookingResult = (props: {
+  expertusername?: string;
+  bookingUid?: string;
+  fromReschedule?: string;
+}) => {
   const params = useParams<{ expertUsername: string; bookingUid: string }>();
-  const expertUsername = params.expertUsername;
-  const bookingUid = params.bookingUid;
+  const expertUsername = props?.expertusername ?? params.expertUsername;
+  const bookingUid = props?.bookingUid ?? params.bookingUid;
   const searchParams = useSearchParams();
-  const fromReschedule = searchParams.get("fromReschedule");
+  const fromReschedule = props?.fromReschedule ?? searchParams.get("fromReschedule");
   const { isLoading, data: booking, refetch } = useGetBooking(bookingUid ?? "");
   // TODO: We're doing this to cast the type since @calcom/atoms doesn't type them properly
-  const bookingStatus = booking!.status as BookingStatus;
+  const bookingStatus = booking && "status" in booking ? (booking.status as BookingStatus) : undefined;
   const { mutate: cancelBooking } = useCancelBooking({
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     onSuccess: async () => {
@@ -49,17 +50,9 @@ export const BookingResult = () => {
     ? stripCalOAuthClientIdFromText(bookingPrevious?.data?.title)
     : null;
 
-  const when = composeReadableTimeRange({
-    startTime: booking.startTime,
-    endTime: booking.endTime,
-    timeZone: booking.user?.timeZone ?? "",
-  });
+  const when = `${dayjs(booking.startTime).format("dddd, MMMM DD YYYY @ h:mma")} (${booking.user.timeZone})`;
   const formerWhen = bookingPrevious.data
-    ? composeReadableTimeRange({
-        startTime: bookingPrevious.data?.startTime,
-        endTime: bookingPrevious.data?.endTime,
-        timeZone: bookingPrevious.data?.user?.timeZone ?? "",
-      })
+    ? `${dayjs(bookingPrevious.data.startTime).format("dddd, MMMM DD YYYY @ h:mma")} (${bookingPrevious.data.user.timeZone})`
     : null;
 
   const who = {
