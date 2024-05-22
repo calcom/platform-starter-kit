@@ -9,7 +9,7 @@
     "postinstall": "prisma generate",
     "lint": "NODE_OPTIONS='--max-old-space-size=4096' next lint --fix",
     "start": "next start",
-    "cal:generate": "openapi-endpoint-trimmer -u https://raw.githubusercontent.com/calcom/cal.com/51428087ef0a20f4d775fccbd3a34c2d885aed2b/apps/api/v2/swagger/documentation.json -p /v2/bookings -o ./src/cal/__generated/trimmed.json && typed-openapi ./src/cal/__generated/trimmed.json -r zod"
+    "cal:generate": "openapi-endpoint-trimmer -u https://raw.githubusercontent.com/calcom/cal.com/51428087ef0a20f4d775fccbd3a34c2d885aed2b/apps/api/v2/swagger/documentation.json -p /v2/bookings -o ./src/cal/__generated/cal-sdk.yml && typed-openapi ./src/cal/__generated/cal-sdk.yml --r zod"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -63,7 +63,8 @@
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.0",
-    "zod": "^3.23.7"
+    "zod": "^3.23.7",
+    "typed-openapi": "^0.4.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.3",
@@ -89,7 +90,6 @@
     "prisma": "^5.10.2",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.7.2",
-    "typed-openapi": "^0.4.1",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.8.0"
   },

@@ -855,7 +855,8 @@ export const get_BookingsController_getBooking = {
   response: GetBookingOutput,
 };
 
-export type get_BookingsController_getBookingForReschedule = typeof get_BookingsController_getBookingForReschedule;
+export type get_BookingsController_getBookingForReschedule =
+  typeof get_BookingsController_getBookingForReschedule;
 export const get_BookingsController_getBookingForReschedule = {
   method: z.literal("GET"),
   path: z.literal("/v2/bookings/{bookingUid}/reschedule"),
@@ -883,7 +884,8 @@ export const post_BookingsController_cancelBooking = {
   response: z.unknown(),
 };
 
-export type post_BookingsController_createRecurringBooking = typeof post_BookingsController_createRecurringBooking;
+export type post_BookingsController_createRecurringBooking =
+  typeof post_BookingsController_createRecurringBooking;
 export const post_BookingsController_createRecurringBooking = {
   method: z.literal("POST"),
   path: z.literal("/v2/bookings/recurring"),
@@ -896,7 +898,8 @@ export const post_BookingsController_createRecurringBooking = {
   response: z.unknown(),
 };
 
-export type post_BookingsController_createInstantBooking = typeof post_BookingsController_createInstantBooking;
+export type post_BookingsController_createInstantBooking =
+  typeof post_BookingsController_createInstantBooking;
 export const post_BookingsController_createInstantBooking = {
   method: z.literal("POST"),
   path: z.literal("/v2/bookings/instant"),
@@ -964,7 +967,7 @@ export type Endpoint<TConfig extends DefaultEndpoint = DefaultEndpoint> = {
 type Fetcher = (
   method: Method,
   url: string,
-  parameters?: EndpointParameters | undefined,
+  parameters?: EndpointParameters | undefined
 ) => Promise<Endpoint["response"]>;
 
 type RequiredKeys<T> = {
@@ -977,7 +980,7 @@ type MaybeOptionalArg<T> = RequiredKeys<T> extends never ? [config?: T] : [confi
 
 // <ApiClient>
 export class ApiClient {
-  baseUrl: string = "";
+  baseUrl = "";
 
   constructor(public fetcher: Fetcher) {}
 
