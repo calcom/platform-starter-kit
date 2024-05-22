@@ -32,8 +32,8 @@ export default function BreadcrumbsSlot(props: {
               {idx > 0 && <BreadcrumbSeparator />}
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link className="transition-colors hover:text-foreground" href={href}>
-                    {capitalizeWordsFromSlug(segment)}
+                  <Link className="capitalize transition-colors hover:text-foreground" href={href}>
+                    {segment}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -42,7 +42,7 @@ export default function BreadcrumbsSlot(props: {
         })}
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>{capitalizeWordsFromSlug(breadcrumbPage)}</BreadcrumbPage>
+          <BreadcrumbPage className="capitalize">{breadcrumbPage}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

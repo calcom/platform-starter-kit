@@ -50,13 +50,4 @@ export const slugify = (str: string, forDisplayingInput?: boolean) => {
   return forDisplayingInput ? s : s.replace(/-+$/, "").replace(/\.*$/, ""); // Remove dashes and period from end
 };
 
-export const capitalizeWordsFromSlug = (slug: string) => {
-  return slug
-    .split("-")
-    .map((word) => {
-      // Capitalize the first letter of each word
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
-};
 export default slugify;
