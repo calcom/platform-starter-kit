@@ -28,13 +28,13 @@ export default async function Dashboard() {
     [{ status: "error" }],
     [{ status: "error" }],
   ];
-  // const bookingResponses = await Promise.all(
-  //   filters.map((filter) =>
-  //     cal.get("/v2/bookings", {
-  //       query: { "filters[status]": filter, cursor: 0, limit: 20 },
-  //     })
-  //   )
-  // );
+  const bookingResponses = await Promise.all(
+    filters.map((filter) =>
+      cal.get("/v2/bookings", {
+        query: { "filters[status]": filter, cursor: 0, limit: 20 },
+      })
+    )
+  );
 
   const bookings = bookingResponses.flatMap((response, idx) => {
     if (response.status === "error") {

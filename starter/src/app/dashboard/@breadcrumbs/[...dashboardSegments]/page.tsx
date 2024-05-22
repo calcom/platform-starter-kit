@@ -6,7 +6,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { capitalizeWordsFromSlug } from "@/lib/utils";
 import Link from "next/link";
 import { Fragment } from "react";
 
