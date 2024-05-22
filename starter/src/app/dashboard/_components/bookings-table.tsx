@@ -1,6 +1,6 @@
 "use client";
 
-import { type Schemas } from "@/cal/__generated/trimmed.json.client";
+import { type GetBookingsDataEntry } from "@/cal/__generated/cal-sdk";
 import { stripCalOAuthClientIdFromEmail, stripCalOAuthClientIdFromText } from "@/cal/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,18 +18,16 @@ import { Fragment, useState } from "react";
 
 export const BookingsTable = (props: {
   bookings: {
-    all: Array<Schemas.GetBookingsDataEntry>;
-    currentWeek: Array<Schemas.GetBookingsDataEntry>;
-    currentMonth: Array<Schemas.GetBookingsDataEntry>;
-    currentYear: Array<Schemas.GetBookingsDataEntry>;
+    all: Array<GetBookingsDataEntry>;
+    currentWeek: Array<GetBookingsDataEntry>;
+    currentMonth: Array<GetBookingsDataEntry>;
+    currentYear: Array<GetBookingsDataEntry>;
   };
   user: { timeZone: CalAccount["timeZone"]; username: User["username"]; email: User["email"] };
 }) => {
   // send this ref to: rable-row-hoverable element
   // then use it in order-details element to read the currently hovered event
-  const [selectedElement, setSelectedElement] = useState<Schemas.GetBookingsDataEntry>(
-    props.bookings.currentWeek[0]
-  );
+  const [selectedElement, setSelectedElement] = useState<GetBookingsDataEntry>(props.bookings.currentWeek[0]);
   const [selectedTab, setSelectedTab] = useState<"week" | "month" | "year">("week");
   const tabs = [
     { label: "Week", value: "week" },

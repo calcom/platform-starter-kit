@@ -1,4 +1,4 @@
-import { createApiClient } from "./__generated/trimmed.json.client";
+import { createApiClient } from "./__generated/cal-sdk";
 import { currentUser } from "@/auth";
 import { env } from "@/env";
 import "server-only";
