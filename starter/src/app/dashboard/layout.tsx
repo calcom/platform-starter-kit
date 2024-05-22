@@ -10,21 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import {
-  Badge,
-  Bell,
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  Settings,
-  ShoppingCart,
-  User,
-  Users,
-  Users2,
-} from "lucide-react";
+import { PanelLeft, User } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Fragment, type ReactNode } from "react";

@@ -1,6 +1,4 @@
-import { type useGetBooking } from "@calcom/atoms";
 import { type ClassValue, clsx } from "clsx";
-import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
