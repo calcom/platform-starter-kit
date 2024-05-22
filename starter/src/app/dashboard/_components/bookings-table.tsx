@@ -38,10 +38,12 @@ export const BookingsTable = (props: {
   // to display the booking detail's attendees
   const who = {
     host: `${selectedElement?.user?.name} (Host) - ${stripCalOAuthClientIdFromEmail(props.user.email ?? "")}`,
-    attendees: selectedElement.attendees.map((attendee) => ({
-      name: stripCalOAuthClientIdFromText(attendee.name),
-      email: stripCalOAuthClientIdFromEmail(attendee.email),
-    })),
+    attendees: selectedElement?.attendees.map((attendee) => {
+      return {
+        name: stripCalOAuthClientIdFromText(attendee?.name ?? ""),
+        email: stripCalOAuthClientIdFromEmail(attendee?.email ?? ""),
+      };
+    }),
   };
 
   const bookings =
@@ -97,15 +99,15 @@ export const BookingsTable = (props: {
                               isEven && "bg-accent"
                             )}
                             data-current={
-                              bookings.findIndex((booking) => booking.id === selectedElement.id) === idx
+                              bookings.findIndex((booking) => booking.id === selectedElement?.id) === idx
                             }
                             onClick={() => setSelectedElement(booking)}>
                             <TableCell>
                               <div className="font-medium capitalize">
-                                {stripCalOAuthClientIdFromText(initiator.name)}
+                                {stripCalOAuthClientIdFromText(initiator?.name ?? "")}
                               </div>
                               <div className="hidden text-sm text-muted-foreground md:inline">
-                                {stripCalOAuthClientIdFromEmail(initiator.email)}
+                                {stripCalOAuthClientIdFromEmail(initiator?.email ?? "")}
                               </div>
                             </TableCell>
                             <TableCell className="hidden sm:table-cell">{booking.eventType.slug}</TableCell>
@@ -159,7 +161,7 @@ export const BookingsTable = (props: {
           <CardHeader className="flex flex-row items-start bg-muted/50">
             <div className="grid gap-0.5">
               <CardTitle className="group flex items-center gap-2 text-lg">
-                {stripCalOAuthClientIdFromText(selectedElement.title)}
+                {stripCalOAuthClientIdFromText(selectedElement?.title ?? "")}
                 <Button
                   size="icon"
                   variant="outline"
@@ -177,11 +179,11 @@ export const BookingsTable = (props: {
               <ul className="grid gap-3">
                 <li className="flex items-center justify-between text-muted-foreground">
                   <span>Booking Uid:</span>
-                  <span>{selectedElement.uid}</span>
+                  <span>{selectedElement?.uid}</span>
                 </li>
                 <li className="flex items-center justify-between text-muted-foreground">
                   <span>Date:</span>
-                  <span>{dayjs(selectedElement.startTime).format("MMMM DD, YYYY")}</span>
+                  <span>{dayjs(selectedElement?.startTime).format("MMMM DD, YYYY")}</span>
                 </li>
                 <li className="flex items-center justify-between text-muted-foreground">
                   <span>Status:</span>
@@ -191,23 +193,23 @@ export const BookingsTable = (props: {
                         // so that we show the destructive badge for cancelled meetings, and success badge for confirmed meetings
                         (["CANCELLED", "REJECTED"] as Array<BookingStatus>).includes(
                           // @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus
-                          selectedElement.status
+                          selectedElement?.status
                         )
                           ? "destructive"
                           : (["PENDING", "ACCEPTED", "AWAITING HOST"] as Array<BookingStatus>)
                                 // @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus
-                                .includes(selectedElement.status)
+                                .includes(selectedElement?.status)
                             ? "success"
                             : "default"
                       }
                       className={cn(
                         "w-fit text-xs",
                         // so that we show a gray badge for pending meetings
-                        (selectedElement.status as BookingStatus) === "PENDING" &&
+                        (selectedElement?.status as BookingStatus) === "PENDING" &&
                           "border-transparent bg-muted text-muted-foreground hover:bg-muted/80"
                       )}>
                       {/* @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus */}
-                      {selectedElement.status}
+                      {selectedElement?.status}
                     </Badge>
                   </span>
                 </li>
@@ -215,7 +217,7 @@ export const BookingsTable = (props: {
               <Separator className="my-2" />
               <div className="font-semibold">Attendees</div>
               <ul className="grid gap-3">
-                {who.attendees.map((attendee, idx) => (
+                {who.attendees?.map((attendee, idx) => (
                   <li key={idx} className="flex items-center justify-between">
                     <span className="capitalize text-muted-foreground">{attendee.name}</span>
                     <span>{attendee.email}</span>
@@ -230,13 +232,15 @@ export const BookingsTable = (props: {
                 <div className="flex items-center justify-between">
                   <dt className="text-muted-foreground">Customer</dt>
                   <dd className="capitalize">
-                    {stripCalOAuthClientIdFromText(selectedElement.attendees[0].name)}
+                    {stripCalOAuthClientIdFromText(selectedElement?.attendees[0]?.name ?? "")}
                   </dd>
                 </div>
                 <div className="flex items-center justify-between">
                   <dt className="text-muted-foreground">Email</dt>
                   <dd>
-                    <a href="mailto:">{stripCalOAuthClientIdFromEmail(selectedElement.attendees[0].email)}</a>
+                    <a href="mailto:">
+                      {stripCalOAuthClientIdFromEmail(selectedElement?.attendees[0]?.email ?? "")}
+                    </a>
                   </dd>
                 </div>
                 <div className="flex items-center justify-between">
@@ -244,9 +248,9 @@ export const BookingsTable = (props: {
                   <dd>
                     <dd>
                       {new Intl.DisplayNames([navigator.language], { type: "language" }).of(
-                        selectedElement.attendees[0].locale
+                        selectedElement?.attendees[0]?.locale ?? "English"
                       )}{" "}
-                      ({selectedElement.attendees[0].locale})
+                      ({selectedElement?.attendees[0]?.locale ?? "en"})
                     </dd>
                   </dd>
                 </div>
@@ -271,7 +275,7 @@ export const BookingsTable = (props: {
                       })
                     }
                     disabled={
-                      bookings.findIndex((booking) => booking.id === selectedElement.id) === 0 ||
+                      bookings.findIndex((booking) => booking.id === selectedElement?.id) === 0 ||
                       bookings.length < 2
                     }>
                     <ChevronLeft className="h-3.5 w-3.5" />
@@ -290,7 +294,7 @@ export const BookingsTable = (props: {
                       })
                     }
                     disabled={
-                      bookings.findIndex((booking) => booking.id === selectedElement.id) ===
+                      bookings.findIndex((booking) => booking.id === selectedElement?.id) ===
                         bookings.length - 1 || bookings.length < 2
                     }>
                     <ChevronRight className="h-3.5 w-3.5" />

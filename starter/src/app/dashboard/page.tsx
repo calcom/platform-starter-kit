@@ -2,7 +2,7 @@
 // @ts-nocheck
 import { BookingsTable } from "./_components/bookings-table";
 import { currentUser } from "@/auth";
-// import { cal } from "@/cal/api";
+import { cal } from "@/cal/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
