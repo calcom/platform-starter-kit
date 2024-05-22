@@ -21,13 +21,7 @@ export default async function Dashboard() {
   const filters = ["upcoming", "recurring", "past", "cancelled", "unconfirmed"] satisfies Array<
     GetBookingsInput["filters"]["status"]
   >;
-  const bookingResponses = [
-    [{ status: "error" }],
-    [{ status: "error" }],
-    [{ status: "error" }],
-    [{ status: "error" }],
-    [{ status: "error" }],
-  ];
+
   const bookingResponses = await Promise.all(
     filters.map((filter) =>
       cal.get("/v2/bookings", {
