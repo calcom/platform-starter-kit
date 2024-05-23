@@ -246,12 +246,10 @@ export const BookingsTable = (props: {
                 <div className="flex items-center justify-between">
                   <dt className="text-muted-foreground">Language</dt>
                   <dd>
-                    <dd>
-                      {new Intl.DisplayNames([navigator.language], { type: "language" }).of(
-                        selectedElement?.attendees[0]?.locale ?? "English"
-                      )}{" "}
-                      ({selectedElement?.attendees[0]?.locale ?? "en"})
-                    </dd>
+                    {new Intl.DisplayNames([navigator.language], { type: "language" }).of(
+                      selectedElement?.attendees[0]?.locale ?? "English"
+                    )}{" "}
+                    ({selectedElement?.attendees[0]?.locale ?? "en"})
                   </dd>
                 </div>
               </dl>
