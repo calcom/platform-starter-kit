@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     });
     if (!calAccount?.user) {
       console.error(`Unable to refresh the user token for the access token '${token}':
-        No user found with the token`);
+        No user found with the token for the access token '${token}'`);
       return new Response("Not Found", { status: 404 });
     }
 
