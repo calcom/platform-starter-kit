@@ -4,6 +4,7 @@ import Image from "next/image";
 import { db } from "prisma/client";
 
 export default async function ExpertDetails({ params }: { params: { expertUsername: string } }) {
+  console.log("expertUsername: ", params.expertUsername);
   const expert = await db.user.findUnique({
     where: { username: params.expertUsername },
     include: { calAccount: true, services: true, professions: true },
