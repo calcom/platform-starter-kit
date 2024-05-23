@@ -9,6 +9,7 @@ type BaseProps = {
 type LayoutProps = BaseProps & {
   flex?: boolean;
   fullWidth?: boolean;
+  align?: "center" | "start" | "end";
 };
 
 export const LayoutAside = ({ children, className }: BaseProps) => {
@@ -19,12 +20,19 @@ export const LayoutMain = ({ children, className }: BaseProps) => {
   return <main className={`layout-main p-4  ${className}`}>{children}</main>;
 };
 
-export const Layout = ({ children, className, flex = false, fullWidth = true }: BaseProps & LayoutProps) => {
+export const Layout = ({
+  children,
+  className,
+  flex = false,
+  fullWidth = true,
+  align,
+}: BaseProps & LayoutProps) => {
   return (
     <div
       className={cn(
         "layout mx-auto my-0",
-        flex && "flex flex-1 justify-center",
+        flex && "flex flex-1",
+        align && `justify-${align}`,
         !fullWidth && `max-w-screen-2xl`,
         className
       )}>
