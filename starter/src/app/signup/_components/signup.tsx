@@ -11,15 +11,19 @@ import { type Profession, type Service } from "@prisma/client";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 
-export const SignupForm = (props: { services: Array<Service>; professions: Array<Profession> }) => {
-  const { services, professions } = props;
+export const SignupForm = ({
+  services,
+  professions,
+}: {
+  services: Array<Service>;
+  professions: Array<Profession>;
+}) => {
   const [error, dispatch] = useFormState<{ error?: string | null }>(
     signInWithCredentials as (state: {
       error?: string | null | undefined;
     }) => { error?: string | null | undefined } | Promise<{ error?: string | null | undefined }>,
     { error: null }
   );
-
   return (
     <form action={dispatch}>
       <Card className="mx-auto max-w-sm">

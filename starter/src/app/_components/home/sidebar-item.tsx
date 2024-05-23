@@ -1,5 +1,6 @@
 "use client";
 
+import type { ResultItem } from "@/app/constants";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
@@ -13,7 +14,7 @@ const FormSchema = z.object({
   }),
 });
 
-export default function SidebarItem({ title, items }: { title: string; items: any }) {
+export default function SidebarItem({ title, items }: { title: string; items: ResultItem[] }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
