@@ -1,4 +1,5 @@
 import { AutocompleteSearch } from "@/app/_components/autocomplete";
+import { Hero } from "@/app/_components/universal/hero";
 import ExpertList from "@/app/experts/_components/result";
 import { professions } from "@/lib/constants";
 import { db } from "prisma/client";
@@ -37,18 +38,10 @@ export default async function ResultsPage({
       {experts.length > 0 ? (
         <main className="flex min-h-screen flex-col items-center justify-center">
           <div className="flex-1">
-            <div
-              className="flex min-h-96 w-screen flex-col justify-center bg-cover bg-center bg-no-repeat py-20"
-              style={{ backgroundImage: "url('/hero.jpg')" }}>
-              <div className="container mt-16 flex flex-col items-center justify-center gap-12 px-4 py-6">
-                <h1 className="font-display text-5xl font-extrabold tracking-tight text-white">
-                  <Balancer>Find your Cal.com Expert</Balancer>
-                </h1>
-                <div>
-                  <AutocompleteSearch options={professions} initialSearch={searchValue} />
-                </div>
-              </div>
-            </div>
+            <Hero title="Find your Cal.com Expert">
+              <AutocompleteSearch options={professions} initialSearch={searchValue} />
+            </Hero>
+
             <div className="mx-auto flex max-w-[980px] flex-col items-center justify-center gap-12 px-4 py-6 md:min-w-[50vw]">
               <ExpertList experts={experts} />
             </div>

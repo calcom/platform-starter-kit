@@ -1,5 +1,6 @@
 import { Navigation } from "./_components/navigation";
 import { HomeFilters } from "@/app/_components/home/filters";
+import { Hero } from "@/app/_components/universal/hero";
 import { Logo } from "@/app/_components/universal/logo";
 import WelcomeCard from "@/app/_components/welcome-card";
 import { SignedIn, SignedOut, currentUser } from "@/auth";
@@ -8,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Loader, LogIn } from "lucide-react";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import { Balancer } from "react-wrap-balancer";
 
 export default async function Home() {
   const user = await currentUser();
@@ -33,19 +33,13 @@ export default async function Home() {
         </div>
       </header>
       <div className="flex-1">
-        <div
-          className="flex min-h-96 flex-col justify-center bg-cover bg-center bg-no-repeat py-20"
-          style={{ backgroundImage: "url('/hero.jpg')" }}>
-          <div className="container mt-16 flex flex-col items-center justify-center gap-12 px-4 py-6">
-            <h1 className="font-display text-5xl font-extrabold tracking-tight text-white">
-              <Balancer>Find your Cal.com Expert</Balancer>
-            </h1>
-            <div className="w-full max-w-2xl">
-              <Input placeholder="Search for your expert, topic or more" className="h-14 w-full shadow-md" />
-              {/*  <AutocompleteSearch options={professions} /> */}
-            </div>
+        <Hero title="Find your Cal.com Expert">
+          <div className="w-full max-w-2xl">
+            <Input placeholder="Search for your expert, topic or more" className="h-14 w-full shadow-md" />
+            {/*  <AutocompleteSearch options={professions} /> */}
           </div>
-        </div>
+        </Hero>
+
         <div className="flex-1">
           <div className="my-10">
             <Suspense
