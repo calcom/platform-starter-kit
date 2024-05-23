@@ -1,5 +1,6 @@
 "use client";
 
+import type { SidebarCategoryItem } from "@/app/constants";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
@@ -13,7 +14,7 @@ const FormSchema = z.object({
   }),
 });
 
-export default function SidebarItem({ title, items }: { title: string; items: any }) {
+export default function SidebarItem({ title, items }: { title: string; items: SidebarCategoryItem[] }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -43,7 +44,7 @@ export default function SidebarItem({ title, items }: { title: string; items: an
               <div className="mb-4">
                 <FormLabel className="text-sm font-light uppercase">{title}</FormLabel>
               </div>
-              {items.map((item: any) => (
+              {items.map((item: SidebarCategoryItem) => (
                 <FormField
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   key={item.id}
