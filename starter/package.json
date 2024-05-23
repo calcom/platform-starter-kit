@@ -18,6 +18,7 @@
     "@auth/prisma-adapter": "^1.4.0",
     "@calcom/atoms": "^1.0.44",
     "@hookform/resolvers": "^3.3.4",
+    "@kodingdotninja/use-tailwind-breakpoint": "^1.0.0",
     "@libsql/client": "^0.6.0",
     "@opentelemetry/api": "^1.8.0",
     "@prisma/adapter-libsql": "^5.12.1",
@@ -62,9 +63,9 @@
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
+    "typed-openapi": "^0.4.1",
     "usehooks-ts": "^3.1.0",
-    "zod": "^3.23.7",
-    "typed-openapi": "^0.4.1"
+    "zod": "^3.23.7"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.3",

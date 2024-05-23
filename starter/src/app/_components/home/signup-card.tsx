@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const SignupCard = () => {
   return (
-    <Card className="mx-auto flex max-w-sm items-center">
+    <Card className="mx-auto flex items-center">
       <div>
         <CardHeader>
           <CardTitle className="text-xl">

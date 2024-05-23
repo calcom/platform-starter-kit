@@ -47,7 +47,7 @@ export default async function Home() {
           </div>
         </div>
         <div className="flex-1">
-          <div className="sm:my-10">
+          <div className="my-10">
             <Suspense
               fallback={
                 <div className="relative h-max w-full max-w-sm place-self-center">

@@ -4,7 +4,7 @@ interface LogoProps {
   href?: string;
 }
 
-export const Logo: React.FC<LogoProps> = ({ href }) => {
+export const Logo = ({ href }: LogoProps) => {
   return (
     <Link href={href ?? "/"} className="flex font-display text-2xl">
       Cal.com <span className="font-display text-sm">®</span>

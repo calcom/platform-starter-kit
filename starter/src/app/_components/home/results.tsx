@@ -31,7 +31,7 @@ function ResultsCard({
 }) {
   return (
     <Link href={"/" + slug}>
-      <Card className="mx-auto max-w-sm overflow-hidden transition-all ease-in-out hover:rotate-1 hover:scale-105 hover:shadow-lg">
+      <Card className="mx-auto overflow-hidden transition-all ease-in-out hover:rotate-1 hover:scale-105 hover:shadow-lg">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={image} alt={title} />
         <CardHeader>
