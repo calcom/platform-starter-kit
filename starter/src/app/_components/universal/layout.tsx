@@ -13,7 +13,7 @@ type LayoutProps = BaseProps & {
 };
 
 export const LayoutAside = ({ children, className }: BaseProps) => {
-  return <aside className={`layout-aside min-w-[260px] p-4 ${className}`}>{children}</aside>;
+  return <aside className={cn("layout-aside min-w-[260px] p-4", className)`}>{children}</aside>;
 };
 
 export const LayoutMain = ({ children, className }: BaseProps) => {
