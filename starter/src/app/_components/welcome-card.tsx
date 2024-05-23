@@ -3,13 +3,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { type User } from "next-auth";
 import Link from "next/link";
 
-export const WelcomeCard = (props: { username: User["name"] }) => {
+interface WelcomeCardProps {
+  username: User["name"];
+}
+
+export const WelcomeCard = ({ username }: WelcomeCardProps) => {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-xl">Welcome back!</CardTitle>
         <CardDescription>
-          You&apos;re logged in{props.username ? ` as "${props.username}"` : ""}.
+          You&apos;re logged in
+          {!!username && (
+            <>
+              {" "}
+              as <b>{username}</b>
+            </>
+          )}
+          .
         </CardDescription>
       </CardHeader>
       <CardContent>

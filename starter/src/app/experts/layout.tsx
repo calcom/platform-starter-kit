@@ -16,7 +16,7 @@ export default function ExpertLayout({
   return (
     <div>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 max-w-screen-2xl items-center">
+        <div className="flex  h-14 max-w-screen-2xl items-center px-4 sm:container">
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
@@ -48,9 +48,9 @@ export default function ExpertLayout({
             </SheetContent>
           </Sheet>
           {breadcrumbs}
-          <div className="flex flex-1 items-center justify-between space-x-4 md:justify-end">
+          <div className="flex flex-1 items-center justify-end sm:space-x-4">
             <AutocompleteSearch options={professions} className="" placement="header" />
-            <span>OR</span>
+            <span className="hidden sm:inline">OR</span>
             <Link href="/signup">
               <Button className="hidden sm:flex">Sign up as Expert</Button>
             </Link>

@@ -56,9 +56,9 @@ export default async function Layout({
             {breadcrumbs}
             <div className="relative ml-auto flex-1 md:grow-0">
               <div className="flex flex-row items-center justify-end gap-4">
-                <div className="flex flex-row items-center">
+                <div className="flex flex-row items-center gap-2">
                   <span className="hidden text-sm text-muted-foreground [width:max-content] md:block">
-                    Logged in as &quot;{user?.username}&quot;
+                    Logged in as <b>{user?.username}</b>
                   </span>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
