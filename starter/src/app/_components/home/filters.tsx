@@ -7,7 +7,7 @@ import SignupCard from "@/app/_components/home/signup-card";
 import { useBreakpoint } from "@/app/_components/universal/hooks/use-breakpoint";
 import { Layout } from "@/app/_components/universal/layout";
 import { sidebarCategories, resultItems } from "@/app/constants";
-import type { SidebarCategory } from "@/app/constants";
+import type { SidebarCategory, ResultItem } from "@/app/constants";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -46,7 +46,7 @@ export const HomeFilters = () => {
             </DialogTrigger>
             <DialogPortal>
               <DialogOverlay className="dialogOverlay" />
-              <DialogContent fullScreen className="dialogContent">
+              <DialogContent className="dialogContent">
                 <div className="flex max-h-[90vh] flex-col overflow-x-auto">
                   {sidebarCategories.map(({ title, items }: SidebarCategory) => (
                     <SidebarItem key={title} title={title} items={items} />

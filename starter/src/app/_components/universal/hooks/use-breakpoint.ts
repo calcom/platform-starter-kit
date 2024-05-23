@@ -1,4 +1,4 @@
-import tailwindConfig from "../../../../../tailwind.config.ts";
+import tailwindConfig from "../../../../../tailwind.config";
 import { create } from "@kodingdotninja/use-tailwind-breakpoint";
 import resolveConfig from "tailwindcss/resolveConfig";
 

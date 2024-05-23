@@ -43,3 +43,5 @@ export const Layout = ({
 
 Layout.Aside = LayoutAside;
 Layout.Main = LayoutMain;
+
+export default Layout;

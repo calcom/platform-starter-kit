@@ -1,12 +1,14 @@
-export type SidebarCategory = {
-  title: string;
-  items: Array<{
-    id: string;
-    label: string;
-  }>;
+export type SidebarCategoryItem = {
+  id: string;
+  label: string;
 };
 
-export const sidebarCategories: SidebarCategory = [
+export type SidebarCategory = {
+  title: string;
+  items: Array<SidebarCategoryItem>;
+};
+
+export const sidebarCategories: SidebarCategory[] = [
   {
     title: "Category",
     items: [
@@ -78,12 +80,12 @@ export const sidebarCategories: SidebarCategory = [
   },
 ];
 
-interface ResultItem {
+export type ResultItem = {
   slug: string;
   image: string;
   title: string;
   description: string;
-}
+};
 
 export const resultItems: ResultItem[] = [
   {
