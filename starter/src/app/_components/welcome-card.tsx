@@ -16,6 +16,7 @@ export const WelcomeCard = ({ username }: WelcomeCardProps) => {
           You&apos;re logged in
           {!!username && (
             <>
+              {" "}
               as <b>{username}</b>
             </>
           )}
