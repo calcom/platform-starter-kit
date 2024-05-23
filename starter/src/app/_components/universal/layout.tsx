@@ -17,7 +17,7 @@ export const LayoutAside = ({ children, className }: BaseProps) => {
 };
 
 export const LayoutMain = ({ children, className }: BaseProps) => {
-  return <main className={`layout-main p-4  ${className}`}>{children}</main>;
+  return <main className={cn("layout-main p-4", className)}>{children}</main>;
 };
 
 export const Layout = ({
