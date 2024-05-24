@@ -3,6 +3,59 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { db } from "prisma/client";
 
+interface Item {
+  name: string;
+}
+
+interface ExpertDetailsSectionProps {
+  title: string;
+  items: Item[];
+  itemLimit: number;
+}
+
+interface Profession {
+  name: string;
+}
+
+interface Expert {
+  name: string;
+  professions: Profession[];
+}
+
+function ExpertHeader({ expert }: { expert: Expert }) {
+  return (
+    <div className="flex items-center gap-x-6">
+      <Image
+        alt="Expert image"
+        className="aspect-square rounded-md object-cover"
+        src="https://picsum.photos/200"
+        height="64"
+        width="64"
+      />
+      <div>
+        <div className="text-sm leading-6 text-muted-foreground">
+          {expert.professions.map((profession) => profession.name).join(", ")}
+        </div>
+        <h1 className="text-2xl font-semibold leading-none tracking-tight">{expert.name}</h1>
+      </div>
+    </div>
+  );
+}
+
+function ExpertDetailsSection({ title, items, itemLimit }: ExpertDetailsSectionProps) {
+  return (
+    <div className="flex flex-col space-y-1.5 p-0 lg:p-6">
+      <div className="text-sm leading-6 text-muted-foreground">{title}</div>
+      <div className="flex gap-1">
+        {items.slice(0, itemLimit).map(({ name }, idx) => (
+          <Badge key={name}>{name}</Badge>
+        ))}
+        {items.length > itemLimit && <Badge>+{items.length - itemLimit} more</Badge>}
+      </div>
+    </div>
+  );
+}
+
 export default async function ExpertDetails({ params }: { params: { expertUsername: string } }) {
   console.log("expertUsername: ", params.expertUsername);
   const expert = await db.user.findUnique({
@@ -16,41 +69,11 @@ export default async function ExpertDetails({ params }: { params: { expertUserna
 
   return (
     <div className="flex flex-1 flex-col items-center gap-4 overflow-auto">
-      <div className="flex w-full justify-between rounded-md bg-muted/50 px-8 py-4 sm:px-10 lg:px-12">
-        <div className="flex items-center gap-x-6">
-          <Image
-            alt="Expert image"
-            className="aspect-square rounded-md object-cover"
-            src="https://picsum.photos/200"
-            height="64"
-            width="64"
-          />
-          <div>
-            <div className="text-sm leading-6 text-muted-foreground">
-              {expert?.professions.map((profession) => profession.name).join(", ")}
-            </div>
-            <h1 className="text-2xl font-semibold leading-none tracking-tight">{expert?.name}</h1>
-          </div>
-        </div>
+      <div className="flex w-full flex-col justify-between gap-4 rounded-md bg-muted/50 px-8 py-4  sm:px-10 lg:flex-row lg:px-12">
+        <ExpertHeader expert={expert} />
         <div className="flex items-center gap-x-4 sm:gap-x-6">
-          <div className="flex flex-col space-y-1.5 p-6">
-            <div className="text-sm leading-6 text-muted-foreground">Professions</div>
-            <div className="flex gap-1">
-              {expert.professions.slice(0, 2).map((profession, idx) => (
-                <Badge key={idx}>{profession.name}</Badge>
-              ))}
-              {expert.professions.length > 2 && <Badge>+{expert.professions.length - 2} more</Badge>}
-            </div>
-          </div>
-          <div className="flex flex-col space-y-1.5 p-6">
-            <div className="text-sm leading-6 text-muted-foreground">Services</div>
-            <div className="flex gap-1">
-              {expert.services.slice(0, 2).map((service, idx) => (
-                <Badge key={idx}>{service.name}</Badge>
-              ))}
-              {expert.services.length > 2 && <Badge>+{expert.services.length - 2} more</Badge>}
-            </div>
-          </div>
+          <ExpertDetailsSection title="Professions" items={expert.professions} itemLimit={2} />
+          <ExpertDetailsSection title="Services" items={expert.services} itemLimit={2} />
         </div>
       </div>
       <div className="mx-auto mt-4 grid w-full gap-2 px-8 sm:px-10 lg:px-12">
