@@ -34,20 +34,19 @@ export default async function ResultsPage({
   });
 
   return (
-    <div className="flex flex-1 flex-col">
+    <>
+      <Hero title="Find your Cal.com Expert">
+        <AutocompleteSearch options={professions} initialSearch={searchValue} />
+      </Hero>
       {experts.length > 0 ? (
-        <main className="flex min-h-screen flex-col items-center justify-center">
+        <div className="flex min-h-screen flex-col items-center justify-center">
           <div className="flex-1">
-            <Hero title="Find your Cal.com Expert">
-              <AutocompleteSearch options={professions} initialSearch={searchValue} />
-            </Hero>
-
             <div className="mx-auto flex max-w-[980px] flex-col items-center justify-center gap-12 px-4 py-6 md:min-w-[50vw]">
               <ExpertList experts={experts} />
             </div>
           </div>
-        </main>
+        </div>
       ) : null}
-    </div>
+    </>
   );
 }
