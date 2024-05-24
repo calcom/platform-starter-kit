@@ -10,13 +10,14 @@ import { sidebarCategories, resultItems } from "@/app/constants";
 import type { SidebarCategory, ResultItem } from "@/app/constants";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogPortal,
-  DialogOverlay,
-  DialogClose,
-  DialogTrigger,
-  DialogContent,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetFooter,
+  SheetClose,
+} from "@/components/ui/sheet";
 
 export const HomeFilters = () => {
   const isMd = useBreakpoint("md");
@@ -36,30 +37,31 @@ export const HomeFilters = () => {
         </Layout.Main>
       </Layout>
     );
+
   return (
     <>
       <Layout flex fullWidth={false} align="end">
-        <div className="dialog flex flex-row-reverse px-4">
-          <Dialog modal={false}>
-            <DialogTrigger asChild>
+        <div className="flex flex-row-reverse px-4">
+          <Sheet>
+            <SheetTrigger asChild>
               <Button className="openFilters">Open Filters</Button>
-            </DialogTrigger>
-            <DialogPortal>
-              <DialogOverlay className="dialogOverlay" />
-              <DialogContent className="dialogContent">
-                <div className="flex max-h-[90vh] flex-col overflow-x-auto">
-                  {sidebarCategories.map(({ title, items }: SidebarCategory) => (
-                    <SidebarItem key={title} title={title} items={items} />
-                  ))}
-                </div>
-                <DialogClose asChild>
-                  <Button className="IconButton" aria-label="Close">
-                    Close
-                  </Button>
-                </DialogClose>
-              </DialogContent>
-            </DialogPortal>
-          </Dialog>
+            </SheetTrigger>
+            <SheetContent className="flex flex-col">
+              <SheetHeader>
+                <SheetTitle>Filters</SheetTitle>
+              </SheetHeader>
+              <div className="pretty-scrollbar flex-col overflow-y-scroll">
+                {sidebarCategories.map(({ title, items }: SidebarCategory) => (
+                  <SidebarItem key={title} title={title} items={items} />
+                ))}
+              </div>
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button type="submit">Close</Button>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
         </div>
       </Layout>
       <Layout flex fullWidth={false} align="center">
