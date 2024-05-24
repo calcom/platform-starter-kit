@@ -73,14 +73,25 @@
 }
 
 @font-face {
-  font-family: 'Cal Sans';
+  font-family: "Cal Sans";
   font-weight: 200 900;
   font-display: block;
   font-style: normal;
   font-stretch: 75% 125%;
-  src: url('../fonts/CalSans-SemiBold.woff2') format('woff2');
+  src: url("../fonts/CalSans-SemiBold.woff2") format("woff2");
 }
 
+.pretty-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #fff;
+}
+
+.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+  transition: background-color 0.3s ease-in-out;
+}
 
 @layer base {
   * {
