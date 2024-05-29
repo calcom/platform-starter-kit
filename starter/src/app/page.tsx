@@ -1,9 +1,9 @@
-import Results from "./_components/home/results";
+import ResultsCard from "./_components/home/results";
 import SidebarItem from "./_components/home/sidebar-item";
 import SignupCard from "./_components/home/signup-card";
 import { Navigation } from "./_components/navigation";
 import { SearchBar } from "./_components/search-bar";
-import { SignedOut, cachedCurrentUser, currentUser } from "@/auth";
+import { SignedOut, cachedCurrentUser } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ListFilter, Loader, LogIn } from "lucide-react";
@@ -332,7 +332,16 @@ export default async function Home(props: {
                     <SignedOut>
                       <SignupCard />
                     </SignedOut>
-                    <Results items={experts} />
+                    {experts.map(({ slug, image, title, description }) => (
+                      <ResultsCard
+                        key={slug}
+                        slug={slug}
+                        image={image}
+                        title={title}
+                        description={description}
+                        query={query}
+                      />
+                    ))}
                   </div>
                 </main>
               </div>

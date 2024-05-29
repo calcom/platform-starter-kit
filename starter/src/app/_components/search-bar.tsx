@@ -14,7 +14,6 @@ export const SearchBar = () => {
         className="h-14 w-full shadow-md"
         defaultValue={searchParams.get("q") ?? ""}
         onChange={(e) => {
-          console.log(e.target.value);
           // append the query to the URL
           const params = new URLSearchParams(searchParams);
           params.set("q", e.target.value);
