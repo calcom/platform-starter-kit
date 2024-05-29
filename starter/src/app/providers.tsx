@@ -6,7 +6,7 @@
  */
 import { env } from "@/env";
 import { CalProvider } from "@calcom/atoms";
-import { type CalAccount } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { ThemeProviderProps } from "next-themes/dist/types";
@@ -15,7 +15,7 @@ import * as React from "react";
 export function Providers({
   children,
   ...props
-}: ThemeProviderProps & { calUserToken?: CalAccount["accessToken"] }) {
+}: ThemeProviderProps & { calUserToken?: User["calAccessToken"] }) {
   const accessToken = props?.calUserToken;
   return (
     <CalProvider

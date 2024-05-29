@@ -4,6 +4,7 @@ import { type User } from "@prisma/client";
 import NextAuth from "next-auth";
 import type { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { unstable_cache } from "next/cache";
 import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 import { db } from "prisma/client";
 import { cache } from "react";
@@ -326,9 +327,11 @@ const {
                     slug,
                   })),
                 },
+                calAccessToken: accessToken,
+                calRefreshToken: refreshToken,
                 /** [@calcom] 👇 These are the tokens necessary to make cal operations on behalf of the user */
                 calAccount: {
-                  create: { ...toCreate, accessToken, refreshToken },
+                  create: toCreate,
                 },
                 /** [@calcom] 👆 */
               },
@@ -363,14 +366,15 @@ export const currentUser = cache(async () => {
   if (!sesh?.user) return null;
   const user = await db.user.findUnique({
     where: { id: sesh.user.id },
-    include: {
-      calAccount: true,
-      professions: true,
-      services: true,
-    },
   });
   return user;
 });
+
+// unstable_cache (cache between requests), so that we can use this in our public routes for faster response times
+// goes from first request of ~200 ms to ~100 ms for subsequent ones
+export const cachedCurrentUser = unstable_cache(async () => {
+  return await currentUser();
+}, ["current-user"]);
 
 export async function SignedIn(props: { children: (props: { user: Session["user"] }) => React.ReactNode }) {
   const sesh = await auth();

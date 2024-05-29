@@ -9,12 +9,16 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { type GetBookingsInput } from "node_modules/@calcom/atoms/dist/packages/platform/types";
+import { db } from "prisma/client";
 
 export default async function Dashboard() {
   const user = await currentUser();
   if (!user) {
     return <div>Not logged in</div>;
   }
+  const calAccount = await db.calAccount.findUnique({
+    where: { id: user.calAccountId },
+  });
   /** [@calcom] We're fetching the bookings on the server to display them here
    * Since `filters` is currently a required parameter, we have to iterate a bit and create our flatMap in the end
    */
@@ -159,7 +163,7 @@ export default async function Dashboard() {
           currentMonth: thisMonthBookings,
           currentYear: thisYearBookings,
         }}
-        user={{ timeZone: user.calAccount.timeZone, username: user.calAccount.username, email: user.email }}
+        user={{ timeZone: calAccount.timeZone, username: calAccount.username, email: user.email }}
       />
     </main>
   );

@@ -1,88 +1,63 @@
 "use client";
 
-import type { SidebarCategoryItem } from "@/app/constants";
+import type { SidebarCategory, SidebarCategoryItem } from "@/app/constants";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { cn } from "@/lib/utils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
-});
+export default function SidebarItem({
+  id,
+  label,
+  className,
+  category,
+  ...props
+}: SidebarCategoryItem & {
+  className?: string;
+  category: SidebarCategory["title"];
+} & React.ComponentPropsWithoutRef<typeof Checkbox>) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
-export default function SidebarItem({ title, items }: { title: string; items: SidebarCategoryItem[] }) {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      items: ["recents", "home"],
-    },
-  });
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
+  const filterParams = JSON.parse(searchParams.get("f") || "{}") as Record<
+    string,
+    string[] | Record<string, never>
+  >;
+  const selectedIds = filterParams[category];
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mb-8 space-y-8 border-b border-gray-200 pb-8">
-        <FormField
-          control={form.control}
-          name="items"
-          render={() => (
-            <FormItem>
-              <div className="mb-4">
-                <FormLabel className="text-sm font-light uppercase">{title}</FormLabel>
-              </div>
-              {items.map((item: SidebarCategoryItem) => (
-                <FormField
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  key={item.id}
-                  control={form.control}
-                  name="items"
-                  render={({ field }: { field: any }) => {
-                    return (
-                      <FormItem
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                        key={item.id}
-                        className="group flex cursor-pointer flex-row items-start space-x-3 space-y-0 pb-1 ">
-                        <FormControl>
-                          <Checkbox
-                            className="group-hover:bg-gray-200"
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                            checked={field.value?.includes(item.id)}
-                            onCheckedChange={(checked) => {
-                              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                              return checked
-                                ? // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                                  field.onChange([...field.value, item.id])
-                                : field.onChange(field.value?.filter((value: any) => value !== item.id));
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className="cursor-pointer font-normal text-gray-700 hover:text-black">
-                          {item.label}
-                        </FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </form>
-    </Form>
+    <div className="flex items-center space-x-2">
+      <Checkbox
+        id={id}
+        className={cn(className)}
+        defaultChecked={selectedIds?.includes(id)}
+        onCheckedChange={(checked) => {
+          const newSelectedIds = [
+            ...(selectedIds?.filter((selectedId) => selectedId !== id) || []),
+            ...(checked ? [id] : []),
+          ];
+          const newCategoryFilter = { [category]: newSelectedIds };
+
+          const { [category]: _, ...withoutCurrentCategory } = filterParams; // remove current category from filters
+
+          // include new category filter if there are selected ids
+          const newFilters = {
+            ...withoutCurrentCategory,
+            ...(newSelectedIds.length > 0 ? newCategoryFilter : {}),
+          };
+          const params = new URLSearchParams({ f: JSON.stringify(newFilters) });
+          router.replace(
+            `${pathname}${Object.keys(newFilters).length ? `?${params.toString()}` : ""}${searchParams.get("q") ? `&q=${searchParams.get("q")}` : ""}`,
+            { scroll: false }
+          );
+        }}
+        {...props}
+      />
+      <label
+        htmlFor={id}
+        className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        {label}
+      </label>
+    </div>
   );
 }
