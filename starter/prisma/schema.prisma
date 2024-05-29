@@ -40,9 +40,9 @@ model Profession {
   slug      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   //   a profession can be assigned to many users
-  users     User[]
+  users User[]
 
   //   a profession can be assigned to many services
   services Service[]
@@ -78,24 +78,25 @@ model Session {
 }
 
 model User {
-  id             String       @id @default(cuid())
-  name           String?
-  username       String?      @unique
-  email          String?      @unique
-  emailVerified  DateTime?
-  hashedPassword String?
-  image          String?
-  accounts       Account[]
-  sessions       Session[]
-  calAccount     CalAccount?
-  professions    Profession[]
-  services       Service[]
+  id              String       @id @default(cuid())
+  name            String?
+  username        String?      @unique
+  email           String?      @unique
+  emailVerified   DateTime?
+  hashedPassword  String?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  calAccount      CalAccount?  @relation(fields: [calAccountId], references: [id], onDelete: Cascade)
+  calAccountId    Int?         @unique
+  calAccessToken  String?      @unique
+  calRefreshToken String?      @unique
+  professions     Profession[]
+  services        Service[]
 }
 
 model CalAccount {
   id                Int    @id
-  accessToken       String @unique
-  refreshToken      String @unique
   username          String @unique
   email             String @unique
   timeZone          String
@@ -104,10 +105,7 @@ model CalAccount {
   timeFormat        Int
   defaultScheduleId Int?
   // expires   DateTime
-  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            String @unique
-
-  @@index([id, accessToken, refreshToken, username, email])
+  user              User?
 }
 
 model VerificationToken {

@@ -13,7 +13,7 @@ export const cal = createApiClient(
       const user = await currentUser();
       const headers = {
         "x-cal-secret-key": env.CAL_SECRET,
-        ...(user.calAccount.accessToken && { Authorization: `Bearer ${user.calAccount.accessToken}` }),
+        ...(user.calAccessToken && { Authorization: `Bearer ${user.calAccessToken}` }),
       };
       return fetch(fullUrl.href, {
         headers,

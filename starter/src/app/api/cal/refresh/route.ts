@@ -9,11 +9,10 @@ export async function GET(request: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
   try {
-    const calAccount = await db.calAccount.findUnique({
-      where: { accessToken: token },
-      include: { user: true },
+    const user = await db.user.findUnique({
+      where: { calAccessToken: token },
     });
-    if (!calAccount?.user) {
+    if (!user) {
       console.error(`Unable to refresh the user token for the access token '${token}':
         No user found with the token for the access token '${token}'`);
       return new Response("Not Found", { status: 404 });
@@ -30,14 +29,14 @@ export async function GET(request: Request) {
         "x-cal-secret-key": env.CAL_SECRET,
       },
       body: JSON.stringify({
-        refreshToken: calAccount.refreshToken,
+        refreshToken: user.calRefreshToken,
       }),
     };
     const response = await fetch(url, options);
 
     if (!response.ok) {
       console.error(
-        `Unable to refresh the user token for user with id '${calAccount.user.id}': Invalid response from Cal after attempting to refresh the token.
+        `Unable to refresh the user token for user with id '${user.id}': Invalid response from Cal after attempting to refresh the token.
         
         -- REQUEST DETAILS --
         Endpoint URL: ${url}
@@ -57,20 +56,16 @@ export async function GET(request: Request) {
 
     // update the user's token in our database:
     const updated = await db.user.update({
-      where: { id: calAccount.user.id },
+      where: { id: user.id },
       data: {
-        calAccount: {
-          update: {
-            accessToken: body.data.accessToken,
-            refreshToken: body.data.refreshToken,
-          },
-        },
+        calAccessToken: body.data.accessToken,
+        calRefreshToken: body.data.refreshToken,
       },
       include: { calAccount: true },
     });
 
     /** [@calcom] You have to return the accessToken back to calcom/atoms api for future refresh requests. */
-    return new Response(JSON.stringify({ accessToken: updated.calAccount?.accessToken }), {
+    return new Response(JSON.stringify({ accessToken: updated.calAccessToken }), {
       status: 200,
     });
   } catch (e) {

@@ -63,11 +63,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head />
       <AxiomWebVitals />
       <body className={cn("antialiased", calFont.variable, interFont.variable)}>
-        <Providers
-          defaultTheme="system"
-          enableSystem
-          attribute="class"
-          calUserToken={user?.calAccount?.accessToken}>
+        <Providers defaultTheme="system" enableSystem attribute="class" calUserToken={user?.calAccessToken}>
           <div className="flex min-h-screen flex-col">
             <Banner
               title="Build your own marketplace"
