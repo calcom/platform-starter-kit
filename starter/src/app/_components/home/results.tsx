@@ -12,10 +12,10 @@ export default function ResultsCard({
   image: string;
   title: string;
   description: string;
-  query: string;
+  query?: string;
 }) {
-  const queryIndexTitle = title.toLowerCase().indexOf(query.toLowerCase());
-  const queryIndexDescription = description.toLowerCase().indexOf(query.toLowerCase());
+  const queryIndexTitle = title.toLowerCase().indexOf(query?.toLowerCase());
+  const queryIndexDescription = description.toLowerCase().indexOf(query?.toLowerCase());
 
   return (
     <Link href={"/" + slug}>
