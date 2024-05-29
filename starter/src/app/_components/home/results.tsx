@@ -17,12 +17,6 @@ export default function ResultsCard({
   const queryIndexTitle = title.toLowerCase().indexOf(query.toLowerCase());
   const queryIndexDescription = description.toLowerCase().indexOf(query.toLowerCase());
 
-  console.log({
-    query,
-    before: title.substring(0, queryIndexTitle),
-    match: title.substring(queryIndexTitle, queryIndexTitle + query.length),
-    after: title.substring(queryIndexTitle + query.length),
-  });
   return (
     <Link href={"/" + slug}>
       <Card className="mx-auto overflow-hidden transition-all ease-in-out hover:rotate-1 hover:scale-105 hover:shadow-lg">

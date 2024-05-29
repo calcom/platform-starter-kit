@@ -17,7 +17,8 @@ export default async function Home(props: {
     f: Array<{ label: "category" | "freelancer"; selected: Array<string> }> | undefined;
   };
 }) {
-  const { q: query, f: filters } = props.searchParams;
+  const { q: query, f: _filters } = props.searchParams;
+  // TODO: move to database after signup
   const experts = [
     {
       slug: "basement",
@@ -44,6 +45,7 @@ export default async function Home(props: {
       );
     });
 
+  // TODO: move to database after signup
   const sidebarSections = [
     {
       title: "Category",
@@ -232,9 +234,6 @@ export default async function Home(props: {
       ],
     },
   ];
-  // for every filter,
-  console.log("filter: (console.dir)");
-  console.dir(filters, { depth: 2 });
 
   // using the cached version here so that we don't re-fetch the user on every search param change with router.replace()
   const user = await cachedCurrentUser();
