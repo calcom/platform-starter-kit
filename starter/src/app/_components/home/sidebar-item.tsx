@@ -2,6 +2,7 @@
 
 import type { SidebarCategory, SidebarCategoryItem } from "@/app/constants";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -53,11 +54,11 @@ export default function SidebarItem({
         }}
         {...props}
       />
-      <label
+      <Label
         htmlFor={id}
         className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
         {label}
-      </label>
+      </Label>
     </div>
   );
 }

@@ -1,11 +1,11 @@
 import { authConfig } from "./config";
 import { env } from "@/env";
-import { type User } from "@prisma/client";
+import { type Prisma, type User } from "@prisma/client";
 import NextAuth from "next-auth";
 import type { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { unstable_cache } from "next/cache";
-import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
+import { randomBytes, scrypt, sign, timingSafeEqual } from "node:crypto";
 import { db } from "prisma/client";
 import { cache } from "react";
 import "server-only";
@@ -148,21 +148,32 @@ const {
             return { id: user.id, name: user.name };
           } else {
             // if user doesn't exist, this comes from our signup page w/ additional fields
-            console.info(`User attempted signup`, {
-              username: c.username,
-              name: c.name,
-              professions: c.professions,
-              services: c.services,
-            });
             const signupData = z
               .object({
                 username: z.string().min(1).max(32),
                 name: z.string().min(1).max(32),
-                professions: z.preprocess((val) => {
+                // for all sidebaritems, let's create the zod schema:
+                categories: z.preprocess((val) => {
                   if (typeof val !== "string") return val; // should error
                   return JSON.parse(val);
                 }, z.array(z.string())),
-                services: z.preprocess((val) => {
+                capabilities: z.preprocess((val) => {
+                  if (typeof val !== "string") return val; // should error
+                  return JSON.parse(val);
+                }, z.array(z.string())),
+                frameworks: z.preprocess((val) => {
+                  if (typeof val !== "string") return val; // should error
+                  return JSON.parse(val);
+                }, z.array(z.string())),
+                budgets: z.preprocess((val) => {
+                  if (typeof val !== "string") return val; // should error
+                  return JSON.parse(val);
+                }, z.array(z.string())),
+                languages: z.preprocess((val) => {
+                  if (typeof val !== "string") return val; // should error
+                  return JSON.parse(val);
+                }, z.array(z.string())),
+                regions: z.preprocess((val) => {
                   if (typeof val !== "string") return val; // should error
                   return JSON.parse(val);
                 }, z.array(z.string())),
@@ -170,7 +181,12 @@ const {
               .safeParse(c);
             if (!signupData.success) {
               console.error(
-                `[auth] Invalid sign in submission because of missing signup data: ${signupData.error.errors.map((e) => e.message).join(", ")}`
+                `[auth] Invalid sign in submission because of missing signup data: ${signupData.error.errors
+                  .map((e) => {
+                    // return the path of the error with the message:
+                    return `${e.path.join(".")} (${e.message}) -> '${e.code}'`;
+                  })
+                  .join(", ")}`
               );
               return null;
             }
@@ -317,16 +333,6 @@ const {
                 name: signupData.data.name,
                 hashedPassword: await hash(credentials.data.password),
                 email: credentials.data.email,
-                professions: {
-                  connect: signupData.data.professions.map((slug) => ({
-                    slug,
-                  })),
-                },
-                services: {
-                  connect: signupData.data.services.map((slug) => ({
-                    slug,
-                  })),
-                },
                 calAccessToken: accessToken,
                 calRefreshToken: refreshToken,
                 /** [@calcom] 👇 These are the tokens necessary to make cal operations on behalf of the user */
@@ -336,9 +342,27 @@ const {
                 /** [@calcom] 👆 */
               },
             });
-          }
+            // now that we have the userId, connect the user to the filters:
+            const selectedFilterOptions = [
+              { filterOpdtionFieldIds: signupData.data.budgets, filterCategoryFieldId: "budgets" },
+              { filterOpdtionFieldIds: signupData.data.capabilities, filterCategoryFieldId: "capabilities" },
+              { filterOpdtionFieldIds: signupData.data.categories, filterCategoryFieldId: "categories" },
+              { filterOpdtionFieldIds: signupData.data.frameworks, filterCategoryFieldId: "frameworks" },
+              { filterOpdtionFieldIds: signupData.data.languages, filterCategoryFieldId: "languages" },
+            ].map(({ filterOpdtionFieldIds, filterCategoryFieldId }) => {
+              return filterOpdtionFieldIds.map((fieldId) => ({
+                filterCategoryFieldId,
+                filterOptionFieldId: fieldId,
+                userId: user.id,
+              }));
+            });
+            const data = selectedFilterOptions.flat();
+            await db.filterOptionsOnUser.createMany({
+              data,
+            });
 
-          return { id: user.id, name: user.name };
+            return { id: user.id, name: user.name };
+          }
         } catch (e) {
           console.error(e);
           return null;
@@ -369,12 +393,6 @@ export const currentUser = cache(async () => {
   });
   return user;
 });
-
-// unstable_cache (cache between requests), so that we can use this in our public routes for faster response times
-// goes from first request of ~200 ms to ~100 ms for subsequent ones
-export const cachedCurrentUser = unstable_cache(async () => {
-  return await currentUser();
-}, ["current-user"]);
 
 export async function SignedIn(props: { children: (props: { user: Session["user"] }) => React.ReactNode }) {
   const sesh = await auth();

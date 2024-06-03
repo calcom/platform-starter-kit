@@ -16,40 +16,6 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-// Necessary for filtering services & professions on both sides of the marketplace
-model Service {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // a service can be assigned to many professions   
-  professions  Profession? @relation(fields: [professionId], references: [id])
-  professionId String?
-
-  //  a service can be assigned to many users
-  users User[]
-
-  @@index([name])
-}
-
-model Profession {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  //   a profession can be assigned to many users
-  users User[]
-
-  //   a profession can be assigned to many services
-  services Service[]
-
-  @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -66,6 +32,8 @@ model Account {
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime? @default(now())
+
   @@unique([provider, providerAccountId])
 }
 
@@ -75,24 +43,27 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime? @default(now())
 }
 
 model User {
-  id              String       @id @default(cuid())
+  id              String      @id @default(cuid())
   name            String?
-  username        String?      @unique
-  email           String?      @unique
+  username        String?     @unique
+  email           String?     @unique
   emailVerified   DateTime?
   hashedPassword  String?
   image           String?
   accounts        Account[]
   sessions        Session[]
-  calAccount      CalAccount?  @relation(fields: [calAccountId], references: [id], onDelete: Cascade)
-  calAccountId    Int?         @unique
-  calAccessToken  String?      @unique
-  calRefreshToken String?      @unique
-  professions     Profession[]
-  services        Service[]
+  calAccount      CalAccount? @relation(fields: [calAccountId], references: [id], onDelete: Cascade)
+  calAccountId    Int?        @unique
+  calAccessToken  String?     @unique
+  calRefreshToken String?     @unique
+
+  createdAt             DateTime?             @default(now())
+  selectedFilterOptions FilterOptionsOnUser[]
 }
 
 model CalAccount {
@@ -106,6 +77,8 @@ model CalAccount {
   defaultScheduleId Int?
   // expires   DateTime
   user              User?
+
+  createdAt DateTime? @default(now())
 }
 
 model VerificationToken {
@@ -113,5 +86,43 @@ model VerificationToken {
   token      String   @unique
   expires    DateTime
 
+  createdAt DateTime? @default(now())
+
   @@unique([identifier, token])
+}
+
+model FilterOption {
+  fieldId    String    @unique
+  fieldValue String
+  fieldLabel String
+  createdAt  DateTime? @default(now())
+
+  // FilterOption table can have multiple users, so that a user can have multiple filters
+  // User ∞ : ∞ FilterOption allows us to query directly on the user though user.filterValues.findMany({ where: { filterFieldId: 'budget' } })
+  selectedByUsers FilterOptionsOnUser[]
+
+  // NB(richard): this is basically a hard-coded 1:many between FilterOption & FilterCategory
+  // I wanted to avoid defining the parent table explicitly to keep things simple but have the the `@@unique` constraint to ensure that we can migrate data to a proper parent table later
+  filterCategoryFieldId String
+  filterCategoryValue   String
+  filterCategoryLabel   String
+
+  // we define the fieldId & filterCategoryId as unique, so that we can define the many:many between User & Filter on multiple fields (improve query performance)
+  @@unique([fieldId, filterCategoryFieldId])
+  @@index([fieldId, filterCategoryFieldId])
+}
+
+model FilterOptionsOnUser {
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  filterOption          FilterOption @relation(fields: [filterOptionFieldId, filterCategoryFieldId], references: [fieldId, filterCategoryFieldId])
+  filterOptionFieldId   String
+  filterCategoryFieldId String
+
+  createdAt DateTime? @default(now())
+
+  // we define the fieldId & filterCategoryId as unique, so that we can define the many:many between User & Filter on multiple fields (improve query performance)
+  @@unique([userId, filterOptionFieldId, filterCategoryFieldId])
+  @@index([userId, filterOptionFieldId, filterCategoryFieldId])
 }

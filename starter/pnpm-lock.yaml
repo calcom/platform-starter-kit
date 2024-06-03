@@ -131,6 +131,9 @@ dependencies:
   react-wrap-balancer:
     specifier: ^1.1.0
     version: 1.1.0(react@18.3.1)
+  remeda:
+    specifier: ^2.0.3
+    version: 2.0.3
   server-only:
     specifier: ^0.0.1
     version: 0.0.1
@@ -6757,6 +6760,12 @@ packages:
     resolution: {integrity: sha512-caKfSz9rDeSKBQQnlJnVW3mbVdFgxgGWQKq1XlFokqjf+hQD5gxutLGTTY2A/x24UxVyJe9gH5fAkFI63ULw4A==}
     dev: false
 
+  /remeda@2.0.3:
+    resolution: {integrity: sha512-3OtBvbFnhPJPNDxrP4dQ+Y7ghIErMeTy7KQ2vkC6XzrQHbFdlD0tT6mYaJ2S96lUu3umNnhkqni2lhVOdL9UOQ==}
+    dependencies:
+      type-fest: 4.18.3
+    dev: false
+
   /require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
@@ -7540,6 +7549,11 @@ packages:
   /type-fest@3.13.1:
     resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}
     engines: {node: '>=14.16'}
+    dev: false
+
+  /type-fest@4.18.3:
+    resolution: {integrity: sha512-Q08/0IrpvM+NMY9PA2rti9Jb+JejTddwmwmVQGskAlhtcrw1wsRzoR6ode6mR+OAabNa75w/dxedSUY2mlphaQ==}
+    engines: {node: '>=16'}
     dev: false
 
   /typed-array-buffer@1.0.2:

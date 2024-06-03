@@ -3,7 +3,8 @@ import SidebarItem from "./_components/home/sidebar-item";
 import SignupCard from "./_components/home/signup-card";
 import { Navigation } from "./_components/navigation";
 import { SearchBar } from "./_components/search-bar";
-import { SignedOut, cachedCurrentUser } from "@/auth";
+import { filterOptions } from "./_hardcoded";
+import { SignedOut, currentUser } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ListFilter, Loader, LogIn } from "lucide-react";
@@ -45,198 +46,8 @@ export default async function Home(props: {
       );
     });
 
-  // TODO: move to database after signup
-  const sidebarSections = [
-    {
-      title: "Category",
-      items: [
-        {
-          id: "freelancer",
-          label: "Freelancer",
-        },
-        {
-          id: "agency",
-          label: "Agency",
-        },
-        {
-          id: "product_studio",
-          label: "Product",
-        },
-      ],
-    },
-    {
-      title: "Capabilities",
-      items: [
-        {
-          id: "ecommerce",
-          label: "Ecommerce",
-        },
-        {
-          id: "product_management",
-          label: "Product Management",
-        },
-        {
-          id: "app_development",
-          label: "App Development",
-        },
-        {
-          id: "design",
-          label: "Design",
-        },
-        {
-          id: "ui_ux",
-          label: "UI/UX Development",
-        },
-        {
-          id: "integration_services",
-          label: "Integration Services",
-        },
-        {
-          id: "branding",
-          label: "Branding",
-        },
-        {
-          id: "digital_marketing",
-          label: "Digital Marketing",
-        },
-        {
-          id: "mobile_development",
-          label: "Mobile Development",
-        },
-        {
-          id: "ai",
-          label: "AI",
-        },
-        {
-          id: "",
-          label: "Web3 / Crypto",
-        },
-      ],
-    },
-    {
-      title: "Framework",
-      items: [
-        {
-          id: "nextjs",
-          label: "Next.js",
-        },
-        {
-          id: "svelte",
-          label: "Svelte",
-        },
-        {
-          id: "nuxtjs",
-          label: "Nuxt.js",
-        },
-        {
-          id: "gatsby",
-          label: "Gatsby",
-        },
-        {
-          id: "angular",
-          label: "Angular",
-        },
-        {
-          id: "ember",
-          label: "Ember",
-        },
-        {
-          id: "vue",
-          label: "Vue",
-        },
-      ],
-    },
-    {
-      title: "Budget",
-      items: [
-        {
-          id: "1000",
-          label: "$1,000 - $4,999",
-        },
-        {
-          id: "5000",
-          label: "$5,000 - $9,999",
-        },
-        {
-          id: "10000",
-          label: "$10,000 - $49,999",
-        },
-        {
-          id: "50000",
-          label: "$50,000 - $99,999",
-        },
-        {
-          id: "100000",
-          label: "$100,000+",
-        },
-      ],
-    },
-    {
-      title: "Languages Spoken",
-      items: [
-        {
-          id: "english",
-          label: "English",
-        },
-        {
-          id: "portugese",
-          label: "Portuguese",
-        },
-        {
-          id: "spanish",
-          label: "Spanish",
-        },
-        {
-          id: "chinese",
-          label: "Chinese",
-        },
-        {
-          id: "french",
-          label: "French",
-        },
-        {
-          id: "japanese",
-          label: "Japanese",
-        },
-        {
-          id: "german",
-          label: "German",
-        },
-      ],
-    },
-    {
-      title: "Region",
-      items: [
-        {
-          id: "asia",
-          label: "Asia",
-        },
-        {
-          id: "australia",
-          label: "Australia and New Zealand",
-        },
-        {
-          id: "europe",
-          label: "Europe",
-        },
-        {
-          id: "latin_america",
-          label: "Latin America",
-        },
-        {
-          id: "middle_east",
-          label: "Middle East",
-        },
-        {
-          id: "north_america",
-          label: "North America",
-        },
-      ],
-    },
-  ];
-
   // using the cached version here so that we don't re-fetch the user on every search param change with router.replace()
-  const user = await cachedCurrentUser();
+  const user = await currentUser();
 
   return (
     <React.Fragment>
@@ -291,7 +102,7 @@ export default async function Home(props: {
                       </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="sm:max-w-xs">
-                      {sidebarSections.map((section) => (
+                      {filterOptions.map((section) => (
                         <div key={section.title} className="mb-8 space-y-4 border-b border-gray-200 pb-8">
                           <p className="text-base font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                             {section.title}
@@ -310,7 +121,7 @@ export default async function Home(props: {
                   </Sheet>
                 </div>
                 <aside className="hidden w-full overflow-scroll border-r border-gray-300 p-4 sm:max-h-full sm:w-72 sm:border-0 md:block">
-                  {sidebarSections.map((section) => (
+                  {filterOptions.map((section) => (
                     <div key={section.title} className="mb-8 space-y-4 border-b border-gray-200 pb-8">
                       <p className="text-base font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                         {section.title}

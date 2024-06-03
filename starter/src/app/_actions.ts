@@ -6,6 +6,7 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 
 export async function signInWithCredentials(_prevState: { error?: string | null }, formData: FormData) {
   try {
+    console.log("Signing in with credentials form data: ", formData);
     await signIn("credentials", formData);
   } catch (error) {
     if (isRedirectError(error)) throw error;
