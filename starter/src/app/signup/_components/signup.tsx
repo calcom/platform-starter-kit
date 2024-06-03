@@ -60,7 +60,7 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                 maxLength={500}
               />
             </div>
-            {filtersByCategory.map(({ filterCategoryFieldId, filterCategoryLabel }, idx) => (
+            {filtersByCategory.map(({ filterCategoryFieldId, filterCategoryLabel }) => (
               <div className="grid gap-2" key={filterCategoryFieldId}>
                 <Label htmlFor="email">{filterCategoryLabel}</Label>
                 <FancyMultiSelect

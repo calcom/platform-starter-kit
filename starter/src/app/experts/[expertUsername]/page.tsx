@@ -1,7 +1,4 @@
 import { ExpertBooker } from "./_components/expert-booker";
-import { Badge } from "@/components/ui/badge";
-import { CardDescription } from "@/components/ui/card";
-import { type User } from "@prisma/client";
 import Image from "next/image";
 import { db } from "prisma/client";
 

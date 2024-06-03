@@ -1,10 +1,9 @@
 import { authConfig } from "./config";
 import { env } from "@/env";
-import { type Prisma, type User } from "@prisma/client";
+import { type User } from "@prisma/client";
 import NextAuth from "next-auth";
 import type { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { unstable_cache } from "next/cache";
 import { randomBytes, scrypt, sign, timingSafeEqual } from "node:crypto";
 import { db } from "prisma/client";
 import { cache } from "react";
