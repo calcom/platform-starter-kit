@@ -6,13 +6,7 @@ import { Home, Package2, PanelLeft, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode } from "react";
 
-export default function ExpertLayout({
-  children,
-  breadcrumbs,
-}: {
-  children?: ReactNode;
-  breadcrumbs: ReactNode;
-}) {
+export default function ExpertLayout({ children }: { children?: ReactNode }) {
   return (
     <div>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -47,7 +41,6 @@ export default function ExpertLayout({
               </nav>
             </SheetContent>
           </Sheet>
-          {breadcrumbs}
           <div className="flex flex-1 items-center justify-end sm:space-x-4">
             <AutocompleteSearch options={professions} className="" placement="header" />
             <span className="hidden sm:inline">OR</span>
