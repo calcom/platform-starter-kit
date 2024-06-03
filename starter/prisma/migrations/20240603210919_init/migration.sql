@@ -31,6 +31,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT,
     "username" TEXT,
+    "bio" TEXT,
     "email" TEXT,
     "emailVerified" DATETIME,
     "hashedPassword" TEXT,

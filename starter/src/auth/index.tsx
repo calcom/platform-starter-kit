@@ -152,6 +152,7 @@ const {
               .object({
                 username: z.string().min(1).max(32),
                 name: z.string().min(1).max(32),
+                bio: z.string().min(1).max(500),
                 // for all sidebaritems, let's create the zod schema:
                 categories: z.preprocess((val) => {
                   if (typeof val !== "string") return val; // should error
@@ -332,6 +333,7 @@ const {
                 username: signupData.data.username,
                 name: signupData.data.name,
                 hashedPassword: await hash(credentials.data.password),
+                bio: signupData.data.bio,
                 email: credentials.data.email,
                 calAccessToken: accessToken,
                 calRefreshToken: refreshToken,

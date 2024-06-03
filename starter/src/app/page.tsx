@@ -11,6 +11,7 @@ import { ListFilter, Loader, LogIn } from "lucide-react";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { Balancer } from "react-wrap-balancer";
+import { prop, uniqueBy } from "remeda";
 
 export default async function Home(props: {
   searchParams: {
@@ -48,6 +49,8 @@ export default async function Home(props: {
 
   // using the cached version here so that we don't re-fetch the user on every search param change with router.replace()
   const user = await currentUser();
+
+  const filtersByCategory = uniqueBy(filterOptions, prop("filterCategoryFieldId"));
 
   return (
     <React.Fragment>
@@ -102,38 +105,52 @@ export default async function Home(props: {
                       </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="sm:max-w-xs">
-                      {filterOptions.map((section) => (
-                        <div key={section.title} className="mb-8 space-y-4 border-b border-gray-200 pb-8">
+                      {filtersByCategory.map((section) => (
+                        <div
+                          key={section.filterCategoryValue}
+                          className="mb-8 space-y-4 border-b border-gray-200 pb-8">
                           <p className="text-base font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            {section.title}
+                            {section.filterCategoryLabel}
                           </p>
-                          {section.items.map((subItem) => (
-                            <SidebarItem
-                              category={section.title}
-                              key={subItem.id}
-                              id={subItem.id}
-                              label={subItem.label}
-                            />
-                          ))}
+                          {filterOptions
+                            .filter(
+                              (filterOption) =>
+                                filterOption.filterCategoryFieldId === section.filterCategoryFieldId
+                            )
+                            .map((filterOption) => (
+                              <SidebarItem
+                                category={section.filterCategoryLabel}
+                                key={filterOption.fieldId}
+                                id={filterOption.fieldId}
+                                label={filterOption.fieldLabel}
+                              />
+                            ))}
                         </div>
                       ))}
                     </SheetContent>
                   </Sheet>
                 </div>
                 <aside className="hidden w-full overflow-scroll border-r border-gray-300 p-4 sm:max-h-full sm:w-72 sm:border-0 md:block">
-                  {filterOptions.map((section) => (
-                    <div key={section.title} className="mb-8 space-y-4 border-b border-gray-200 pb-8">
+                  {filtersByCategory.map((section) => (
+                    <div
+                      key={section.filterCategoryValue}
+                      className="mb-8 space-y-4 border-b border-gray-200 pb-8">
                       <p className="text-base font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        {section.title}
+                        {section.filterCategoryLabel}
                       </p>
-                      {section.items.map((subItem) => (
-                        <SidebarItem
-                          category={section.title}
-                          key={subItem.id}
-                          id={subItem.id}
-                          label={subItem.label}
-                        />
-                      ))}
+                      {filterOptions
+                        .filter(
+                          (filterOption) =>
+                            filterOption.filterCategoryFieldId === section.filterCategoryFieldId
+                        )
+                        .map((filterOption) => (
+                          <SidebarItem
+                            category={section.filterCategoryValue}
+                            key={filterOption.fieldId}
+                            id={filterOption.fieldId}
+                            label={filterOption.fieldLabel}
+                          />
+                        ))}
                     </div>
                   ))}
                 </aside>
