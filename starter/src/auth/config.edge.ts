@@ -1,19 +1,6 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { DefaultSession, NextAuthConfig } from "next-auth";
-import { db } from "prisma/client";
-
-declare module "next-auth" {
-  interface Session {
-    user: DefaultSession["user"] & {
-      id: string;
-      username: string;
-    };
-  }
-}
+import { type NextAuthConfig } from "next-auth";
 
 export const authConfig = {
-  adapter: PrismaAdapter(db),
-  session: { strategy: "jwt" },
   providers: [],
   pages: { signIn: "/login" },
   callbacks: {

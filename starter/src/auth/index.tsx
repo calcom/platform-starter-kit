@@ -1,4 +1,4 @@
-import { authConfig } from "./config";
+import { authConfig } from "./config.node";
 import { env } from "@/env";
 import { type User } from "@prisma/client";
 import NextAuth from "next-auth";

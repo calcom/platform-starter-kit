@@ -1,4 +1,4 @@
-import { authConfig } from "./auth/config";
+import { authConfig } from "./auth/config.edge";
 import NextAuth from "next-auth";
 import type { MiddlewareConfig } from "next/server";
 

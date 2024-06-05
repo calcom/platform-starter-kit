@@ -81,7 +81,7 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                 />
               </div>
             ))}
-            <input hidden name="redirectTo" value="/dashboard/getting-started" />
+            <input hidden name="redirectTo" value="/dashboard/getting-started" readOnly />
             <Button type="submit" className="w-full">
               Create an account
             </Button>

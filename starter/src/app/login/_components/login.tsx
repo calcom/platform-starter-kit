@@ -32,7 +32,7 @@ export function LoginForm() {
             <Label htmlFor="password">Password</Label>
             <Input id="password" name="password" type="password" required />
           </div>
-          <input hidden name="redirectTo" value="/dashboard/getting-started" />
+          <input hidden name="redirectTo" value="/dashboard/getting-started" readOnly />
         </CardContent>
         <CardFooter>
           <div className="flex w-full flex-col">

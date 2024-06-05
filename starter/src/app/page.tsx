@@ -4,7 +4,7 @@ import SignupCard from "./_components/home/signup-card";
 import { Navigation } from "./_components/navigation";
 import { SearchBar } from "./_components/search-bar";
 import { filterOptions } from "./_hardcoded";
-import { SignedOut, currentUser } from "@/auth";
+import { SignedIn, SignedOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ListFilter, Loader, LogIn } from "lucide-react";
@@ -47,9 +47,6 @@ export default async function Home(props: {
       );
     });
 
-  // using the cached version here so that we don't re-fetch the user on every search param change with router.replace()
-  const user = await currentUser();
-
   const filtersByCategory = uniqueBy(filterOptions, prop("filterCategoryFieldId"));
 
   return (
@@ -60,18 +57,21 @@ export default async function Home(props: {
         </Link>
         <Navigation />
         <div>
-          {user ? (
-            <Link href="/dashboard">
-              <Button className="w-full">
-                Dashboard
-                <LogIn className="ml-1 size-4" />
-              </Button>
-            </Link>
-          ) : (
+          <SignedIn>
+            {(_user) => (
+              <Link href="/dashboard">
+                <Button className="w-full">
+                  Dashboard
+                  <LogIn className="ml-1 size-4" />
+                </Button>
+              </Link>
+            )}
+          </SignedIn>
+          <SignedOut>
             <Link href="/signup">
               <Button className="w-full">Sign Up</Button>
             </Link>
-          )}
+          </SignedOut>
         </div>
       </header>
       <main className="flex-1">
