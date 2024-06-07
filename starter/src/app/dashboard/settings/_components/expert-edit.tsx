@@ -9,6 +9,7 @@ import { useFormState } from "react-dom";
 export default function ExpertEditForm(props: InputProps) {
   const [result, dispatch] = useFormState<
     { error: string; data: null } | { data: string; error: null } | { error: null; data: null }
+    // @ts-expect-error - unsure why the types are wrong here?
   >(expertEdit, {
     error: null,
     data: null,
