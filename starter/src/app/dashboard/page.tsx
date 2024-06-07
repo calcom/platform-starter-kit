@@ -1,7 +1,7 @@
 /* eslint-disable */
 // @ts-nocheck
 import { BookingsTable } from "./_components/bookings-table";
-import { currentUser } from "@/auth";
+import { auth, currentUser } from "@/auth";
 import { cal } from "@/cal/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,12 +12,14 @@ import { type GetBookingsInput } from "node_modules/@calcom/atoms/dist/packages/
 import { db } from "prisma/client";
 
 export default async function Dashboard() {
-  const user = await currentUser();
-  if (!user) {
+  console.log("[Dashboard page]");
+  const sesh = await auth();
+  if (!sesh.user.id) {
     return <div>Not logged in</div>;
   }
-  const calAccount = await db.calAccount.findUnique({
-    where: { id: user.calAccountId },
+  const { calAccount, ...user } = await db.user.findUnique({
+    where: { id: sesh.user.id },
+    select: { calAccount: true },
   });
   /** [@calcom] We're fetching the bookings on the server to display them here
    * Since `filters` is currently a required parameter, we have to iterate a bit and create our flatMap in the end

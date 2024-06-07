@@ -3,7 +3,6 @@ import Image from "next/image";
 import { db } from "prisma/client";
 
 export default async function ExpertDetails({ params }: { params: { expertUsername: string } }) {
-  console.log("expertUsername: ", params.expertUsername);
   const expert = await db.user.findUnique({
     where: { username: params.expertUsername },
     include: { calAccount: true },
@@ -28,18 +27,12 @@ export default async function ExpertDetails({ params }: { params: { expertUserna
             <h1 className="text-2xl font-semibold capitalize leading-none tracking-tight">{expert.name}</h1>
           </div>
         </div>
-        <div className="flex items-center gap-x-4 sm:gap-x-6">
-          {/* <ExpertDetailsSection title="Professions" items={expert.professions} itemLimit={2} />
-          <ExpertDetailsSection title="Services" items={expert.services} itemLimit={2} /> */}
-        </div>
       </div>
       <div className="mx-auto mt-4 grid w-full gap-2 px-8 sm:px-10 lg:px-12">
         <h2 className="text-3xl font-semibold">About Us</h2>
       </div>
       <div className="mx-auto mt-4 grid w-full gap-2 px-8 sm:px-10 lg:px-12">
-        <p className="max-w-lg text-balance text-sm leading-relaxed text-muted-foreground">
-          Introducing Our Dynamic Orders Dashboard for Seamless Management and Insightful Analysis.
-        </p>
+        <p className="max-w-lg text-balance text-sm leading-relaxed text-muted-foreground">{expert.bio}</p>
       </div>
       <div className="mx-auto mt-4 grid w-full gap-2 px-8 sm:px-10 lg:px-12">
         <h2 className="text-3xl font-semibold">Availability</h2>
