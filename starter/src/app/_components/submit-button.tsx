@@ -10,17 +10,21 @@ export const ButtonSubmit = ({
   className,
   children,
   ...props
-}: { children: ReactNode; className?: string } & ButtonProps) => {
-  const status = useFormStatus();
+}: {
+  children: ReactNode;
+  className?: string;
+} & ButtonProps) => {
+  const { pending } = useFormStatus();
+
   return (
     <>
       <Button
         type="submit"
         variant="secondary"
-        disabled={status.pending}
+        disabled={pending}
         className={cn("w-48 font-normal", className)}
         {...props}>
-        {status.pending ? (
+        {pending ? (
           <div className="flex w-full flex-row justify-evenly">
             <Loader
               className="stroke-offset-foreground/25 h-5 w-5 animate-spin"

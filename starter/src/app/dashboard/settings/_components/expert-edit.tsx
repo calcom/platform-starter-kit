@@ -1,38 +1,56 @@
 "use client";
 
 import { expertEdit } from "@/app/_actions";
-import { Button } from "@/components/ui/button";
+import { ButtonSubmit } from "@/app/_components/submit-button";
+import { CardDescription } from "@/components/ui/card";
 import { Input, type InputProps } from "@/components/ui/input";
+import { Textarea, type TextareaProps } from "@/components/ui/textarea";
 import { Pencil } from "lucide-react";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
-export default function ExpertEditForm(props: InputProps) {
-  const [result, dispatch] = useFormState<
-    { error: string; data: null } | { data: string; error: null } | { error: null; data: null }
-    // @ts-expect-error - unsure why the types are wrong here?
-  >(expertEdit, {
-    error: null,
-    data: null,
-  });
+export default function ExpertEditForm(props: InputProps | TextareaProps) {
+  const [state, submitAction, isPendingAction] = useActionState<
+    { error: null | string } | { success: null | string },
+    FormData
+  >(expertEdit, { error: null }, "/dashboard/settings/profile");
+
+  // TODO: add an onUpdateSuccess callback to update our session in NextAuth
   return (
-    <form action={dispatch}>
+    <form action={submitAction}>
       <div className="mb-2 flex w-full max-w-sm items-center space-x-2">
         <div className="relative rounded-md shadow-sm">
-          <Input
-            // id="name"
-            // name="name"
-            // placeholder={props.expertName}
-            {...props}
-            className="text-2xl font-semibold capitalize leading-none tracking-tight"
-          />
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          {props.name === "bio" ? (
+            <Textarea
+              {...(props as TextareaProps)}
+              className="min-w-72 max-w-2xl text-balance text-sm leading-relaxed text-muted-foreground"
+              disabled={isPendingAction}
+            />
+          ) : (
+            <Input
+              {...(props as InputProps)}
+              className="text-2xl font-semibold leading-none tracking-tight"
+              // disabled={isPendingTransition}
+              disabled={isPendingAction}
+            />
+          )}
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pl-2 pr-3">
             <Pencil className="size-4 text-muted-foreground" />
           </div>
         </div>
-        <Button type="submit">Save</Button>
+        <ButtonSubmit variant="default" size="lg" className="max-w-max">
+          Save
+        </ButtonSubmit>
       </div>
-      {result?.error && <div className="text-sm text-destructive">{result.error}</div>}
-      {result?.data && <div className="text-sm text-success">Saved!</div>}
+      {/* display action states (pending, idle, success & error) */}
+      {isPendingAction ? (
+        <CardDescription>Saving...</CardDescription>
+      ) : "success" in state && state.success ? (
+        <CardDescription>{state.success}</CardDescription>
+      ) : "error" in state && state.error ? (
+        <CardDescription>{state.error}</CardDescription>
+      ) : (
+        <CardDescription>Please provide a new {props.name}.</CardDescription>
+      )}
     </form>
   );
 }

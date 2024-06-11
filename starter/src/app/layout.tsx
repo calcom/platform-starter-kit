@@ -1,7 +1,7 @@
 import Banner from "./_components/banner";
 import { Providers } from "./providers";
 import { TailwindIndicator } from "./tailwind-indicator";
-import { currentUser } from "@/auth";
+import { auth } from "@/auth";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import "@/styles/globals.css";
@@ -54,16 +54,20 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  /** [@calcom] Fetch the user so that we can add the user's accessToken to the <CalProvider /> */
-  const user = await currentUser();
-
+  /** [@calcom] We're fetching the user's database info inside our session callback in auth */
+  const sesh = await auth();
   return (
     /** [@calcom] Ensure to set the diretion (either 'ltr' or 'rtl') since the calcom/atoms use their styles */
     <html lang="en" dir="ltr">
       <head />
       <AxiomWebVitals />
       <body className={cn("antialiased", calFont.variable, interFont.variable)}>
-        <Providers defaultTheme="system" enableSystem attribute="class" calUserToken={user?.calAccessToken}>
+        <Providers
+          defaultTheme="system"
+          enableSystem
+          attribute="class"
+          // if sesh.user.calAccessToken is defined, pass it to our providers:
+          session={sesh}>
           <div className="flex min-h-screen flex-col">
             <Banner
               title="Build your own marketplace"

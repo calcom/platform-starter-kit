@@ -1,6 +1,6 @@
 import { ButtonSubmit } from "@/app/_components/submit-button";
 import { Logo } from "@/app/_components/universal/logo";
-import { auth, currentUser, signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,8 +28,8 @@ export default async function Layout({
   dashboardNavigationMobile: ReactNode;
 }) {
   const sesh = await auth();
+  if (!sesh?.user) return redirect("/login");
   const user = sesh.user;
-  if (!user) return redirect("/login");
   return (
     <>
       <div className="grid min-h-screen w-full lg:grid-cols-[220px_1fr] 2xl:grid-cols-[280px_1fr]">

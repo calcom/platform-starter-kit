@@ -1,7 +1,7 @@
 /* eslint-disable */
 // @ts-nocheck
 import { BookingsTable } from "./_components/bookings-table";
-import { auth, currentUser } from "@/auth";
+import { auth } from "@/auth";
 import { cal } from "@/cal/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +12,6 @@ import { type GetBookingsInput } from "node_modules/@calcom/atoms/dist/packages/
 import { db } from "prisma/client";
 
 export default async function Dashboard() {
-  console.log("[Dashboard page]");
   const sesh = await auth();
   if (!sesh.user.id) {
     return <div>Not logged in</div>;

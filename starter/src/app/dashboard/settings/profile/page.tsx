@@ -1,24 +1,16 @@
 import ExpertEditForm from "../_components/expert-edit";
 import ExpertBooker from "@/app/experts/[expertUsername]/_components/expert-booker";
-import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { currentUser } from "@/auth";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Pencil, PencilIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { db } from "prisma/client";
 
 export default async function DashboardSettingsProfile() {
-  const sesh = await auth();
-  if (!sesh.user.id) {
-    return <div>Not logged in</div>;
-  }
+  const user = await currentUser();
   const expert = await db.user.findUnique({
-    where: { id: sesh.user.id },
+    where: { id: user.id },
     include: { calAccount: true },
   });
 
@@ -61,30 +53,24 @@ export default async function DashboardSettingsProfile() {
                 <h2 className="text-3xl font-semibold">About Us</h2>
               </div>
               <div className="mx-auto mt-4 grid w-full gap-2 px-8 sm:px-10 lg:px-12">
-                <form>
-                  <div className="flex w-full max-w-sm items-center space-x-2">
-                    <div className="relative rounded-md shadow-sm">
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder={expert.bio}
-                        className="max-w-lg text-balance text-sm leading-relaxed text-muted-foreground"
-                      />
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                        <Pencil className="size-4 text-muted-foreground" />
-                      </div>
-                    </div>
-                    <Button type="submit">Save</Button>
-                  </div>
-                </form>
+                <ExpertEditForm id="bio" name="bio" placeholder={expert.bio} />
               </div>
               <div className="mx-auto mt-4 grid w-full gap-2 px-8 sm:px-10 lg:px-12">
                 <h2 className="text-3xl font-semibold">Availability</h2>
+                <CardDescription>
+                  If you want to make changes to your Booking page, go to your{" "}
+                  <Link href="/dashboard/settings/availability" className="underline">
+                    Availability
+                  </Link>{" "}
+                  settings.
+                </CardDescription>
               </div>
               <div className="border-subtle mx-8 mt-12 flex aspect-[2.5/1] flex-col-reverse items-center overflow-x-clip rounded-2xl border bg-muted pb-6 pl-6 pt-6 shadow-sm max-md:pr-6 sm:mx-10 md:grid md:grid-cols-[minmax(440px,1fr)_minmax(0,2.5fr)] lg:mx-12">
                 <div className="md:min-w-[96vw] [&_.calcom-atoms]:bg-[transparent]">
                   {Boolean(expert.calAccount) && (
-                    <ExpertBooker calAccount={expert.calAccount!} expert={expert} />
+                    <div className="pointer-events-none">
+                      <ExpertBooker calAccount={expert.calAccount!} expert={expert} />
+                    </div>
                   )}
                 </div>
               </div>
