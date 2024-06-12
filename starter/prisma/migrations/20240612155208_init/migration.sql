@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Account" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
@@ -12,40 +12,43 @@ CREATE TABLE "Account" (
     "scope" TEXT,
     "id_token" TEXT,
     "session_state" TEXT,
-    "createdAt" DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Session" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "sessionToken" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "expires" DATETIME NOT NULL,
-    "createdAt" DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "expires" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "name" TEXT,
     "username" TEXT,
     "bio" TEXT,
     "email" TEXT,
-    "emailVerified" DATETIME,
+    "emailVerified" TIMESTAMP(3),
     "hashedPassword" TEXT,
     "image" TEXT,
     "calAccountId" INTEGER,
     "calAccessToken" TEXT,
     "calRefreshToken" TEXT,
-    "createdAt" DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "User_calAccountId_fkey" FOREIGN KEY ("calAccountId") REFERENCES "CalAccount" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "CalAccount" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" INTEGER NOT NULL,
     "username" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "timeZone" TEXT NOT NULL,
@@ -53,15 +56,17 @@ CREATE TABLE "CalAccount" (
     "createdDate" TEXT NOT NULL,
     "timeFormat" INTEGER NOT NULL,
     "defaultScheduleId" INTEGER,
-    "createdAt" DATETIME DEFAULT CURRENT_TIMESTAMP
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "CalAccount_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
-    "expires" DATETIME NOT NULL,
-    "createdAt" DATETIME DEFAULT CURRENT_TIMESTAMP
+    "expires" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
@@ -69,7 +74,7 @@ CREATE TABLE "FilterOption" (
     "fieldId" TEXT NOT NULL,
     "fieldValue" TEXT NOT NULL,
     "fieldLabel" TEXT NOT NULL,
-    "createdAt" DATETIME DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "filterCategoryFieldId" TEXT NOT NULL,
     "filterCategoryValue" TEXT NOT NULL,
     "filterCategoryLabel" TEXT NOT NULL
@@ -80,9 +85,7 @@ CREATE TABLE "FilterOptionsOnUser" (
     "userId" TEXT NOT NULL,
     "filterOptionFieldId" TEXT NOT NULL,
     "filterCategoryFieldId" TEXT NOT NULL,
-    "createdAt" DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "FilterOptionsOnUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "FilterOptionsOnUser_filterOptionFieldId_filterCategoryFieldId_fkey" FOREIGN KEY ("filterOptionFieldId", "filterCategoryFieldId") REFERENCES "FilterOption" ("fieldId", "filterCategoryFieldId") ON DELETE RESTRICT ON UPDATE CASCADE
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateIndex
@@ -128,7 +131,22 @@ CREATE INDEX "FilterOption_fieldId_filterCategoryFieldId_idx" ON "FilterOption"(
 CREATE UNIQUE INDEX "FilterOption_fieldId_filterCategoryFieldId_key" ON "FilterOption"("fieldId", "filterCategoryFieldId");
 
 -- CreateIndex
-CREATE INDEX "FilterOptionsOnUser_userId_filterOptionFieldId_filterCategoryFieldId_idx" ON "FilterOptionsOnUser"("userId", "filterOptionFieldId", "filterCategoryFieldId");
+CREATE INDEX "FilterOptionsOnUser_userId_filterOptionFieldId_filterCatego_idx" ON "FilterOptionsOnUser"("userId", "filterOptionFieldId", "filterCategoryFieldId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "FilterOptionsOnUser_userId_filterOptionFieldId_filterCategoryFieldId_key" ON "FilterOptionsOnUser"("userId", "filterOptionFieldId", "filterCategoryFieldId");
+CREATE UNIQUE INDEX "FilterOptionsOnUser_userId_filterOptionFieldId_filterCatego_key" ON "FilterOptionsOnUser"("userId", "filterOptionFieldId", "filterCategoryFieldId");
+
+-- AddForeignKey
+ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_calAccountId_fkey" FOREIGN KEY ("calAccountId") REFERENCES "CalAccount"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FilterOptionsOnUser" ADD CONSTRAINT "FilterOptionsOnUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FilterOptionsOnUser" ADD CONSTRAINT "FilterOptionsOnUser_filterOptionFieldId_filterCategoryFiel_fkey" FOREIGN KEY ("filterOptionFieldId", "filterCategoryFieldId") REFERENCES "FilterOption"("fieldId", "filterCategoryFieldId") ON DELETE RESTRICT ON UPDATE CASCADE;

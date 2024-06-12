@@ -5,7 +5,7 @@
     "build": "next build",
     "db:studio": "prisma studio",
     "db:seed": "NODE_ENV=development prisma db seed",
-    "db:yolo": "pnpm prisma migrate dev --name=init && sqlite3 ./prisma/dev.db .dump > ./prisma/dump.sql && turso db destroy platforms-starter && turso db create platforms-starter --from-dump ./prisma/dump.sql",
+    "db:init": "pnpm prisma migrate dev --name=init",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "NODE_OPTIONS='--max-old-space-size=4096' next lint --fix",
