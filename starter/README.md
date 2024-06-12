@@ -97,6 +97,7 @@ Initialize the database:
 ```bash
 supabase start # Only if running locally with Supabase CLI
 pnpm db:init
+pnpm db:seed
 ```
 
 _4.2 Authentication_
