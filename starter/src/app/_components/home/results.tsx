@@ -2,16 +2,14 @@
 
 import { SearchBar } from "../search-bar";
 import SidebarItem from "./sidebar-item";
-import SignupCard from "./signup-card";
 import { filterOptions } from "@/app/_hardcoded";
 import { filterSearchParamSchema } from "@/app/_searchParams";
-import { SignedOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { type FilterOption, type User } from "@prisma/client";
-import { ListFilter, Loader, LogIn } from "lucide-react";
+import { ListFilter, Loader } from "lucide-react";
 import Link from "next/link";
 import { useQueryState, parseAsString, parseAsJson } from "nuqs";
 import { Fragment } from "react";
@@ -80,8 +78,9 @@ export function Results(props: {
   images: Array<string>;
   signedOut: JSX.Element;
 }) {
-  const [query, setQuery] = useQueryState("q", parseAsString);
-  const [filters, setFilters] = useQueryState("f", parseAsJson(filterSearchParamSchema.parse));
+  const [query] = useQueryState("q", parseAsString);
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  const [filters] = useQueryState("f", parseAsJson(filterSearchParamSchema.parse));
   const filtersByCategory = uniqueBy(filterOptions, prop("filterCategoryFieldId"));
 
   // this is the query string search:
@@ -98,7 +97,7 @@ export function Results(props: {
       if (!filters) return true;
       const expertSelectedOptions = expert.filterOptions;
       // if we have filters selected, let's only show the experts who have all the selected filters:
-      return Object.entries(filters).every(([filterCategoryFieldId, filterValues]) => {
+      return Object.entries(filters).every(([_filterCategoryFieldId, filterValues]) => {
         if (!filterValues) return true;
         return filterValues.every((filterValue) =>
           expertSelectedOptions.find((option) => option.fieldValue === filterValue)
@@ -151,7 +150,7 @@ export function Results(props: {
                           )
                           .map((filterOption) => (
                             <SidebarItem
-                              category={section.filterCategoryLabel}
+                              category={section.filterCategoryFieldId}
                               key={filterOption.fieldId}
                               id={filterOption.fieldId}
                               label={filterOption.fieldLabel}

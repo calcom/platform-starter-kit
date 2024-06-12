@@ -1,10 +1,7 @@
-import { AutocompleteSearch } from "@/app/_components/autocomplete";
 import { Navigation } from "@/app/_components/navigation";
 import { SignedIn, SignedOut } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { professions } from "@/lib/constants";
-import { Home, LogIn, Package2, PanelLeft, ShoppingCart } from "lucide-react";
+import { LogIn } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode } from "react";
 

@@ -1,46 +1,15 @@
 import { Results } from "./_components/home/results";
-import SidebarItem from "./_components/home/sidebar-item";
 import SignupCard from "./_components/home/signup-card";
 import { Navigation } from "./_components/navigation";
-import { SearchBar } from "./_components/search-bar";
-import {
-  budgetOptions,
-  categoryOptions,
-  filterOptions,
-  frameworkOptions,
-  languageOptions,
-} from "./_hardcoded";
-import { querySearchParamSchema, filterSearchParamSchema } from "./_searchParams";
+import { budgetOptions, categoryOptions, frameworkOptions, languageOptions } from "./_hardcoded";
 import { SignedIn, SignedOut } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { type FilterOption, type User } from "@prisma/client";
-import { ListFilter, Loader, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
 import Link from "next/link";
-import React, { Suspense } from "react";
-import { Balancer } from "react-wrap-balancer";
-import { prop, uniqueBy } from "remeda";
+import React from "react";
 
-export default async function Home(props: {
-  searchParams: {
-    q: string | undefined;
-    f: string | undefined;
-  };
-  // searchParams: z.infer<typeof searchParamsSchema>;
-}) {
-  const queryValidation = querySearchParamSchema.safeParse(props.searchParams?.q);
-  const filtersValidation = filterSearchParamSchema.safeParse(
-    props.searchParams.f ? JSON.parse(props.searchParams.f) : undefined
-  );
-  if (!queryValidation.success) {
-    console.error("Ignoring query search (invalid search param)", props.searchParams.q);
-  }
-  if (!filtersValidation.success) {
-    console.error("Ignoring filter search (invalid search param)", props.searchParams.f);
-  }
-  const query = queryValidation.success ? queryValidation.data : undefined;
-  const filters = filtersValidation.success ? filtersValidation.data : undefined;
-
+export default async function Home() {
   // TODO: Add profile pic upload
   const images = [
     "https://vercel.com/_next/image?url=https://images.ctfassets.net/e5382hct74si/2cKHP3FPydq6qS76yUDt0r/802ababba7f7b15fcbff2907cd730547/thumb.png&w=2048&q=75&dpl=dpl_EfzrzLzob7m1yj8Yjz3EuANQAvmc",

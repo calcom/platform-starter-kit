@@ -16,6 +16,7 @@ export default async function createEventType(
     return { error: "Unauthorized" };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const updateEventTypeBodyData = Object.fromEntries(
     Array.from(formData.entries())
       .filter(([key]) => !key.toLowerCase().startsWith("$action"))
@@ -25,6 +26,7 @@ export default async function createEventType(
       })
   );
   const updateEventTypeParameters = {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     body: updateEventTypeBodyData,
   } satisfies z.infer<typeof post_EventTypesController_createEventType.parameters>;
 

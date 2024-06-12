@@ -1,6 +1,4 @@
-import { type KeysResponseDto } from "@/cal/__generated/cal-sdk";
 import { signUp } from "@/cal/auth";
-import { env } from "@/env";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type User } from "@prisma/client";
 import { type Session, type NextAuthConfig, type DefaultSession } from "next-auth";
@@ -44,12 +42,8 @@ export const authConfig = {
       }
       return false;
     },
-    jwt: async ({ token, user, account, trigger, session, profile }) => {
-      console.log(
-        `[auth.callbacks.jwt] jwt triggered ${JSON.stringify({ session, token, trigger, account, user, profile })}`
-      );
+    jwt: async ({ token, user, trigger, session }) => {
       if (trigger === "update") {
-        console.log(`[auth] jwt update triggered ${JSON.stringify({ session, token, trigger })}`);
         // this gets called via `unstable_update`, let's update the token according to the payload
         if (session.user.calAccessToken) token.accessToken = (session as Session).user.calAccessToken;
         if (session.user.calRefreshToken) token.refreshToken = (session as Session).user.calRefreshToken;
@@ -65,9 +59,8 @@ export const authConfig = {
         if (!token.accessToken) {
           // 👇 [@calcom] the `signUp` function creates a managed user with the cal platform api and handles basic setup (such as creating a default schedule)
           const toUpdate = await signUp({
-            id: user.id,
             email: user.email,
-            username: user.username,
+            name: user.name,
           });
           // 👆 [@calcom]
 

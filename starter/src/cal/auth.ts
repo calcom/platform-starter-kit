@@ -62,7 +62,7 @@ type CalCreateScheduleResponse = {
   };
 };
 
-export async function signUp({ email, name, id }: Pick<User, "email" | "name" | "id">) {
+export async function signUp({ email, name }: Pick<User, "email" | "name">) {
   const url = `${env.NEXT_PUBLIC_CAL_API_URL}/oauth-clients/${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}/users`;
   const response = await fetch(url, {
     method: "POST",

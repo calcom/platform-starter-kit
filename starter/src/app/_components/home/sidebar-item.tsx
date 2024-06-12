@@ -1,7 +1,7 @@
 "use client";
 
+import { type filterOptions } from "@/app/_hardcoded";
 import { filterSearchParamSchema } from "@/app/_searchParams";
-import type { SidebarCategory, SidebarCategoryItem } from "@/app/constants";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -13,10 +13,13 @@ export default function SidebarItem({
   className,
   category,
   ...props
-}: SidebarCategoryItem & {
+}: {
   className?: string;
-  category: SidebarCategory["title"];
+  id: (typeof filterOptions)[number]["fieldId"];
+  label: (typeof filterOptions)[number]["fieldLabel"];
+  category: (typeof filterOptions)[number]["filterCategoryFieldId"];
 } & React.ComponentPropsWithoutRef<typeof Checkbox>) {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const [filters, setFilters] = useQueryState("f", parseAsJson(filterSearchParamSchema.parse));
   const selectedIds = filters?.[category];
 
@@ -25,6 +28,7 @@ export default function SidebarItem({
       <Checkbox
         id={id}
         className={cn(className)}
+        // @ts-expect-error id could be anything
         defaultChecked={selectedIds?.includes(id)}
         onCheckedChange={async (checked) => {
           const newSelectedIds = [
