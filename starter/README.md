@@ -92,7 +92,7 @@ DIRECT_URL=""  # Set this to the Session connection pooler string from your Supa
 
 When working locally use the `DB URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres` outputted by running `supabase start` for both env vars.
 
-Initialise the database:
+Initialize the database:
 
 ```bash
 supabase start # Only if running locally with Supabase CLI
