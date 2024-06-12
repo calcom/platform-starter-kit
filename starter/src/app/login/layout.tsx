@@ -56,7 +56,7 @@ export default function LoginLayout({ children }: { children?: ReactNode }) {
           </Breadcrumb>
         </div>
       </header>
-      <main className="flex-1">{children}</main>
+      <main className="flex flex-1 flex-1 items-center justify-center">{children}</main>
     </>
   );
 }

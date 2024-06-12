@@ -62,7 +62,7 @@ type CalCreateScheduleResponse = {
   };
 };
 
-export async function signUp({ email, name, id }: Pick<User, "email" | "name" | "id">) {
+export async function signUp({ email, name }: Pick<User, "email" | "name">) {
   const url = `${env.NEXT_PUBLIC_CAL_API_URL}/oauth-clients/${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}/users`;
   const response = await fetch(url, {
     method: "POST",
@@ -148,16 +148,25 @@ export async function signUp({ email, name, id }: Pick<User, "email" | "name" | 
       );
     }
     const {
-      data: { accessToken, refreshToken },
+      data: {
+        accessToken,
+        refreshToken,
+        // accessTokenExpiresAt
+      },
     } = (await forceRefreshResponse.json()) as {
       status: string;
-      data: { accessToken: string; refreshToken: string };
+      data: {
+        accessToken: string;
+        refreshToken: string;
+        // accessTokenExpiresAt: string
+      };
     };
     // [@calcom] ✅ Now, we have successfully recovered our users tokens. Let's allocate this to our `calUser`
     calUser = {
       user: fromCal,
       accessToken,
       refreshToken,
+      // accessTokenExpiresAt,
     };
   }
 
@@ -202,6 +211,7 @@ export async function signUp({ email, name, id }: Pick<User, "email" | "name" | 
   const toUpdate = {
     calAccessToken: calUser.accessToken,
     calRefreshToken: calUser.refreshToken,
+    // calAccessTokenExpiresAt: calUser.accessTokenExpiresAt,
     calAccount: {
       connectOrCreate: {
         where: { id: calUser.user.id },

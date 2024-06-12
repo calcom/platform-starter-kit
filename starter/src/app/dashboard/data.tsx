@@ -1,4 +1,4 @@
-import { Home, Settings } from "lucide-react";
+import { Calendar, Clock, Home, Settings, User } from "lucide-react";
 
 export const dashboardNavigationData = [
   {
@@ -8,7 +8,23 @@ export const dashboardNavigationData = [
   },
   {
     label: "Settings",
-    href: "/dashboard/settings",
     icon: (props: { className?: string }) => <Settings className={props.className} />,
+    subItems: [
+      {
+        label: "Profile",
+        href: "/dashboard/settings/profile",
+        icon: (props: { className?: string }) => <User className={props.className} />,
+      },
+      {
+        label: "Availability",
+        href: "/dashboard/settings/availability",
+        icon: (props: { className?: string }) => <Clock className={props.className} />,
+      },
+      {
+        label: "Booking Events",
+        href: "/dashboard/settings/booking-events",
+        icon: (props: { className?: string }) => <Calendar className={props.className} />,
+      },
+    ],
   },
 ];

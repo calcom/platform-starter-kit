@@ -24,7 +24,7 @@ export default async function DashboardSettingsProfile() {
       </CardHeader>
       <Separator className="my-4" />
       <CardContent>
-        <Card className="border-2 border-black">
+        <Card>
           <CardHeader className="rounded-t-lg bg-muted p-4">
             {/* red yellow and green dot to display the window frame form macOS: */}
             <div className="flex items-center gap-2">

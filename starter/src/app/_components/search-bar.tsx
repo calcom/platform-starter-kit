@@ -1,24 +1,20 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useQueryState, parseAsString } from "nuqs";
 
 export const SearchBar = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
+  const [query, setQuery] = useQueryState("q", parseAsString);
+
   return (
     <div className="w-full max-w-2xl">
       <Input
         placeholder="Search for your expert, topic or more"
         className="h-14 w-full shadow-md"
-        defaultValue={searchParams.get("q") ?? ""}
-        onChange={(e) => {
+        defaultValue={query ?? ""}
+        onChange={async (e) => {
           // append the query to the URL
-          const params = new URLSearchParams(searchParams);
-          params.set("q", e.target.value);
-
-          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+          await setQuery(e.target.value);
         }}
       />
       {/*  <AutocompleteSearch options={professions} /> */}

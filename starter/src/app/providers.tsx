@@ -8,7 +8,6 @@ import { env } from "@/env";
 import { CalProvider } from "@calcom/atoms";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { ThemeProviderProps } from "next-themes/dist/types";
 import * as React from "react";
@@ -17,18 +16,16 @@ export function Providers({ children, ...props }: ThemeProviderProps & { session
   const session = props?.session;
   const accessToken = session?.user?.calAccessToken;
   return (
-    <SessionProvider session={session}>
-      <CalProvider
-        clientId={env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}
-        options={{
-          apiUrl: env.NEXT_PUBLIC_CAL_API_URL,
-          refreshUrl: env.NEXT_PUBLIC_REFRESH_URL,
-        }}
-        {...(accessToken && { accessToken })}>
-        <NextThemesProvider {...props}>
-          <TooltipProvider>{children}</TooltipProvider>
-        </NextThemesProvider>
-      </CalProvider>
-    </SessionProvider>
+    <CalProvider
+      clientId={env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}
+      options={{
+        apiUrl: env.NEXT_PUBLIC_CAL_API_URL,
+        refreshUrl: env.NEXT_PUBLIC_REFRESH_URL,
+      }}
+      {...(accessToken && { accessToken })}>
+      <NextThemesProvider {...props}>
+        <TooltipProvider>{children}</TooltipProvider>
+      </NextThemesProvider>
+    </CalProvider>
   );
 }

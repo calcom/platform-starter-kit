@@ -1,7 +1,7 @@
 import type { FilterOption } from "@prisma/client";
 
 // TODO: move to database after signup
-export const filterOptions = [
+export const categoryOptions = [
   {
     fieldId: "freelancer",
     fieldLabel: "Freelancer",
@@ -29,6 +29,9 @@ export const filterOptions = [
     filterCategoryValue: "categories",
     createdAt: new Date(),
   },
+] as const satisfies FilterOption[];
+
+export const capabilityOptions = [
   {
     fieldId: "ecommerce",
     fieldLabel: "Ecommerce",
@@ -128,6 +131,9 @@ export const filterOptions = [
     filterCategoryValue: "capabilities",
     createdAt: new Date(),
   },
+] as const satisfies FilterOption[];
+
+export const frameworkOptions = [
   {
     fieldId: "nextjs",
     fieldLabel: "Next.js",
@@ -191,6 +197,9 @@ export const filterOptions = [
     filterCategoryValue: "frameworks",
     createdAt: new Date(),
   },
+] as const satisfies FilterOption[];
+
+export const budgetOptions = [
   {
     fieldId: "1000",
     fieldLabel: "$1,000 - $4,999",
@@ -236,6 +245,9 @@ export const filterOptions = [
     filterCategoryValue: "budgets",
     createdAt: new Date(),
   },
+] as const satisfies FilterOption[];
+
+export const languageOptions = [
   {
     fieldId: "english",
     fieldLabel: "English",
@@ -299,6 +311,9 @@ export const filterOptions = [
     filterCategoryValue: "languages",
     createdAt: new Date(),
   },
+] as const satisfies FilterOption[];
+
+export const regions = [
   {
     fieldId: "asia",
     fieldLabel: "Asia",
@@ -362,4 +377,13 @@ export const filterOptions = [
     filterCategoryValue: "regions",
     createdAt: new Date(),
   },
-] satisfies FilterOption[];
+] as const satisfies FilterOption[];
+
+export const filterOptions = [
+  ...categoryOptions,
+  ...capabilityOptions,
+  ...frameworkOptions,
+  ...budgetOptions,
+  ...languageOptions,
+  ...regions,
+] as const satisfies FilterOption[];

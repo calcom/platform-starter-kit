@@ -810,6 +810,91 @@ export const CancelBookingInput = z.object({
 export type ReserveSlotInput = z.infer<typeof ReserveSlotInput>;
 export const ReserveSlotInput = z.object({});
 
+export type post_EventTypesController_createEventType = typeof post_EventTypesController_createEventType;
+export const post_EventTypesController_createEventType = {
+  method: z.literal("POST"),
+  path: z.literal("/v2/event-types"),
+  parameters: z.object({
+    body: CreateEventTypeInput,
+  }),
+  response: CreateEventTypeOutput,
+};
+
+export type get_EventTypesController_getEventTypes = typeof get_EventTypesController_getEventTypes;
+export const get_EventTypesController_getEventTypes = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/event-types"),
+  parameters: z.never(),
+  response: GetEventTypesOutput,
+};
+
+export type get_EventTypesController_getEventType = typeof get_EventTypesController_getEventType;
+export const get_EventTypesController_getEventType = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/event-types/{eventTypeId}"),
+  parameters: z.object({
+    path: z.object({
+      eventTypeId: z.string(),
+    }),
+  }),
+  response: GetEventTypeOutput,
+};
+
+export type patch_EventTypesController_updateEventType = typeof patch_EventTypesController_updateEventType;
+export const patch_EventTypesController_updateEventType = {
+  method: z.literal("PATCH"),
+  path: z.literal("/v2/event-types/{eventTypeId}"),
+  parameters: z.object({
+    path: z.object({
+      eventTypeId: z.number(),
+    }),
+    body: UpdateEventTypeInput,
+  }),
+  response: UpdateEventTypeOutput,
+};
+
+export type delete_EventTypesController_deleteEventType = typeof delete_EventTypesController_deleteEventType;
+export const delete_EventTypesController_deleteEventType = {
+  method: z.literal("DELETE"),
+  path: z.literal("/v2/event-types/{eventTypeId}"),
+  parameters: z.object({
+    path: z.object({
+      eventTypeId: z.number(),
+    }),
+  }),
+  response: DeleteEventTypeOutput,
+};
+
+export type get_EventTypesController_getPublicEventType = typeof get_EventTypesController_getPublicEventType;
+export const get_EventTypesController_getPublicEventType = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/event-types/{username}/{eventSlug}/public"),
+  parameters: z.object({
+    query: z.object({
+      isTeamEvent: z.boolean().optional(),
+      org: z.union([z.string(), z.null()]).optional(),
+    }),
+    path: z.object({
+      username: z.string(),
+      eventSlug: z.string(),
+    }),
+  }),
+  response: GetEventTypePublicOutput,
+};
+
+export type get_EventTypesController_getPublicEventTypes =
+  typeof get_EventTypesController_getPublicEventTypes;
+export const get_EventTypesController_getPublicEventTypes = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/event-types/{username}/public"),
+  parameters: z.object({
+    path: z.object({
+      username: z.string(),
+    }),
+  }),
+  response: GetEventTypesPublicOutput,
+};
+
 export type get_BookingsController_getBookings = typeof get_BookingsController_getBookings;
 export const get_BookingsController_getBookings = {
   method: z.literal("GET"),
@@ -914,24 +999,37 @@ export const post_BookingsController_createInstantBooking = {
 
 // <EndpointByMethod>
 export const EndpointByMethod = {
-  get: {
-    "/v2/bookings": get_BookingsController_getBookings,
-    "/v2/bookings/{bookingUid}": get_BookingsController_getBooking,
-    "/v2/bookings/{bookingUid}/reschedule": get_BookingsController_getBookingForReschedule,
-  },
   post: {
+    "/v2/event-types": post_EventTypesController_createEventType,
     "/v2/bookings": post_BookingsController_createBooking,
     "/v2/bookings/{bookingId}/cancel": post_BookingsController_cancelBooking,
     "/v2/bookings/recurring": post_BookingsController_createRecurringBooking,
     "/v2/bookings/instant": post_BookingsController_createInstantBooking,
+  },
+  get: {
+    "/v2/event-types": get_EventTypesController_getEventTypes,
+    "/v2/event-types/{eventTypeId}": get_EventTypesController_getEventType,
+    "/v2/event-types/{username}/{eventSlug}/public": get_EventTypesController_getPublicEventType,
+    "/v2/event-types/{username}/public": get_EventTypesController_getPublicEventTypes,
+    "/v2/bookings": get_BookingsController_getBookings,
+    "/v2/bookings/{bookingUid}": get_BookingsController_getBooking,
+    "/v2/bookings/{bookingUid}/reschedule": get_BookingsController_getBookingForReschedule,
+  },
+  patch: {
+    "/v2/event-types/{eventTypeId}": patch_EventTypesController_updateEventType,
+  },
+  delete: {
+    "/v2/event-types/{eventTypeId}": delete_EventTypesController_deleteEventType,
   },
 };
 export type EndpointByMethod = typeof EndpointByMethod;
 // </EndpointByMethod>
 
 // <EndpointByMethod.Shorthands>
-export type GetEndpoints = EndpointByMethod["get"];
 export type PostEndpoints = EndpointByMethod["post"];
+export type GetEndpoints = EndpointByMethod["get"];
+export type PatchEndpoints = EndpointByMethod["patch"];
+export type DeleteEndpoints = EndpointByMethod["delete"];
 export type AllEndpoints = EndpointByMethod[keyof EndpointByMethod];
 // </EndpointByMethod.Shorthands>
 
@@ -989,6 +1087,15 @@ export class ApiClient {
     return this;
   }
 
+  // <ApiClient.post>
+  post<Path extends keyof PostEndpoints, TEndpoint extends PostEndpoints[Path]>(
+    path: Path,
+    ...params: MaybeOptionalArg<z.infer<TEndpoint["parameters"]>>
+  ): Promise<z.infer<TEndpoint["response"]>> {
+    return this.fetcher("post", this.baseUrl + path, params[0]) as Promise<z.infer<TEndpoint["response"]>>;
+  }
+  // </ApiClient.post>
+
   // <ApiClient.get>
   get<Path extends keyof GetEndpoints, TEndpoint extends GetEndpoints[Path]>(
     path: Path,
@@ -998,14 +1105,23 @@ export class ApiClient {
   }
   // </ApiClient.get>
 
-  // <ApiClient.post>
-  post<Path extends keyof PostEndpoints, TEndpoint extends PostEndpoints[Path]>(
+  // <ApiClient.patch>
+  patch<Path extends keyof PatchEndpoints, TEndpoint extends PatchEndpoints[Path]>(
     path: Path,
     ...params: MaybeOptionalArg<z.infer<TEndpoint["parameters"]>>
   ): Promise<z.infer<TEndpoint["response"]>> {
-    return this.fetcher("post", this.baseUrl + path, params[0]) as Promise<z.infer<TEndpoint["response"]>>;
+    return this.fetcher("patch", this.baseUrl + path, params[0]) as Promise<z.infer<TEndpoint["response"]>>;
   }
-  // </ApiClient.post>
+  // </ApiClient.patch>
+
+  // <ApiClient.delete>
+  delete<Path extends keyof DeleteEndpoints, TEndpoint extends DeleteEndpoints[Path]>(
+    path: Path,
+    ...params: MaybeOptionalArg<z.infer<TEndpoint["parameters"]>>
+  ): Promise<z.infer<TEndpoint["response"]>> {
+    return this.fetcher("delete", this.baseUrl + path, params[0]) as Promise<z.infer<TEndpoint["response"]>>;
+  }
+  // </ApiClient.delete>
 }
 
 export function createApiClient(fetcher: Fetcher, baseUrl?: string) {

@@ -1,10 +1,11 @@
 "use client";
 
-import type { SidebarCategory, SidebarCategoryItem } from "@/app/constants";
+import { type filterOptions } from "@/app/_hardcoded";
+import { filterSearchParamSchema } from "@/app/_searchParams";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useQueryState, parseAsJson } from "nuqs";
 
 export default function SidebarItem({
   id,
@@ -12,45 +13,40 @@ export default function SidebarItem({
   className,
   category,
   ...props
-}: SidebarCategoryItem & {
+}: {
   className?: string;
-  category: SidebarCategory["title"];
+  id: (typeof filterOptions)[number]["fieldId"];
+  label: (typeof filterOptions)[number]["fieldLabel"];
+  category: (typeof filterOptions)[number]["filterCategoryFieldId"];
 } & React.ComponentPropsWithoutRef<typeof Checkbox>) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const filterParams = JSON.parse(searchParams.get("f") || "{}") as Record<
-    string,
-    string[] | Record<string, never>
-  >;
-  const selectedIds = filterParams[category];
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  const [filters, setFilters] = useQueryState("f", parseAsJson(filterSearchParamSchema.parse));
+  const selectedIds = filters?.[category];
 
   return (
     <div className="flex items-center space-x-2">
       <Checkbox
         id={id}
         className={cn(className)}
+        // @ts-expect-error id could be anything
         defaultChecked={selectedIds?.includes(id)}
-        onCheckedChange={(checked) => {
+        onCheckedChange={async (checked) => {
           const newSelectedIds = [
             ...(selectedIds?.filter((selectedId) => selectedId !== id) || []),
             ...(checked ? [id] : []),
           ];
           const newCategoryFilter = { [category]: newSelectedIds };
 
-          const { [category]: _, ...withoutCurrentCategory } = filterParams; // remove current category from filters
+          console.log("newCategoryFilter", newCategoryFilter);
+
+          const { [category]: _, ...withoutCurrentCategory } = newCategoryFilter; // remove current category from filters
 
           // include new category filter if there are selected ids
           const newFilters = {
             ...withoutCurrentCategory,
             ...(newSelectedIds.length > 0 ? newCategoryFilter : {}),
           };
-          const params = new URLSearchParams({ f: JSON.stringify(newFilters) });
-          router.replace(
-            `${pathname}${Object.keys(newFilters).length ? `?${params.toString()}` : ""}${searchParams.get("q") ? `&q=${searchParams.get("q")}` : ""}`,
-            { scroll: false }
-          );
+          await setFilters(newFilters);
         }}
         {...props}
       />

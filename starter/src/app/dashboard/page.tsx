@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { type GetBookingsInput } from "node_modules/@calcom/atoms/dist/packages/platform/types";
 import { db } from "prisma/client";
 
@@ -83,7 +85,7 @@ export default async function Dashboard() {
   };
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+    <main className="flex flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-8">
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         <Card className="sm:col-span-2" x-chunk="dashboard-05-chunk-0">
           <CardHeader className="pb-3">
@@ -93,7 +95,12 @@ export default async function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardFooter className="pt-6">
-            <Button>Create New Booking Event</Button>
+            <Link href="/dashboard/settings/booking-events">
+              <Button>
+                Manage booking events
+                <ArrowRight className="ml-1 size-4" />
+              </Button>
+            </Link>
           </CardFooter>
         </Card>
         <Card x-chunk="dashboard-05-chunk-1">
