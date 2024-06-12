@@ -71,7 +71,7 @@ export const BookingsTable = (props: {
         {tabs.map((tab, idx) => {
           return (
             <TabsContent value={tab.value} key={idx} className="xl:col-span-2">
-              <Card x-chunk="dashboard-05-chunk-3">
+              <Card>
                 <CardHeader className="px-7">
                   <CardTitle>Bookings</CardTitle>
                   <CardDescription>Bookings from potential customers.</CardDescription>
@@ -88,68 +88,79 @@ export const BookingsTable = (props: {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {bookings.map((booking, idx) => {
-                        const initiator = booking.attendees[0];
-                        const isEven = idx % 2 === 0;
-                        return (
-                          <TableRow
-                            key={booking.id}
-                            className={cn(
-                              "data-[current=true]:bg-muted-foreground/30",
-                              isEven && "bg-accent"
-                            )}
-                            data-current={
-                              bookings.findIndex((booking) => booking.id === selectedElement?.id) === idx
-                            }
-                            onClick={() => setSelectedElement(booking)}>
-                            <TableCell>
-                              <div className="font-medium capitalize">
-                                {stripCalOAuthClientIdFromText(initiator?.name ?? "")}
-                              </div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                {stripCalOAuthClientIdFromEmail(initiator?.email ?? "")}
-                              </div>
-                            </TableCell>
-                            <TableCell className="hidden sm:table-cell">{booking.eventType.slug}</TableCell>
-                            <TableCell className="hidden sm:table-cell">
-                              <Badge
-                                variant={
-                                  // so that we show the destructive badge for cancelled meetings, and success badge for confirmed meetings
-                                  (["CANCELLED", "REJECTED"] as Array<BookingStatus>).includes(
-                                    // @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus
-                                    booking.status
-                                  )
-                                    ? "destructive"
-                                    : (["PENDING", "ACCEPTED", "AWAITING HOST"] as Array<BookingStatus>)
-                                          // @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus
-                                          .includes(booking.status)
-                                      ? "success"
-                                      : "default"
-                                }
-                                className={cn(
-                                  "text-xs",
-                                  // so that we show a gray badge for pending meetings
-                                  (booking.status as BookingStatus) === "PENDING" &&
-                                    "border-transparent bg-muted text-muted-foreground hover:bg-muted/80"
-                                )}>
-                                {/* @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus */}
-                                {booking.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell">
-                              {dayjs(booking.startTime).format("YYYY-MM-DD")}
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="font-medium capitalize">
-                                {dayjs(booking.startTime).format("h:mma")}
-                              </div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                {props.user.timeZone}
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
+                      {bookings.length ? (
+                        bookings.map((booking, idx) => {
+                          const initiator = booking.attendees[0];
+                          const isEven = idx % 2 === 0;
+                          return (
+                            <TableRow
+                              key={booking.id}
+                              className={cn(
+                                "data-[current=true]:bg-muted-foreground/30",
+                                isEven && "bg-accent"
+                              )}
+                              data-current={
+                                bookings.findIndex((booking) => booking.id === selectedElement?.id) === idx
+                              }
+                              onClick={() => setSelectedElement(booking)}>
+                              <TableCell>
+                                <div className="font-medium capitalize">
+                                  {stripCalOAuthClientIdFromText(initiator?.name ?? "")}
+                                </div>
+                                <div className="hidden text-sm text-muted-foreground md:inline">
+                                  {stripCalOAuthClientIdFromEmail(initiator?.email ?? "")}
+                                </div>
+                              </TableCell>
+                              <TableCell className="hidden sm:table-cell">{booking.eventType.slug}</TableCell>
+                              <TableCell className="hidden sm:table-cell">
+                                <Badge
+                                  variant={
+                                    // so that we show the destructive badge for cancelled meetings, and success badge for confirmed meetings
+                                    (["CANCELLED", "REJECTED"] as Array<BookingStatus>).includes(
+                                      // @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus
+                                      booking.status
+                                    )
+                                      ? "destructive"
+                                      : (["PENDING", "ACCEPTED", "AWAITING HOST"] as Array<BookingStatus>)
+                                            // @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus
+                                            .includes(booking.status)
+                                        ? "success"
+                                        : "default"
+                                  }
+                                  className={cn(
+                                    "text-xs",
+                                    // so that we show a gray badge for pending meetings
+                                    (booking.status as BookingStatus) === "PENDING" &&
+                                      "border-transparent bg-muted text-muted-foreground hover:bg-muted/80"
+                                  )}>
+                                  {/* @ts-expect-error: There are missing types in the openapi specs for cal's api, this should likely be: BookingStatus */}
+                                  {booking.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">
+                                {dayjs(booking.startTime).format("YYYY-MM-DD")}
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <div className="font-medium capitalize">
+                                  {dayjs(booking.startTime).format("h:mma")}
+                                </div>
+                                <div className="hidden text-sm text-muted-foreground md:inline">
+                                  {props.user.timeZone}
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
+                      ) : (
+                        <TableRow>
+                          <TableCell>
+                            <p className="text-sm text-muted-foreground">
+                              In the current {tab.label.toLocaleLowerCase()}, you don&rsquo;t have any
+                              bookings.
+                            </p>
+                          </TableCell>
+                        </TableRow>
+                      )}
                     </TableBody>
                   </Table>
                 </CardContent>
@@ -161,7 +172,7 @@ export const BookingsTable = (props: {
           <CardHeader className="flex flex-row items-start bg-muted/50">
             <div className="grid gap-0.5">
               <CardTitle className="group flex items-center gap-2 text-lg">
-                {stripCalOAuthClientIdFromText(selectedElement?.title ?? "")}
+                {stripCalOAuthClientIdFromText(selectedElement?.title ?? "No booking selected")}
                 <Button
                   size="icon"
                   variant="outline"
@@ -183,7 +194,11 @@ export const BookingsTable = (props: {
                 </li>
                 <li className="flex items-center justify-between text-muted-foreground">
                   <span>Date:</span>
-                  <span>{dayjs(selectedElement?.startTime).format("MMMM DD, YYYY")}</span>
+                  <span>
+                    {selectedElement?.startTime
+                      ? dayjs(selectedElement?.startTime).format("MMMM DD, YYYY")
+                      : "MMMM DD, YYYY"}
+                  </span>
                 </li>
                 <li className="flex items-center justify-between text-muted-foreground">
                   <span>Status:</span>
@@ -246,10 +261,14 @@ export const BookingsTable = (props: {
                 <div className="flex items-center justify-between">
                   <dt className="text-muted-foreground">Language</dt>
                   <dd>
-                    {new Intl.DisplayNames([navigator.language], { type: "language" }).of(
-                      selectedElement?.attendees[0]?.locale ?? "English"
-                    )}{" "}
-                    ({selectedElement?.attendees[0]?.locale ?? "en"})
+                    {selectedElement?.attendees[0]?.locale
+                      ? new Intl.DisplayNames([navigator.language], { type: "language" }).of(
+                          selectedElement?.attendees[0]?.locale ?? "English"
+                        )
+                      : ""}{" "}
+                    {selectedElement?.attendees[0]?.locale
+                      ? `(${selectedElement?.attendees[0]?.locale})`
+                      : ""}
                   </dd>
                 </div>
               </dl>

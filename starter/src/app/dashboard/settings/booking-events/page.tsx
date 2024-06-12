@@ -61,7 +61,7 @@ export default async function DashboardSettingsBookingEvents() {
   return (
     <Fragment>
       <div className="flex items-center">
-        <div className="ml-auto flex items-center gap-2">
+        <div className="mr-auto flex items-center gap-2">
           {/* TODO: add filter logic via url params */}
           {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
