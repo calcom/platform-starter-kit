@@ -32,6 +32,8 @@ Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com 
 
 ## Deploy your own
 
+<!-- TODO UPDATE WITH SUPABASE VERCEL INTEGRATION -->
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Ftree%2Fmain%2Fstarter&env=TURSO_DATABASE_URL,TURSO_AUTH_TOKEN,NEXT_PUBLIC_REFRESH_URL,AUTH_SECRET,AUTH_TRUST_HOST,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,NEXT_PUBLIC_REFRESH_URL,CAL_SECRET&envDescription=You%20can%20see%20how%20to%20populate%20the%20environment%20variables%20in%20our%20starter%20example%20→&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter%2F.env.example&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal.com%20Experts&demo-description=A%20marketplace%20to%20book%20appointments%20with%20experts&demo-url=https%3A%2F%2Fexperts.cal.com&demo-image=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fassets%2F8019099%2F2e58f8da-a110-4a45-b9a4-dcffb45f9baa)
 
 ## How to use
@@ -79,40 +81,24 @@ cp .env.example .env
 
 _4.1 Database_
 
-This project uses SQLite with Turso. You can create one for free at [turso.tech](https://turso.tech/).
+This project uses Postgres with Supabase. You can create one for free at [database.new](https://database.new/).
 
-Then, get the URL and Access Token from the Turso dashboard and update the respective values in your `.env` file:
+Then, get the Database URL from the [Supabase dashboard](https://supabase.com/dashboard/project/_/settings/database) and update the respective values in your `.env` file:
 
 ```.env
-# Prisma (Turso Database from https://turso.tech/app)
-# https://www.prisma.io/docs/orm/overview/databases/turso
-TURSO_DATABASE_URL="libsql://<your-database-name>.turso.io"
-TURSO_AUTH_TOKEN="eyJhbGc****"
+DATABASE_URL="" # Set this to the Transaction connection pooler string from your Supabase Dashboard
+DIRECT_URL=""  # Set this to the Session connection pooler string from your Supabase Dashboard
 ```
 
-To initialize the database models in your turso database, you have to apply the schema like so:
+When working locally use the `DB URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres` outputted by running `supabase start` for both env vars.
 
-> [!TIP]
-> Replace `turso-prisma-db` with the name of the database you created on turso. 👇
+Initialize the database:
 
 ```bash
-turso db shell turso-prisma-db < .starter/prisma/migrations/20240414212357_init/migration.sql
+supabase start # Only if running locally with Supabase CLI
+pnpm db:init
+pnpm db:seed
 ```
-
-> [!NOTE]
-> For your database schema changes, please note that the usual Prisma workflows differ. From [Prisma's docs](https://www.prisma.io/docs/orm/overview/databases/turso#how-to-manage-schema-changes):
->
-> > Prisma Migrate and Introspection workflows are currently not supported when working with Turso. This is because Turso uses HTTP to connect to your database, which Prisma Migrate doesn't support.
-> > To update your database schema:
-> >
-> > 1. Generate a migration file using prisma migrate dev against a local SQLite database:
-> >    `npx prisma migrate dev --name init`
-> > 2. Apply the migration using Turso's CLI:
-> >    `turso db shell turso-prisma-db < ./prisma/migrations/20230922132717_init/migration.sql`
-> >
-> > Replace `20230922132717_init` with the name of your migration.
-> >
-> > For subsequent migrations, repeat the above steps to apply changes to your database. This workflow does not support track the history of applied migrations to your remote database.
 
 _4.2 Authentication_
 
