@@ -81,9 +81,9 @@ cp .env.example .env
 
 _4.1 Database_
 
-This project uses SQLite with Turso. You can create one for free at [turso.tech](https://turso.tech/).
+This project uses Postgres with Supabase. You can create one for free at [database.new](https://database.new/).
 
-Then, get the URL and Access Token from the Turso dashboard and update the respective values in your `.env` file:
+Then, get the Database URL from the [Supabase dashboard](https://supabase.com/dashboard/project/_/settings/database) and update the respective values in your `.env` file:
 
 ```.env
 DATABASE_URL="" # Set this to the Transaction connection pooler string from your Supabase Dashboard
