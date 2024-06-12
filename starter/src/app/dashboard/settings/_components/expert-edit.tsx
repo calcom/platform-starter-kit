@@ -14,7 +14,6 @@ export default function ExpertEditForm(props: InputProps | TextareaProps) {
     FormData
   >(expertEdit, { error: null }, "/dashboard/settings/profile");
 
-  // TODO: add an onUpdateSuccess callback to update our session in NextAuth
   return (
     <form action={submitAction}>
       <div className="mb-2 flex w-full max-w-sm items-center space-x-2">
@@ -29,7 +28,6 @@ export default function ExpertEditForm(props: InputProps | TextareaProps) {
             <Input
               {...(props as InputProps)}
               className="text-2xl font-semibold leading-none tracking-tight"
-              // disabled={isPendingTransition}
               disabled={isPendingAction}
             />
           )}

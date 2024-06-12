@@ -1,6 +1,7 @@
 "use server";
 
-import { auth, signIn } from "@/auth";
+import { auth, signIn, unstable_update } from "@/auth";
+import { type User } from "@prisma/client";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect";
@@ -31,7 +32,6 @@ export async function expertEdit(
   _prevState: { error: null | string } | { success: null | string },
   formData: FormData
 ) {
-  console.log(`[_actions] Updating expert. previous state: ${JSON.stringify(_prevState)}`);
   console.log("[_actions] Updating expert with form data: ", formData);
   const sesh = await auth();
   if (!sesh.user.id) {
@@ -54,8 +54,9 @@ export async function expertEdit(
   }
 
   const key = Object.keys(userEdit.data)[0];
+  let user: User | null;
   try {
-    await db.user.update({
+    user = await db.user.update({
       where: { id: sesh.user.id },
       data: {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -67,6 +68,7 @@ export async function expertEdit(
     return { error: "Internal Server Error" };
   }
   revalidatePath("/dashboard/settings/profile");
+  await unstable_update({ user: { ...sesh.user, name: user.name } });
 
   return { success: `Successfully updated your ${key} to: '${userEdit.data[key]}'.` };
 }

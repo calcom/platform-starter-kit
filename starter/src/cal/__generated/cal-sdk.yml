@@ -1,5 +1,146 @@
 openapi: 3.0.0
 paths:
+  /v2/event-types:
+    post:
+      operationId: EventTypesController_createEventType
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventTypeInput'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEventTypeOutput'
+      tags:
+        - Event types
+    get:
+      operationId: EventTypesController_getEventTypes
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventTypesOutput'
+      tags:
+        - Event types
+  /v2/event-types/{eventTypeId}:
+    get:
+      operationId: EventTypesController_getEventType
+      parameters:
+        - name: eventTypeId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventTypeOutput'
+      tags:
+        - Event types
+    patch:
+      operationId: EventTypesController_updateEventType
+      parameters:
+        - name: eventTypeId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEventTypeInput'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateEventTypeOutput'
+      tags:
+        - Event types
+    delete:
+      operationId: EventTypesController_deleteEventType
+      parameters:
+        - name: eventTypeId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteEventTypeOutput'
+      tags:
+        - Event types
+  /v2/event-types/{username}/{eventSlug}/public:
+    get:
+      operationId: EventTypesController_getPublicEventType
+      parameters:
+        - name: username
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: eventSlug
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: isTeamEvent
+          required: false
+          in: query
+          schema:
+            type: boolean
+        - name: org
+          required: false
+          in: query
+          schema:
+            nullable: true
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventTypePublicOutput'
+      tags:
+        - Event types
+  /v2/event-types/{username}/public:
+    get:
+      operationId: EventTypesController_getPublicEventTypes
+      parameters:
+        - name: username
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventTypesPublicOutput'
+      tags:
+        - Event types
   /v2/bookings:
     get:
       operationId: BookingsController_getBookings

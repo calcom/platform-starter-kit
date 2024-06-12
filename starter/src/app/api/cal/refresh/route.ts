@@ -1,3 +1,4 @@
+import { unstable_update } from "@/auth";
 import { env } from "@/env";
 import { db } from "prisma/client";
 
@@ -51,18 +52,32 @@ export async function GET(request: Request) {
     }
 
     const body = (await response.json()) as {
-      data: { accessToken: string; refreshToken: string };
+      data: {
+        accessToken: string;
+        refreshToken: string;
+        // ; expiresAt: string
+      };
     };
 
-    // update the user's token in our database:
-    const updated = await db.user.update({
-      where: { id: user.id },
-      data: {
-        calAccessToken: body.data.accessToken,
-        calRefreshToken: body.data.refreshToken,
-      },
-      include: { calAccount: true },
-    });
+    // update the user's token in our database & in our jwt session strategy:
+    const [updated] = await Promise.all([
+      db.user.update({
+        where: { id: user.id },
+        data: {
+          calAccessToken: body.data.accessToken,
+          calRefreshToken: body.data.refreshToken,
+          // calTokenExpiresAt: body.data.expiresAt,
+        },
+        include: { calAccount: true },
+      }),
+      unstable_update({
+        user: {
+          calAccessToken: body.data.accessToken,
+          calRefreshToken: body.data.refreshToken,
+          // , calTokenExpiresAt: body.data.expiresAt
+        },
+      }),
+    ]);
 
     /** [@calcom] You have to return the accessToken back to calcom/atoms api for future refresh requests. */
     return new Response(JSON.stringify({ accessToken: updated.calAccessToken }), {

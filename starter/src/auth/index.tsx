@@ -44,6 +44,7 @@ const {
   handlers: { GET, POST },
   signIn,
   signOut,
+  unstable_update,
 } = NextAuth({
   ...authConfig,
   /**
@@ -86,7 +87,8 @@ const {
               console.debug(`User ${user.id} attempted login with bad password`);
               return null;
             }
-            return { id: user.id, name: user.name };
+            console.log("[auth.Credentials.authorize] User signed in successfully, returning user");
+            return user;
           } else {
             // if user doesn't exist, this comes from our signup page w/ additional fields
             const signupData = z
@@ -171,7 +173,7 @@ const {
   ],
 });
 
-export { signIn, signOut, GET, POST };
+export { signIn, signOut, GET, POST, unstable_update };
 
 export const auth = cache(async () => {
   try {

@@ -1,36 +1,8 @@
+import { dashboardNavigationData } from "../../data";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import slugify, { cn } from "@/lib/utils";
-import { Calendar, Clock, Home, Settings, User } from "lucide-react";
 import Link from "next/link";
 
-const dashboardNavigationData = [
-  {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: (props: { className?: string }) => <Home className={props.className} />,
-  },
-  {
-    label: "Settings",
-    icon: (props: { className?: string }) => <Settings className={props.className} />,
-    subItems: [
-      {
-        label: "Profile",
-        href: "/dashboard/settings/profile",
-        icon: (props: { className?: string }) => <User className={props.className} />,
-      },
-      {
-        label: "Availability",
-        href: "/dashboard/settings/availability",
-        icon: (props: { className?: string }) => <Clock className={props.className} />,
-      },
-      {
-        label: "Booking Events",
-        href: "/dashboard/settings/booking-events",
-        icon: (props: { className?: string }) => <Calendar className={props.className} />,
-      },
-    ],
-  },
-];
 export default function DashboardNavigationDesktopSlot(props: {
   params: {
     dashboardSegments: string[];
