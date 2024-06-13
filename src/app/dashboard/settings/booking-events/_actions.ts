@@ -55,7 +55,7 @@ export default async function createEventType(
         responseData: ${JSON.stringify(res.data)}
       `
     );
-    return { error: "Unable to create the booking event on Cal Platform (something went wrong)." };
+    return { error: "Unable to create the booking event (something went wrong)." };
   }
 
   const permalink = String(formData.get("permalink"));

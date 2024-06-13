@@ -7,7 +7,7 @@ export const dashboardNavigationData = [
     icon: (props: { className?: string }) => <Home className={props.className} />,
   },
   {
-    label: "Event Types",
+    label: "Booking Events",
     href: "/dashboard/settings/booking-events",
     icon: (props: { className?: string }) => <Calendar className={props.className} />,
   },

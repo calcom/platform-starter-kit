@@ -12,7 +12,9 @@ export default function ExpertLayout({ children }: { children?: ReactNode }) {
         <Link href="/dashboard" className="flex font-display text-2xl">
           Cal.com <span className="font-display text-sm">®</span>
         </Link>
-        <Navigation />
+        {/* 
+        Tip: Use this for your own navigation
+        <Navigation /> */}
         <div>
           <SignedIn>
             {(_user) => (

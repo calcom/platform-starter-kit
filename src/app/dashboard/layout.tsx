@@ -33,7 +33,7 @@ export default async function Layout({
   return (
     <>
       <div className="grid min-h-screen w-full lg:grid-cols-[220px_1fr] 2xl:grid-cols-[280px_1fr]">
-        <div className="hidden border-r bg-muted/90 md:block">
+        <div className="hidden border-r bg-muted/40 md:block">
           <div className="sticky top-0 z-40 flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Logo href="/dashboard" />
@@ -42,7 +42,7 @@ export default async function Layout({
           </div>
         </div>
         <div className="flex flex-col">
-          <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border/40 bg-muted/90 px-4 backdrop-blur-[2px] lg:h-[60px] lg:px-6">
+          <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border/40 bg-muted/40 px-4 backdrop-blur-[2px] lg:h-[60px] lg:px-6">
             <Sheet>
               <SheetTrigger asChild>
                 <Button size="icon" variant="outline" className="sm:hidden">

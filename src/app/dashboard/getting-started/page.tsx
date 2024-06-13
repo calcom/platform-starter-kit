@@ -7,7 +7,7 @@ import { Suspense } from "react";
 
 export default function GettingStarted() {
   return (
-    <main className="flex-1 bg-muted/90">
+    <main className="flex-1 bg-muted/40">
       <div className="flex items-center justify-center p-10">
         <Card className="w-full max-w-sm">
           <CardHeader>
