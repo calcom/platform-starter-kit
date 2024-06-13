@@ -247,7 +247,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
             <span>
               {" "}
               See{" "}
-              <Link href={`/experts/${expertUsername}`} className="underline">
+              <Link href={`/${expertUsername}`} className="underline">
                 availabilities
               </Link>
             </span>
@@ -257,7 +257,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
             <span>Need to make changes?</span>
             <span>
               {" "}
-              <Link href={`/experts/${expertUsername}?rescheduleUid=${bookingUid}`} className="underline">
+              <Link href={`/${expertUsername}?rescheduleUid=${bookingUid}`} className="underline">
                 Reschedule
               </Link>{" "}
               or{" "}

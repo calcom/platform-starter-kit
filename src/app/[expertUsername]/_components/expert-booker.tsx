@@ -43,7 +43,7 @@ export const ExpertBooker = (
       onCreateBookingSuccess={(booking) => {
         toast.success("Booking successful! ");
         router.push(
-          `/experts/${props.expert.username}/booking/${booking.data.uid}${booking.data.fromReschedule ? `?${new URLSearchParams({ fromReschedule: booking.data.fromReschedule }).toString()}` : ""}`
+          `/${props.expert.username}/booking/${booking.data.uid}${booking.data.fromReschedule ? `?${new URLSearchParams({ fromReschedule: booking.data.fromReschedule }).toString()}` : ""}`
         );
       }}
       rescheduleUid={rescheduleUid}

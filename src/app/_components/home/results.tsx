@@ -186,7 +186,7 @@ export function Results(props: {
               </aside>
               <main className="w-full p-4 pt-0">
                 <div className="block grid-cols-3 gap-4 space-x-2 md:grid">
-                  {props.signedOut}
+                  {!query && props.signedOut}
                   {experts.length ? (
                     experts.map(
                       (

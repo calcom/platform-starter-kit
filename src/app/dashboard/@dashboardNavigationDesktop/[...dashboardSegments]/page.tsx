@@ -20,7 +20,7 @@ export default function DashboardNavigationDesktopSlot(props: {
               key={navigationItem.href}
               href={navigationItem.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary hover:underline",
+                "flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-muted/50 transition-all hover:text-primary",
                 pathname === navigationItem.href && "bg-muted text-primary"
               )}
               prefetch={false}>
@@ -59,7 +59,7 @@ export default function DashboardNavigationDesktopSlot(props: {
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
                       pathname === subItem.href && "bg-muted text-primary",
-                      "ml-6 hover:underline"
+                      "ml-6"
                     )}
                     prefetch={false}>
                     <subItem.icon className="size-4" />
