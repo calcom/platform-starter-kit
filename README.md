@@ -53,7 +53,7 @@ gh repo clone calcom/platform-starter-kit
 **2. Move into the Starter**
 
 ```bash
-cd platform-starter-kit/starter
+cd platform-starter-kit/
 ```
 
 **3. Install dependencies**
