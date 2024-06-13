@@ -147,11 +147,11 @@ export const authConfig = {
       if (token?.name) {
         session.user.name = token.name;
       }
-      if (token?.accessToken) {
-        session.user.calAccessToken = token.accessToken;
+      if (token?.accessToken || token?.access_token) {
+        session.user.calAccessToken = token?.accessToken ?? (token?.access_token as string);
       }
-      if (token?.refreshToken) {
-        session.user.calRefreshToken = token.refreshToken;
+      if (token?.refreshToken || token?.refresh_token) {
+        session.user.calRefreshToken = token?.refreshToken ?? (token?.refresh_token as string);
       }
       // if (token.accessTokenExpiresAt) {
       //   session.user.calAccessTokenExpiresAt = token.expiresAt;

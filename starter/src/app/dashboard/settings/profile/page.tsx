@@ -16,13 +16,13 @@ export default async function DashboardSettingsProfile() {
 
   return (
     <Card>
-      <CardHeader className="pb-3">
+      {/* this is to match the calcom/atoms AvailabilitySettings style */}
+      <CardHeader className="mb-6 pb-0 md:mb-6 md:mt-0 lg:mb-8">
         <CardTitle>Your Profile Page</CardTitle>
         <CardDescription className="max-w-lg text-balance leading-relaxed">
           Make edits to your profile page below.
         </CardDescription>
       </CardHeader>
-      <Separator className="my-4" />
       <CardContent>
         <Card>
           <CardHeader className="rounded-t-lg bg-muted p-4">

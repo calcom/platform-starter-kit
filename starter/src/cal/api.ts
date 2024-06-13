@@ -13,6 +13,7 @@ export const cal = createApiClient(
       const sesh = await auth();
 
       if (!sesh.user.calAccessToken) {
+        console.log(`the session object for the cal api error: ${JSON.stringify(sesh)}`);
         throw new Error(
           `Unable to fetch cal api on endpoint '${fullUrl.href}': No cal access token found for user with id '${sesh.user.id}'`
         );

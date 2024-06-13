@@ -11,9 +11,9 @@ export const SettingsContent = () => {
           scheduleClassNames: {
             scheduleDay: "min-w-[480px]",
           },
-          containerClassName: "!font-sans",
+          containerClassName: "!font-sans !p-6",
           editableHeadingClassName:
-            "!text-2xl !font-semibold !leading-none !tracking-tight !pr-4 !min-w-[14rem] !text-foreground",
+            "!text-2xl !font-semibold !leading-none !tracking-tight !pr-4  !text-foreground min-w-[20rem]",
           subtitlesClassName: "!text-sm !leading-relaxed !max-w-lg !text-balance !text-muted-foreground",
         }}
         onUpdateSuccess={() => {
