@@ -1,9 +1,6 @@
 import ExpertEditForm from "../_components/expert-edit";
-import ExpertBooker from "@/app/[expertUsername]/_components/expert-booker";
 import { currentUser } from "@/auth";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import Link from "next/link";
 import { db } from "prisma/client";
 

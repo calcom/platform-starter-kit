@@ -7,7 +7,7 @@ import { type User } from "@prisma/client";
 import NextAuth from "next-auth";
 import type { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { randomBytes, scrypt, sign, timingSafeEqual } from "node:crypto";
+import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 import { db } from "prisma/client";
 import { cache } from "react";
 import "server-only";
@@ -176,12 +176,7 @@ const {
 export { signIn, signOut, GET, POST, unstable_update, uncachedAuth };
 
 export const auth = cache(async () => {
-  try {
-    return await uncachedAuth();
-  } catch (error) {
-    console.error(`[auth] error: ${error}`);
-    throw error;
-  }
+  return await uncachedAuth();
 });
 export const currentUser = cache(async () => {
   const sesh = await auth();

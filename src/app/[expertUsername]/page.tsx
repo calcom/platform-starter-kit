@@ -1,6 +1,4 @@
 import { ExpertBooker } from "./_components/expert-booker";
-import { auth } from "@/auth";
-import Image from "next/image";
 import { db } from "prisma/client";
 
 export default async function ExpertDetails({ params }: { params: { expertUsername: string } }) {

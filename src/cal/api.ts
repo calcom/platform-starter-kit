@@ -7,6 +7,7 @@ import {
 import { auth } from "@/auth";
 import { env } from "@/env";
 import { type Prisma, type User } from "@prisma/client";
+import { unstable_noStore } from "next/cache";
 import { db } from "prisma/client";
 import "server-only";
 import { type z } from "zod";
@@ -14,6 +15,7 @@ import { type z } from "zod";
 const calApiUrl = new URL(env.NEXT_PUBLIC_CAL_API_URL);
 const baseUrl = `${calApiUrl.protocol}//${calApiUrl.hostname}`;
 export const cal = createApiClient(async (method, url, params) => {
+  unstable_noStore(); // TODO: whenever we upgrade to next15, replace this with `unstable_rethrow` to support react's throwing mechanism under the hood @link: https://nextjs.org/docs/messages/ppr-caught-error
   try {
     /*
      * [Validation] to ensure that SDK is used by an authenticated user
@@ -63,6 +65,7 @@ export const cal = createApiClient(async (method, url, params) => {
     const fetchParameters = [fullUrl.href, options] satisfies Parameters<typeof fetch>;
 
     // instantiate response variables (assign with `let` so that we can re-assign after retries)
+    unstable_noStore(); // TODO: whenever we upgrade to next15, replace this with `unstable_rethrow` to support react's throwing mechanism under the hood @link: https://nextjs.org/docs/messages/ppr-caught-error
     let res = await fetch(fetchParameters[0], fetchParameters[1]);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let json = await res.json();
@@ -200,10 +203,12 @@ export const refreshTokens = async (
         "Content-Type": "application/json",
         "x-cal-secret-key": env.CAL_SECRET,
       },
+      cache: "no-store",
       body: JSON.stringify({ refreshToken: input.refreshToken } satisfies RefreshTokenInput),
     },
   ] satisfies Parameters<typeof fetch>;
 
+  unstable_noStore(); // TODO: whenever we upgrade to next15, replace this with `unstable_rethrow` to support react's throwing mechanism under the hood @link: https://nextjs.org/docs/messages/ppr-caught-error
   const response = await fetch(fetchParameters[0], fetchParameters[1]);
 
   // early return if that worked

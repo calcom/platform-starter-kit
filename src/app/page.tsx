@@ -1,13 +1,12 @@
 import { Results } from "./_components/home/results";
 import SignupCard from "./_components/home/signup-card";
-import { Navigation } from "./_components/navigation";
 import { budgetOptions, categoryOptions, frameworkOptions, languageOptions } from "./_hardcoded";
 import { SignedIn, SignedOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { type FilterOption, type User } from "@prisma/client";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 
 export default async function Home() {
   // TODO: Add profile pic upload
@@ -66,15 +65,17 @@ export default async function Home() {
         </div>
       </header>
       <main className="flex-1">
-        <Results
-          experts={experts}
-          images={images}
-          signedOut={
-            <SignedOut>
-              <SignupCard />
-            </SignedOut>
-          }
-        />
+        <Suspense>
+          <Results
+            experts={experts}
+            images={images}
+            signedOut={
+              <SignedOut>
+                <SignupCard />
+              </SignedOut>
+            }
+          />
+        </Suspense>
       </main>
     </React.Fragment>
   );

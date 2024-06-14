@@ -133,7 +133,6 @@ export const authConfig = {
     },
 
     session: async ({ session, token }) => {
-      console.log(`[auth.callbacks.session] session triggered ${JSON.stringify({ session, token })}`);
       // make the user fields available on the token from signin & signup available to our session object (so that auth() doesn't need a db roundtrip)
       if (token?.sub) {
         session.user.id = token.sub;
@@ -156,7 +155,6 @@ export const authConfig = {
       // if (token.accessTokenExpiresAt) {
       //   session.user.calAccessTokenExpiresAt = token.expiresAt;
       // }
-      console.log(`[auth.callbacks.session] session updated ${JSON.stringify(session.user)}`);
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {

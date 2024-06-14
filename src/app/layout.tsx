@@ -1,7 +1,6 @@
 import Banner from "./_components/banner";
 import { Providers } from "./providers";
 import { TailwindIndicator } from "./tailwind-indicator";
-import { auth } from "@/auth";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import "@/styles/globals.css";
