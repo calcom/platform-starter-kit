@@ -14,6 +14,8 @@ const config = {
         hostname: "picsum.photos",
       },
     ],
+    loader: "custom",
+    loaderFile: "./src/lib/supabase-image-loader.ts",
   },
 };
 

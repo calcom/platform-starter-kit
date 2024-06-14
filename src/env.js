@@ -12,13 +12,14 @@ export const env = createEnv({
     DIRECT_URL: z.string(),
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
     AUTH_SECRET: process.env.NODE_ENV === "production" ? z.string() : z.string().optional(),
-
     /**
      * [@calcom] These are the server environment variables to make our atoms work:
      * - CAL_SECRET: The secret key to authenticate our SDK requests. Follow this guide to get it 👇
      * @link: https://cal.com/docs/platform/quick-start#2.-setting-up-an-oauth-client
      */
     CAL_SECRET: z.string(),
+    /** Supabase secret key to generate signed storage upload urls */
+    SUPABASE_SERVICE_ROLE_KEY: z.string(),
   },
 
   /**
@@ -39,6 +40,8 @@ export const env = createEnv({
     NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID: z.string(),
     NEXT_PUBLIC_CAL_API_URL: z.string(),
     NEXT_PUBLIC_REFRESH_URL: z.string(),
+    NEXT_PUBLIC_SUPABASE_URL: z.string(),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
   },
 
   /**
@@ -56,6 +59,10 @@ export const env = createEnv({
     NEXT_PUBLIC_CAL_API_URL: process.env.NEXT_PUBLIC_CAL_API_URL,
     NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID: process.env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,
     NEXT_PUBLIC_REFRESH_URL: process.env.NEXT_PUBLIC_REFRESH_URL,
+    /** [@supabase] Add Supabase env vars */
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

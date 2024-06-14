@@ -5,7 +5,7 @@ SET session_replication_role = replica;
 --
 
 -- Dumped from database version 15.1 (Ubuntu 15.1-1.pgdg20.04+1)
--- Dumped by pg_dump version 15.6 (Ubuntu 15.6-1.pgdg20.04+1)
+-- Dumped by pg_dump version 15.7 (Ubuntu 15.7-1.pgdg20.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -183,6 +183,28 @@ INSERT INTO "public"."FilterOption" ("fieldId", "fieldValue", "fieldLabel", "cre
 -- Data for Name: FilterOptionsOnUser; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."FilterOptionsOnUser" ("userId", "filterOptionFieldId", "filterCategoryFieldId", "createdAt") VALUES
+	('clxe510qu00004qzybkdqp01z', '1000', 'budgets', '2024-06-14 03:37:15.286'),
+	('clxe510qu00004qzybkdqp01z', 'ecommerce', 'capabilities', '2024-06-14 03:37:15.286'),
+	('clxe510qu00004qzybkdqp01z', 'freelancer', 'categories', '2024-06-14 03:37:15.286'),
+	('clxe510qu00004qzybkdqp01z', 'nextjs', 'frameworks', '2024-06-14 03:37:15.286'),
+	('clxe510qu00004qzybkdqp01z', 'english', 'languages', '2024-06-14 03:37:15.286'),
+	('clxe59f5z0000smw3gyivnzr9', '1000', 'budgets', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'ecommerce', 'capabilities', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'app_development', 'capabilities', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'mobile_development', 'capabilities', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'ai', 'capabilities', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'freelancer', 'categories', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'nextjs', 'frameworks', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'angular', 'frameworks', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'english', 'languages', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'german', 'languages', '2024-06-14 03:43:47.223'),
+	('clxe59f5z0000smw3gyivnzr9', 'chinese', 'languages', '2024-06-14 03:43:47.223'),
+	('clxek5g4d00004jdghfieq2zs', '1000', 'budgets', '2024-06-14 10:40:36.079'),
+	('clxek5g4d00004jdghfieq2zs', 'ecommerce', 'capabilities', '2024-06-14 10:40:36.079'),
+	('clxek5g4d00004jdghfieq2zs', 'freelancer', 'categories', '2024-06-14 10:40:36.079'),
+	('clxek5g4d00004jdghfieq2zs', 'nextjs', 'frameworks', '2024-06-14 10:40:36.079'),
+	('clxek5g4d00004jdghfieq2zs', 'english', 'languages', '2024-06-14 10:40:36.079');
 
 
 --
@@ -209,6 +231,8 @@ INSERT INTO "public"."_prisma_migrations" ("id", "checksum", "finished_at", "mig
 -- Data for Name: buckets; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
 --
 
+INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
+	('avatars', 'avatars', NULL, '2024-06-14 11:51:12.750831+00', '2024-06-14 11:51:12.750831+00', true, false, NULL, '{image/jpeg,image/png}', NULL);
 
 
 --
