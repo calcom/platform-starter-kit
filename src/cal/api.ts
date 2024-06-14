@@ -53,6 +53,7 @@ export const cal = createApiClient(async (method, url, params) => {
     if (params?.query) fullUrl.search = new URLSearchParams(params.query).toString();
     const headers = {
       "x-cal-secret-key": env.CAL_SECRET,
+      "cal-api-version": "2024-05-21",
       Authorization: `Bearer ${dbUser.calAccessToken}`,
       Origin: new URL(env.NEXT_PUBLIC_REFRESH_URL).origin ?? "http://localhost:3000",
     };
@@ -194,7 +195,7 @@ export const refreshTokens = async (
 
   // first attempt is to use the /refresh endpoint on `/oauth/`:
   const url = new URL(calApiUrl);
-  url.pathname = `/oauth/${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}/refresh`;
+  url.pathname = `/v2/oauth/${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}/refresh`;
   const fetchParameters = [
     url.href,
     {
