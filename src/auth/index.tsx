@@ -186,7 +186,9 @@ export const auth = cache(async () => {
 export const currentUser = cache(async () => {
   const sesh = await auth();
   if (!sesh?.user.id) throw new Error("somehting's wrong here");
-  return sesh.user;
+  return db.user.findUnique({
+    where: { id: sesh.user.id },
+  });
 });
 
 export async function SignedIn(props: { children: (props: { user: Session["user"] }) => React.ReactNode }) {

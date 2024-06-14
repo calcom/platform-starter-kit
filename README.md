@@ -14,7 +14,7 @@
     ·
     <a href="https://cal.com/docs/platform"><strong>Docs</strong></a>
     ·
-    <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter&env=TURSO_DATABASE_URL,TURSO_AUTH_TOKEN,AUTH_SECRET,AUTH_TRUST_HOST,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,NEXT_PUBLIC_REFRESH_URL,CAL_SECRET&envDescription=API%20Keys%20for%20the%20database%20(turso)%2C%20authentication%20(nextauth)%20and%20Cal.%20*Note*%3A%20You%20can%20copy%20%26%20paste%20the%20cal-specific%20env%20vars%20from%20our%20demo%20under%20the%20provided%20link&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter%2F.env.example%23L24-L35&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal%20Platform%20Starter&demo-description=A%20marketplace%20to%20book%20experts.%20Scheduling%20is%20handled%20by%20%40calcom%2Fatoms.&demo-url=https%3A%2F%2Fstarter-4m7evv7ji-cal-staging.vercel.app%2F&demo-image=https%3A%2F%2Fcal.com%2Ffavicon.ico"><strong>Deploy on Vercel</strong></a>
+    <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Ftree%2Fmain%2Fstarter&env=NEXT_PUBLIC_REFRESH_URL,AUTH_SECRET,AUTH_TRUST_HOST,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,NEXT_PUBLIC_REFRESH_URL,CAL_SECRET&envDescription=You%20can%20see%20how%20to%20populate%20the%20environment%20variables%20in%20our%20starter%20example%20→&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter%2F.env.example&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal.com%20Experts&demo-description=A%20marketplace%20to%20book%20appointments%20with%20experts&demo-url=https%3A%2F%2Fexperts.cal.com&demo-image=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fassets%2F8019099%2F2e58f8da-a110-4a45-b9a4-dcffb45f9baa&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fcalcom%2Fplatform-starter-kit%2Ftree%2Fmain%2Fstarter"><strong>Deploy on Vercel</strong></a>
     <br />
     <br />
     <a href="https://go.cal.com/discord">Discord</a>
@@ -28,13 +28,11 @@
 
 # Platform Starter Kit Example
 
-Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com Atoms. It was built using the [T3 Stack](https://create.t3.gg/).
+Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com Atoms. It was built using the [T3 Stack](https://create.t3.gg/) with [Supabase](https://supabase.com/) as the Postgres Database host.
 
 ## Deploy your own
 
-<!-- TODO UPDATE WITH SUPABASE VERCEL INTEGRATION -->
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Ftree%2Fmain%2Fstarter&env=TURSO_DATABASE_URL,TURSO_AUTH_TOKEN,NEXT_PUBLIC_REFRESH_URL,AUTH_SECRET,AUTH_TRUST_HOST,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,NEXT_PUBLIC_REFRESH_URL,CAL_SECRET&envDescription=You%20can%20see%20how%20to%20populate%20the%20environment%20variables%20in%20our%20starter%20example%20→&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter%2F.env.example&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal.com%20Experts&demo-description=A%20marketplace%20to%20book%20appointments%20with%20experts&demo-url=https%3A%2F%2Fexperts.cal.com&demo-image=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fassets%2F8019099%2F2e58f8da-a110-4a45-b9a4-dcffb45f9baa)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Ftree%2Fmain%2Fstarter&env=NEXT_PUBLIC_REFRESH_URL,AUTH_SECRET,AUTH_TRUST_HOST,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,NEXT_PUBLIC_REFRESH_URL,CAL_SECRET&envDescription=You%20can%20see%20how%20to%20populate%20the%20environment%20variables%20in%20our%20starter%20example%20→&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fblob%2Fmain%2Fstarter%2F.env.example&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal.com%20Experts&demo-description=A%20marketplace%20to%20book%20appointments%20with%20experts&demo-url=https%3A%2F%2Fexperts.cal.com&demo-image=https%3A%2F%2Fgithub.com%2Fcalcom%2Fexamples%2Fassets%2F8019099%2F2e58f8da-a110-4a45-b9a4-dcffb45f9baa&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fcalcom%2Fplatform-starter-kit%2Ftree%2Fmain%2Fstarter)
 
 ## How to use
 
@@ -43,19 +41,19 @@ Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com 
 HTTPS:
 
 ```bash
-git clone https://github.com/calcom/examples.git
+git clone https://github.com/calcom/platform-starter-kit.git
 ```
 
 GitHub CLI:
 
 ```bash
-gh repo clone calcom/examples
+gh repo clone calcom/platform-starter-kit
 ```
 
 **2. Move into the Starter**
 
 ```bash
-cd examples/starter
+cd platform-starter-kit/
 ```
 
 **3. Install dependencies**
@@ -81,21 +79,20 @@ cp .env.example .env
 
 _4.1 Database_
 
-This project uses Postgres with Supabase. You can create one for free at [database.new](https://database.new/).
+This project uses Postgres with Supabase. You can create a free project at [database.new](https://database.new/).
 
 Then, get the Database URL from the [Supabase dashboard](https://supabase.com/dashboard/project/_/settings/database) and update the respective values in your `.env` file:
 
 ```.env
-DATABASE_URL="" # Set this to the Transaction connection pooler string from your Supabase Dashboard
-DIRECT_URL=""  # Set this to the Session connection pooler string from your Supabase Dashboard
+DATABASE_URL="postgres://postgres.YOUR-PROJECT-REF:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres" # Transaction Mode
+DIRECT_URL="postgres://postgres.YOUR-PROJECT-REF:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"  # Session Mode
 ```
 
-When working locally use the `DB URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres` outputted by running `supabase start` for both env vars.
+[Only needed when deploying manually] Initialize the database:
 
-Initialize the database:
+Note that if you used the Vercel Deploy link from above, the Supabase Vercel integration set this up automatically for you!
 
 ```bash
-supabase start # Only if running locally with Supabase CLI
 pnpm db:init
 pnpm db:seed
 ```
@@ -163,3 +160,7 @@ To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the fo
 - [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
 You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+
+## Learn More about Supabase
+
+Supabase is the fastest way to get up and running with Next.js and Postgres. Check out [this video](https://youtu.be/WdA6b0jPNv4?si=eeWpu03PI3W-t5pC) to learn more!

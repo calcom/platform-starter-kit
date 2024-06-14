@@ -58,7 +58,8 @@ export const cal = createApiClient(async (method, url, params) => {
       headers,
       method,
       ...(params?.body && { body: JSON.stringify(params.body) }),
-    };
+      cache: "no-store",
+    } satisfies RequestInit;
     const fetchParameters = [fullUrl.href, options] satisfies Parameters<typeof fetch>;
 
     // instantiate response variables (assign with `let` so that we can re-assign after retries)
@@ -268,7 +269,7 @@ export const updateDbAndRetryFetch = async (input: {
     ...input.fetch[1],
     headers: {
       ...input.fetch[1].headers,
-      Authorization: `Bearer ${input.data.calAccessToken as string}`,
+      Authorization: `Bearer ${input.update.data.calAccessToken as string}`,
     },
   } satisfies RequestInit;
   const [updatedUser, retryRes] = await Promise.all([
@@ -299,6 +300,42 @@ export const updateDbAndRetryFetch = async (input: {
  * =================
  */
 type FetchParametersLike = [string | URL, Parameters<typeof fetch>["1"]];
+export const composeFetchLogs = (ctx: {
+  fetch: FetchParametersLike;
+  res: Pick<Response, "status" | "statusText"> & { json: unknown };
+  cal: { id: User["calAccountId"] } | { refreshToken: User["calRefreshToken"] };
+}) => {
+  const { fetch, res, cal } = ctx;
+  const [input, init] = fetch;
+  const url = typeof input === "string" ? new URL(input) : input;
+
+  return `
+  
+  -- REQUEST DETAILS --
+
+  URL: ${url.href}
+  Method: ${init.method}
+  Headers: ${JSON.stringify(init.headers)}
+  Body: ${JSON.stringify(init.body)}
+
+  Stringified fetch options: ${JSON.stringify(fetch[1])}
+
+  -- RESPONSE DETAILS --
+
+  Error Code: ${res.status}
+  Error Message: ${res.statusText}
+  Error Body: ${JSON.stringify(res.json)}
+  Timestamp: ${Date.now()}
+  
+  -- CAL API DETAILS --
+
+  OAuthClient: ${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}
+  API Host: ${calApiUrl.host}
+  ${"id" in cal ? `Managed User id: ${cal.id}}` : `Managed User refresh token: ${cal.refreshToken}`}
+  Endpoint: ${url.pathname}
+  
+  `;
+};
 
 export const isCalError = (res: any): res is CalErrorResponse => res.status === "error";
 
