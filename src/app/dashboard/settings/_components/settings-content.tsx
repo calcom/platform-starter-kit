@@ -1,13 +1,12 @@
 "use client";
 
-import { env } from "@/env";
-import { AvailabilitySettings, CalProvider } from "@calcom/atoms";
+import { AvailabilitySettings } from "@calcom/atoms";
 
 /**
  * [@calcom] Make sure to wrap your app with our `CalProvider` to enable the use of our hooks.
  * @link https://cal.com/docs/platform/quick-start#5.3-setup-root-of-your-app
  */
-export const SettingsContent = (props: { calAccessToken?: string }) => {
+export const SettingsContent = () => {
   return (
     <div className="grid gap-6 [&>div]:rounded-lg [&>div]:border [&>div]:bg-card [&>div]:text-card-foreground [&>div]:shadow-sm">
       <AvailabilitySettings

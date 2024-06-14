@@ -1,7 +1,5 @@
 import EventTypeCreateForm from "./event-type-create";
 import { ButtonSubmit } from "@/app/_components/submit-button";
-import { auth, uncachedAuth } from "@/auth";
-import { type KeysResponseDto } from "@/cal/__generated/cal-sdk";
 import { cal } from "@/cal/api";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,59 +16,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { env } from "@/env";
 import { PlusCircle, Video } from "lucide-react";
 import { Fragment } from "react";
 
 export default async function DashboardSettingsBookingEvents() {
-  let getEventTypes = await cal.get("/v2/event-types");
+  const getEventTypes = await cal.get("/v2/event-types");
   if (getEventTypes.status === "error") {
     console.error("[dashboard/settings/booking-events/page.tsx] Error fetching event types", getEventTypes);
-    // would the following condition help identifying our issue? getEvenTypes.error.details.statusCode === 403 || 498 === getEvenTypes.error.details.statusCode
-    const sesh = await auth();
-    // refresh the token just to be sure
-    if (sesh.user.id) {
-      const refreshRouteUrl = new URL(env.NEXT_PUBLIC_REFRESH_URL);
-      refreshRouteUrl.search = new URLSearchParams({ userId: sesh.user.id }).toString();
-      const refreshRouteOptions = {
-        headers: {
-          Authorization: `Bearer ${sesh.user.calAccessToken}`,
-        },
-      } satisfies RequestInit;
-      console.log(`[dashboard/settings/booking-events/page.tsx] refreshRouteUrl.href:`, refreshRouteUrl.href);
-      const refreshRouteResponse = await fetch(refreshRouteUrl.href, refreshRouteOptions);
-
-      const refreshRouteJson = (await refreshRouteResponse.json()) as KeysResponseDto["data"];
-      const newSession = await uncachedAuth();
-      console.log(`[dashboard/settings/booking-events/page.tsx] Compare the refreshed session, please:
-
-      -- OLD SESSION --
-      ${JSON.stringify(sesh.user)}
-
-      -- NEW SESSION --
-      ${JSON.stringify(newSession.user)}
-        `);
-      if (!refreshRouteResponse.ok) {
-        console.warn(
-          `[dashboard/settings/booking-events/page.tsx] Tried to refresh the cal tokens unsuccessfully.
-
-          This page will not be useable.
-
-          -- REQUEST DETAILS --
-          Endpoint URL: ${refreshRouteUrl.href}
-
-          Options: ${JSON.stringify(refreshRouteOptions)}
-
-          -- RESPONSE DETAILS --
-          Text:
-          ${JSON.stringify(refreshRouteJson)}`
-        );
-      } else {
-        getEventTypes = await cal.get("/v2/event-types");
-      }
-    }
     // TODO debug this error
-    // return <div>Unable to fetch event types</div>;
+    console.warn(`[dashboard/settings/booking-events/page.tsx] Error fetching event types. Check logs above`);
   }
   const eventTypes = getEventTypes?.data?.eventTypeGroups?.flatMap((group) => group.eventTypes) ?? [
     {
