@@ -181,7 +181,7 @@ export const auth = cache(async () => {
 });
 export const currentUser = cache(async () => {
   const sesh = await auth();
-  if (!sesh?.user.id) throw new Error("somehting's wrong here");
+  if (!sesh?.user.id) return null;
   return db.user.findUnique({
     where: { id: sesh.user.id },
   });
