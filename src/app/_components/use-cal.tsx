@@ -15,7 +15,7 @@ import { use } from "react";
       return (
         <Suspense>
         {* note how we're passing the unresolved promise as props*}
-          <UseCalAtoms calAccessToken={currentUser().then((dbUser) => dbUser.calAccessToken)}>
+          <UseCalAtoms calAccessToken={currentUser().then((dbUser) => dbUser?.calAccessToken ?? undefined)}>
             {props.children}
           </UseCalAtoms>
         </Suspense>
