@@ -84,17 +84,19 @@ This project uses Postgres with Supabase. You can create a free project at [data
 Then, get the Database URL from the [Supabase dashboard](https://supabase.com/dashboard/project/_/settings/database) and update the respective values in your `.env` file:
 
 ```.env
-DATABASE_URL="postgres://postgres.YOUR-PROJECT-REF:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres" # Transaction Mode
-DIRECT_URL="postgres://postgres.YOUR-PROJECT-REF:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"  # Session Mode
+POSTGRES_PRISMA_URL="postgres://postgres.YOUR-PROJECT-REF:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres" # Transaction Mode
+POSTGRES_URL_NON_POOLING="postgres://postgres.YOUR-PROJECT-REF:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"  # Session Mode
 ```
+
+When working locally you can use the DB URL: `postgresql://postgres:postgres@127.0.0.1:54322/postgres` outputted by the `supabase start` command for both vairables.
 
 [Only needed when deploying manually] Initialize the database:
 
-Note that if you used the Vercel Deploy link from above, the Supabase Vercel integration set this up automatically for you!
+Note that if you used the Vercel Deploy link from above, the Supabase Vercel integration sets this up automatically for you!
 
 ```bash
 pnpm db:init
-pnpm db:seed
+pnpm db:seed # Will throw an error if DB is already seeded, which you can ignore.
 ```
 
 _4.2 Authentication_

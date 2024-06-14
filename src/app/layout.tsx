@@ -1,7 +1,8 @@
 import Banner from "./_components/banner";
+import UseCalAtoms from "./_components/use-cal";
 import { Providers } from "./providers";
 import { TailwindIndicator } from "./tailwind-indicator";
-import { auth } from "@/auth";
+import { currentUser } from "@/auth";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import "@/styles/globals.css";
@@ -16,6 +17,7 @@ import { type Metadata } from "next";
 import { AxiomWebVitals } from "next-axiom";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
 
 const interFont = Inter({ subsets: ["latin"], variable: "--font-inter", preload: true, display: "swap" });
@@ -55,19 +57,13 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   /** [@calcom] We're fetching the user's database info inside our session callback in auth */
-  const sesh = await auth();
   return (
     /** [@calcom] Ensure to set the diretion (either 'ltr' or 'rtl') since the calcom/atoms use their styles */
     <html lang="en" dir="ltr">
       <head />
       <AxiomWebVitals />
       <body className={cn("antialiased", calFont.variable, interFont.variable)}>
-        <Providers
-          defaultTheme="system"
-          enableSystem
-          attribute="class"
-          // if sesh.user.calAccessToken is defined, pass it to our providers:
-          session={sesh}>
+        <Providers defaultTheme="system" enableSystem attribute="class">
           <div className="flex min-h-screen flex-col">
             <Banner
               title="Build your own marketplace"
@@ -75,7 +71,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               ctaLink="https://go.cal.com/starter-kit"
               ctaText="Code on GitHub"
             />
-            {children}
+            <UseCalAtoms calAccessToken={currentUser().then((dbUser) => dbUser.calAccessToken)}>
+              {children}
+            </UseCalAtoms>
           </div>
           <TailwindIndicator />
         </Providers>

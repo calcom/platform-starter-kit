@@ -22,14 +22,14 @@ import { Fragment } from "react";
 export default async function DashboardSettingsBookingEvents() {
   const getEventTypes = await cal.get("/v2/event-types");
   if (getEventTypes.status === "error") {
-    console.error("Unable to fetch event types", getEventTypes);
+    console.error("[dashboard/settings/booking-events/page.tsx] Error fetching event types", getEventTypes);
     // TODO debug this error
-    // return <div>Unable to fetch event types</div>;
+    console.warn(`[dashboard/settings/booking-events/page.tsx] Error fetching event types. Check logs above`);
   }
   const eventTypes = getEventTypes?.data?.eventTypeGroups?.flatMap((group) => group.eventTypes) ?? [
     {
       length: 60,
-      slug: "/60min",
+      slug: "60min",
       title: "60min",
       description: "A 60 minute session",
       locations: [
@@ -42,7 +42,7 @@ export default async function DashboardSettingsBookingEvents() {
     },
     {
       length: 30,
-      slug: "/30min",
+      slug: "30min",
       title: "30min",
       description: "A 30 minute session",
       locations: [
@@ -54,10 +54,7 @@ export default async function DashboardSettingsBookingEvents() {
       id: 2,
     },
   ];
-  console.log(
-    "eventTypes.locations:",
-    eventTypes.map((eventType) => eventType.locations)
-  );
+  // console.log("eventTypes:", JSON.stringify(eventTypes, null, 2));
   return (
     <Fragment>
       <div className="flex items-center">

@@ -6,10 +6,15 @@ import { Loader } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
+/**
+ * [@calcom] Make sure to wrap your app with our `CalProvider` to enable the use of our hooks.
+ * @link https://cal.com/docs/platform/quick-start#5.3-setup-root-of-your-app
+ */
 type BookerProps = Parameters<typeof Booker>[number];
 export const ExpertBooker = (
   props: {
     className?: string;
+    calAccessToken?: User["calAccessToken"];
     calAccount: CalAccount;
     expert: User;
   } & Partial<BookerProps>

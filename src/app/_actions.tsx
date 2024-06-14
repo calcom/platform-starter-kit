@@ -10,7 +10,6 @@ import { z } from "zod";
 
 export async function signInWithCredentials(_prevState: { error?: string | null }, formData: FormData) {
   try {
-    console.log("Signing in with credentials form data: ", formData);
     await signIn("credentials", formData);
   } catch (error) {
     if (isRedirectError(error)) throw error;
@@ -68,7 +67,7 @@ export async function expertEdit(
     return { error: "Internal Server Error" };
   }
   revalidatePath("/dashboard/settings/profile");
-  await unstable_update({ user: { ...sesh.user, name: user.name } });
+  await unstable_update({ user: { name: user.name } });
 
   return { success: `Successfully updated your ${key} to: '${userEdit.data[key]}'.` };
 }
