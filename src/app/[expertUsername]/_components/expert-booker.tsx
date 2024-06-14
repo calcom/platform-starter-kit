@@ -1,7 +1,6 @@
 "use client";
 
-import { env } from "@/env";
-import { Booker, CalProvider, useEventTypesPublic } from "@calcom/atoms";
+import { Booker, useEventTypesPublic } from "@calcom/atoms";
 import type { CalAccount, User } from "@prisma/client";
 import { Loader } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -43,25 +42,17 @@ export const ExpertBooker = (
   }
 
   return (
-    <CalProvider
-      clientId={env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}
-      options={{
-        apiUrl: env.NEXT_PUBLIC_CAL_API_URL,
-        refreshUrl: env.NEXT_PUBLIC_REFRESH_URL,
+    <Booker
+      eventSlug={eventTypes[0]?.slug ?? ""}
+      username={props.calAccount.username}
+      onCreateBookingSuccess={(booking) => {
+        toast.success("Booking successful! ");
+        router.push(
+          `/${props.expert.username}/booking/${booking.data.uid}${booking.data.fromReschedule ? `?${new URLSearchParams({ fromReschedule: booking.data.fromReschedule }).toString()}` : ""}`
+        );
       }}
-      {...(props.calAccessToken && { accessToken: props.calAccessToken })}>
-      <Booker
-        eventSlug={eventTypes[0]?.slug ?? ""}
-        username={props.calAccount.username}
-        onCreateBookingSuccess={(booking) => {
-          toast.success("Booking successful! ");
-          router.push(
-            `/${props.expert.username}/booking/${booking.data.uid}${booking.data.fromReschedule ? `?${new URLSearchParams({ fromReschedule: booking.data.fromReschedule }).toString()}` : ""}`
-          );
-        }}
-        rescheduleUid={rescheduleUid}
-      />
-    </CalProvider>
+      rescheduleUid={rescheduleUid}
+    />
   );
 };
 export default ExpertBooker;

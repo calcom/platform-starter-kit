@@ -26,9 +26,6 @@ export default async function Layout({
   dashboardNavigationDesktop: ReactNode;
   dashboardNavigationMobile: ReactNode;
 }) {
-  // const sesh = await auth();
-  // if (!sesh?.user) return redirect("/login");
-  // const user = sesh.user;
   return (
     <SignedIn>
       {({ user }) => (

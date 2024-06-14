@@ -1,6 +1,8 @@
 import Banner from "./_components/banner";
+import UseCalAtoms from "./_components/use-cal";
 import { Providers } from "./providers";
 import { TailwindIndicator } from "./tailwind-indicator";
+import { currentUser } from "@/auth";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import "@/styles/globals.css";
@@ -15,6 +17,7 @@ import { type Metadata } from "next";
 import { AxiomWebVitals } from "next-axiom";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
 
 const interFont = Inter({ subsets: ["latin"], variable: "--font-inter", preload: true, display: "swap" });
@@ -68,7 +71,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               ctaLink="https://go.cal.com/starter-kit"
               ctaText="Code on GitHub"
             />
-            {children}
+            <Suspense>
+              <UseCalAtoms calAccessToken={currentUser().then((dbUser) => dbUser.calAccessToken)}>
+                {children}
+              </UseCalAtoms>
+            </Suspense>
           </div>
           <TailwindIndicator />
         </Providers>

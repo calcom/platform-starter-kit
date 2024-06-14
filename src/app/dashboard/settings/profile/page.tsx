@@ -2,14 +2,9 @@ import ExpertEditForm from "../_components/expert-edit";
 import { currentUser } from "@/auth";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import Link from "next/link";
-import { db } from "prisma/client";
 
 export default async function DashboardSettingsProfile() {
-  const user = await currentUser();
-  const expert = await db.user.findUnique({
-    where: { id: user.id },
-    include: { calAccount: true },
-  });
+  const expert = await currentUser();
 
   return (
     <Card>

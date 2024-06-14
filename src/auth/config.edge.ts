@@ -1,28 +1,22 @@
 import { signUp } from "@/cal/auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type User } from "@prisma/client";
-import { type Session, type NextAuthConfig, type DefaultSession } from "next-auth";
+import { type NextAuthConfig, type DefaultSession } from "next-auth";
 import { type DefaultJWT } from "next-auth/jwt";
 import { db } from "prisma/client";
 import "server-only";
+import { z } from "zod";
 
 declare module "next-auth" {
   interface Session {
     user: DefaultSession["user"] & {
-      id: string;
       username: string;
-      calAccessToken?: string;
-      calRefreshToken?: string;
-      // calAccessTokenExpiresAt?: number;
     };
   }
 }
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     username?: string;
-    accessToken?: string;
-    refreshToken?: string;
-    // expiresAt?: number;
   }
 }
 
@@ -43,97 +37,74 @@ export const authConfig = {
       return false;
     },
     jwt: async ({ token, user, trigger, session }) => {
+      let dbUser: User | null;
+      // if this is a new user, sign them up to Cal
+      if (!token.accessToken && trigger === "signUp") {
+        // 👇 [@calcom] the `signUp` function creates a managed user with the cal platform api and handles basic setup (such as creating a default schedule)
+        const toUpdate = await signUp({
+          email: user.email,
+          name: user.name,
+        });
+        // 👆 [@calcom]
+
+        // persist cal data to our db:
+        dbUser = await db.user.update({ where: { id: user.id }, data: toUpdate });
+      }
+      // if this is an update, let's update the token with the provided user data
       if (trigger === "update") {
-        // this gets called via `unstable_update`, let's update the token according to the payload
-        if (session.user.calAccessToken) token.accessToken = (session as Session).user.calAccessToken;
-        if (session.user.calRefreshToken) token.refreshToken = (session as Session).user.calRefreshToken;
-        // if (session.user.calAccessTokenExpiresAt) token.expiresAt = (session as Session).user.calAccessTokenExpiresAt;
-        if (session.user.username) token.username = (session as Session).user.username;
-        if (session.user.name) token.name = (session as Session).user.name;
+        const updateSessionValidation = z
+          .object({
+            user: z.object({
+              // default fields
+              name: z.string().optional(),
+              email: z.string().optional(),
+              picture: z.string().optional(),
+              // augmented fields
+              username: z.string().optional(),
+            }),
+          })
+          .parse(session);
+        const keysToUpdate = Object.keys(updateSessionValidation.user);
+        for (const key of keysToUpdate) {
+          console.info(
+            `
+            
+            [NextAuth.callbacks.jwt] Update user's token (userId: '${token.sub}') with key '${key}' to the value: ${updateSessionValidation.user[key]}
+            The previous value was: ${String(token?.[key])}
+            `
+          );
+          token[key] = updateSessionValidation.user[key];
+        }
+        dbUser = await db.user.update({
+          where: { id: token.sub },
+          data: {
+            name: token.name,
+            email: token.email,
+            username: token.username,
+            // picture: token.picture,
+          },
+        });
       }
       if (user) {
-        // User is available during sign-in & sign-up, let's sync with our db
-        let dbUser: User | null;
+        // update the token with the user's data
+        token.sub = user.id;
+        token.email = user.email;
+        token.username = (user as User).username;
+        token.name = user.name;
+      }
 
-        // if this is a new user, sign them up to Cal
-        if (!token.accessToken) {
-          // 👇 [@calcom] the `signUp` function creates a managed user with the cal platform api and handles basic setup (such as creating a default schedule)
-          const toUpdate = await signUp({
-            email: user.email,
-            name: user.name,
-          });
-          // 👆 [@calcom]
-
-          // persist cal data to our db:
-          dbUser = await db.user.update({ where: { id: user.id }, data: toUpdate });
-        }
-
-        // if this is a sign-in and the token is expired, let's refresh
-        // if (token.calAccessTokenExpiresAt && Date.now() < (token.calAccessTokenExpiresAt as number) * 1000) {
-        //   // refresh the token if it's expired
-        //   const url = `${env.NEXT_PUBLIC_CAL_API_URL}/oauth/${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}/refresh`;
-        //   const options = {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       "x-cal-secret-key": env.CAL_SECRET,
-        //     },
-        //     body: JSON.stringify({
-        //       refreshToken: token.calRefreshToken,
-        //     }),
-        //   };
-        //   const response = await fetch(url, options);
-
-        //   if (!response.ok) {
-        //     console.error(
-        //       `Unable to refresh the user token for user with id '${user.id}': Invalid response from Cal after attempting to refresh the token.
-
-        // -- REQUEST DETAILS --
-        // Endpoint URL: ${url}
-
-        // Options: ${JSON.stringify(options)}
-
-        // -- RESPONSE DETAILS --
-        // Text:
-        // ${await response.text()}`
-        //     );
-        //     throw new Error(`[auth] Unable to refresh cal api tokens: Bad Response`);
-        //   }
-
-        //   const body = (await response.json()) as KeysResponseDto;
-
-        //   // update the user's token in our database & in our jwt session strategy:
-        //   dbUser = await db.user.update({
-        //     where: { id: user.id },
-        //     data: {
-        //       calAccessToken: body.data.accessToken,
-        //       calRefreshToken: body.data.refreshToken,
-        //       // calAccessTokenExpiresAt: body.data.accessTokenExpiresAt,
-        //     },
-        //   });
-        // }
-
-        // if this is a sign-in and we haven't fetched our dbUser yet, let's do that
-        if (!dbUser) {
-          // fetch the user during signin to add fields to our token & make them available in the session without any db roundtrips
-          dbUser = await db.user.findUnique({ where: { id: token.sub } });
-        }
-        console.log(`[auth.callbacks.jwt] updating the token: ${JSON.stringify(dbUser)}`);
+      if (dbUser) {
         // update the token with the user's data
         token.sub = dbUser.id;
         token.email = dbUser.email;
         token.username = dbUser.username;
         token.name = dbUser.name;
-        token.accessToken = dbUser.calAccessToken;
-        token.refreshToken = dbUser.calRefreshToken;
-        // token.expiresAt = dbUser.calAccessTokenExpiresAt;
-        console.log(`[auth.callbacks.jwt] updated the token: ${JSON.stringify(token)}`);
       }
       return token;
     },
 
     session: async ({ session, token }) => {
-      // make the user fields available on the token from signin & signup available to our session object (so that auth() doesn't need a db roundtrip)
+      // make the token's user fields available on the session, so that we can call auth() to fetch it (no db call needed)
       if (token?.sub) {
         session.user.id = token.sub;
       }
@@ -146,15 +117,9 @@ export const authConfig = {
       if (token?.name) {
         session.user.name = token.name;
       }
-      if (token?.accessToken || token?.access_token) {
-        session.user.calAccessToken = token?.accessToken ?? (token?.access_token as string);
+      if (token?.picture) {
+        session.user.image = token.picture;
       }
-      if (token?.refreshToken || token?.refresh_token) {
-        session.user.calRefreshToken = token?.refreshToken ?? (token?.refresh_token as string);
-      }
-      // if (token.accessTokenExpiresAt) {
-      //   session.user.calAccessTokenExpiresAt = token.expiresAt;
-      // }
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {

@@ -1,8 +1,9 @@
 /* eslint-disable */
 // @ts-nocheck
 import { BookingsTable } from "./_components/bookings-table";
-import { auth } from "@/auth";
+import { CalAccount, auth } from "@/auth";
 import { cal } from "@/cal/api";
+import { stripCalOAuthClientIdFromEmail } from "@/cal/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -11,17 +12,13 @@ import dayjs from "dayjs";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { type GetBookingsInput } from "node_modules/@calcom/atoms/dist/packages/platform/types";
-import { db } from "prisma/client";
+import { Suspense } from "react";
 
 export default async function Dashboard() {
   const sesh = await auth();
   if (!sesh.user.id) {
     return <div>Not logged in</div>;
   }
-  const { calAccount, ...user } = await db.user.findUnique({
-    where: { id: sesh.user.id },
-    select: { calAccount: true },
-  });
   /** [@calcom] We're fetching the bookings on the server to display them here
    * Since `filters` is currently a required parameter, we have to iterate a bit and create our flatMap in the end
    */
@@ -164,15 +161,25 @@ export default async function Dashboard() {
           </CardFooter>
         </Card>
       </div>
-      <BookingsTable
-        bookings={{
-          all: bookings,
-          currentWeek: thisWeekBookings,
-          currentMonth: thisMonthBookings,
-          currentYear: thisYearBookings,
-        }}
-        user={{ timeZone: calAccount.timeZone, username: calAccount.username, email: user.email }}
-      />
+      <Suspense>
+        <CalAccount>
+          {(calAccount) => (
+            <BookingsTable
+              bookings={{
+                all: bookings,
+                currentWeek: thisWeekBookings,
+                currentMonth: thisMonthBookings,
+                currentYear: thisYearBookings,
+              }}
+              user={{
+                timeZone: calAccount.timeZone,
+                username: calAccount.username,
+                email: stripCalOAuthClientIdFromEmail(calAccount.email),
+              }}
+            />
+          )}
+        </CalAccount>
+      </Suspense>
     </main>
   );
 }
