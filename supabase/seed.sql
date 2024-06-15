@@ -2,7 +2,7 @@
 -- Data for Name: FilterOption; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."FilterOption" ("fieldId", "fieldValue", "fieldLabel", "createdAt", "filterCategoryFieldId", "filterCategoryValue", "filterCategoryLabel") VALUES
+INSERT INTO "prisma"."FilterOption" ("fieldId", "fieldValue", "fieldLabel", "createdAt", "filterCategoryFieldId", "filterCategoryValue", "filterCategoryLabel") VALUES
 	('freelancer', 'freelancer', 'Freelancer', '2024-06-12 16:34:56.508', 'categories', 'categories', 'Category'),
 	('agency', 'agency', 'Agency', '2024-06-12 16:34:56.508', 'categories', 'categories', 'Category'),
 	('product_studio', 'product_studio', 'Product Studio', '2024-06-12 16:34:56.508', 'categories', 'categories', 'Category'),
@@ -50,7 +50,7 @@ INSERT INTO "public"."FilterOption" ("fieldId", "fieldValue", "fieldLabel", "cre
 --
 
 INSERT INTO "public"."_prisma_migrations" ("id", "checksum", "finished_at", "migration_name", "logs", "rolled_back_at", "started_at", "applied_steps_count") VALUES
-	('e95b57f7-ff46-4cab-baed-4e64d4b5716d', 'c8f95901b01c27725e12ff60750a8f8d77148bf62092315e1167f87d2261ff41', '2024-06-12 16:34:49.227006+00', '20240612155208_init', NULL, NULL, '2024-06-12 16:34:49.169119+00', 1);
+	('c5d8d6fe-8be5-4476-8aca-f102e63be12e', '3f5160803fe82395ea1343a296457bd40a893640b02a6cc4e5389c15736825fb', '2024-06-15 09:39:06.676328+00', '20240615093906_init', NULL, NULL, '2024-06-15 09:39:06.628549+00', 1);
 
 
 --
