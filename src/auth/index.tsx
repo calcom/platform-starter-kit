@@ -1,13 +1,14 @@
 import { authConfig } from "./config.edge";
+import { env } from "@/env";
 
 /**
  * [@calcom] 1️⃣ Set up NextAuth's Credentials provider by importing `withCal`
  */
-import { type User } from "@prisma/client";
+import { type CalAccount, type User } from "@prisma/client";
 import NextAuth from "next-auth";
 import type { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { randomBytes, scrypt, sign, timingSafeEqual } from "node:crypto";
+import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 import { db } from "prisma/client";
 import { cache } from "react";
 import "server-only";
@@ -173,21 +174,24 @@ const {
   ],
 });
 
-export { signIn, signOut, GET, POST, unstable_update };
+export { signIn, signOut, GET, POST, unstable_update, uncachedAuth };
 
 export const auth = cache(async () => {
-  try {
-    return await uncachedAuth();
-  } catch (error) {
-    console.error(`[auth] error: ${error}`);
-    throw error;
-  }
+  return await uncachedAuth();
 });
-
 export const currentUser = cache(async () => {
   const sesh = await auth();
+  if (!sesh?.user.id) return null;
+  return db.user.findUnique({
+    where: { id: sesh.user.id },
+  });
+});
+export const currentUserWithCalAccount = cache(async () => {
+  const sesh = await auth();
   if (!sesh?.user.id) throw new Error("somehting's wrong here");
-  return sesh.user;
+  return db.calAccount.findUnique({
+    where: { email: sesh.user.email.replace("@", `+${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}@`) },
+  });
 });
 
 export async function SignedIn(props: { children: (props: { user: Session["user"] }) => React.ReactNode }) {
@@ -198,4 +202,14 @@ export async function SignedIn(props: { children: (props: { user: Session["user"
 export async function SignedOut(props: { children: React.ReactNode }) {
   const sesh = await auth();
   return sesh?.user ? null : <>{props.children}</>;
+}
+
+export async function CurrentUser(props: { children: (props: User) => React.ReactNode }) {
+  const user = await currentUser();
+  console.log(`[Auth] CurrentUser -> ${JSON.stringify(user)}`);
+  return <>{props.children(user)}</>;
+}
+export async function CalAccount(props: { children: (props: CalAccount) => React.ReactNode }) {
+  const calAccount = await currentUserWithCalAccount();
+  return <>{props.children(calAccount)}</>;
 }

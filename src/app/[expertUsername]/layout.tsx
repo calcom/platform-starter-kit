@@ -1,4 +1,3 @@
-import { Navigation } from "@/app/_components/navigation";
 import { SignedIn, SignedOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";

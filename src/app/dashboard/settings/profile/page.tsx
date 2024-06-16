@@ -2,17 +2,12 @@ import ExpertEditForm from "../_components/expert-edit";
 import SupabaseReactDropzone from "../_components/supabase-react-dropzone";
 import ExpertBooker from "@/app/[expertUsername]/_components/expert-booker";
 import { currentUser } from "@/auth";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { db } from "prisma/client";
 
 export default async function DashboardSettingsProfile() {
-  const user = await currentUser();
-  const expert = await db.user.findUnique({
-    where: { id: user.id },
-    include: { calAccount: true },
-  });
+  const expert = await currentUser();
 
   return (
     <Card>
@@ -42,15 +37,20 @@ export default async function DashboardSettingsProfile() {
               settings.
             </CardDescription>
           </div>
-          <div className="w-full overflow-hidden [&_.calcom-atoms]:bg-[transparent]">
+          {/* FIX: this currently doesn't work as there are then two `<CalProvider />` instantiated (leads to queryclient conflict) */}
+          {/* <div className="w-full overflow-hidden [&_.calcom-atoms]:bg-[transparent]">
             <div className="rounded-md border md:-ml-[80px] md:scale-75">
               {Boolean(expert.calAccount) && (
                 <div className="pointer-events-none">
-                  <ExpertBooker calAccount={expert.calAccount!} expert={expert} />
+                  <ExpertBooker
+                    calAccessToken={expert.calAccessToken}
+                    calAccount={expert.calAccount!}
+                    expert={expert}
+                  />
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </CardContent>
     </Card>
