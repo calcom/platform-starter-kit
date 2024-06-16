@@ -1,6 +1,9 @@
 import ExpertEditForm from "../_components/expert-edit";
+import SupabaseReactDropzone from "../_components/supabase-react-dropzone";
+import ExpertBooker from "@/app/[expertUsername]/_components/expert-booker";
 import { currentUser } from "@/auth";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 export default async function DashboardSettingsProfile() {
@@ -10,15 +13,9 @@ export default async function DashboardSettingsProfile() {
     <Card>
       <CardContent className="mt-4">
         <div className="flex flex-1 flex-col items-center gap-4 overflow-auto">
+          <SupabaseReactDropzone userId={expert.id} />
           <div className="flex w-full flex-col justify-between gap-4 rounded-md bg-muted/50 px-6 py-4 lg:flex-row">
             <div className="flex items-center gap-x-6">
-              {/* <Image
-                alt="Expert image"
-                className="aspect-square rounded-md object-cover"
-                src="https://picsum.photos/200"
-                height="64"
-                width="64"
-              /> */}
               <div>
                 <ExpertEditForm id="name" name="name" placeholder={expert.name} />
               </div>
