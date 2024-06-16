@@ -151,6 +151,7 @@ If you are not familiar with the different technologies used in this project, pl
 
 - [Cal.com Platform](https://cal.com/platform)
 - [Next.js](https://nextjs.org)
+- [Supabase](https://supabase.com)
 - [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
