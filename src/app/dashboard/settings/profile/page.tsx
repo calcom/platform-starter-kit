@@ -13,7 +13,7 @@ export default async function DashboardSettingsProfile() {
     <Card>
       <CardContent className="mt-4">
         <div className="flex flex-1 flex-col items-center gap-4 overflow-auto">
-          <SupabaseReactDropzone userId={user.id} />
+          <SupabaseReactDropzone userId={expert.id} />
           <div className="flex w-full flex-col justify-between gap-4 rounded-md bg-muted/50 px-6 py-4 lg:flex-row">
             <div className="flex items-center gap-x-6">
               <div>
