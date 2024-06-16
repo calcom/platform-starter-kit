@@ -99,6 +99,14 @@ pnpm db:init
 pnpm db:seed # Will throw an error if DB is already seeded, which you can ignore.
 ```
 
+Prisma will create a `_prisma_migrations` table on the `public` database schema. In Supabase, the public schema is exposed via the API by default. To secure the table, navigate to the [Table Editor](https://supabase.com/dashboard/project/_/editor), click on "RLS diasbaled" > "Enable RLS for this table".
+
+Alternatively, you can run the follow SQL statement on your database, e.g. via the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) in the Supabase Dashboard:
+
+```sql
+ALTER TABLE "public"."_prisma_migrations" ENABLE ROW LEVEL SECURITY;
+```
+
 _4.2 Authentication_
 
 Generate a NextAuth secret and add it to your `.env` file:
