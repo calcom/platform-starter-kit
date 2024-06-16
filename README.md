@@ -28,7 +28,7 @@
 
 # Platform Starter Kit Example
 
-Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com Atoms. It was built using the [T3 Stack](https://create.t3.gg/) with [Supabase](https://supabase.com/) as the Postgres Database host.
+Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com Atoms. It was built using the [T3 Stack](https://create.t3.gg/) with [Supabase](https://supabase.com/) as the Postgres Database and Image Storage host.
 
 ## Deploy your own
 
