@@ -1,3 +1,4 @@
+// @ts-nocheck generated file
 import z from "zod";
 
 export type ManagedUserOutput = z.infer<typeof ManagedUserOutput>;
@@ -810,7 +811,8 @@ export const CancelBookingInput = z.object({
 export type ReserveSlotInput = z.infer<typeof ReserveSlotInput>;
 export const ReserveSlotInput = z.object({});
 
-export type get_OAuthClientUsersController_getManagedUsers = typeof get_OAuthClientUsersController_getManagedUsers;
+export type get_OAuthClientUsersController_getManagedUsers =
+  typeof get_OAuthClientUsersController_getManagedUsers;
 export const get_OAuthClientUsersController_getManagedUsers = {
   method: z.literal("GET"),
   path: z.literal("/v2/oauth-clients/{clientId}/users"),
@@ -862,7 +864,8 @@ export const patch_OAuthClientUsersController_updateUser = {
   response: GetManagedUserOutput,
 };
 
-export type delete_OAuthClientUsersController_deleteUser = typeof delete_OAuthClientUsersController_deleteUser;
+export type delete_OAuthClientUsersController_deleteUser =
+  typeof delete_OAuthClientUsersController_deleteUser;
 export const delete_OAuthClientUsersController_deleteUser = {
   method: z.literal("DELETE"),
   path: z.literal("/v2/oauth-clients/{clientId}/users/{userId}"),
@@ -875,7 +878,8 @@ export const delete_OAuthClientUsersController_deleteUser = {
   response: GetManagedUserOutput,
 };
 
-export type post_OAuthClientUsersController_forceRefresh = typeof post_OAuthClientUsersController_forceRefresh;
+export type post_OAuthClientUsersController_forceRefresh =
+  typeof post_OAuthClientUsersController_forceRefresh;
 export const post_OAuthClientUsersController_forceRefresh = {
   method: z.literal("POST"),
   path: z.literal("/v2/oauth-clients/{clientId}/users/{userId}/force-refresh"),
@@ -888,7 +892,8 @@ export const post_OAuthClientUsersController_forceRefresh = {
   response: KeysResponseDto,
 };
 
-export type post_OAuthClientsController_createOAuthClient = typeof post_OAuthClientsController_createOAuthClient;
+export type post_OAuthClientsController_createOAuthClient =
+  typeof post_OAuthClientsController_createOAuthClient;
 export const post_OAuthClientsController_createOAuthClient = {
   method: z.literal("POST"),
   path: z.literal("/v2/oauth-clients"),
@@ -906,7 +911,8 @@ export const get_OAuthClientsController_getOAuthClients = {
   response: GetOAuthClientsResponseDto,
 };
 
-export type get_OAuthClientsController_getOAuthClientById = typeof get_OAuthClientsController_getOAuthClientById;
+export type get_OAuthClientsController_getOAuthClientById =
+  typeof get_OAuthClientsController_getOAuthClientById;
 export const get_OAuthClientsController_getOAuthClientById = {
   method: z.literal("GET"),
   path: z.literal("/v2/oauth-clients/{clientId}"),
@@ -918,7 +924,8 @@ export const get_OAuthClientsController_getOAuthClientById = {
   response: GetOAuthClientResponseDto,
 };
 
-export type patch_OAuthClientsController_updateOAuthClient = typeof patch_OAuthClientsController_updateOAuthClient;
+export type patch_OAuthClientsController_updateOAuthClient =
+  typeof patch_OAuthClientsController_updateOAuthClient;
 export const patch_OAuthClientsController_updateOAuthClient = {
   method: z.literal("PATCH"),
   path: z.literal("/v2/oauth-clients/{clientId}"),
@@ -931,7 +938,8 @@ export const patch_OAuthClientsController_updateOAuthClient = {
   response: GetOAuthClientResponseDto,
 };
 
-export type delete_OAuthClientsController_deleteOAuthClient = typeof delete_OAuthClientsController_deleteOAuthClient;
+export type delete_OAuthClientsController_deleteOAuthClient =
+  typeof delete_OAuthClientsController_deleteOAuthClient;
 export const delete_OAuthClientsController_deleteOAuthClient = {
   method: z.literal("DELETE"),
   path: z.literal("/v2/oauth-clients/{clientId}"),
@@ -1073,7 +1081,8 @@ export const get_EventTypesController_getPublicEventType = {
   response: GetEventTypePublicOutput,
 };
 
-export type get_EventTypesController_getPublicEventTypes = typeof get_EventTypesController_getPublicEventTypes;
+export type get_EventTypesController_getPublicEventTypes =
+  typeof get_EventTypesController_getPublicEventTypes;
 export const get_EventTypesController_getPublicEventTypes = {
   method: z.literal("GET"),
   path: z.literal("/v2/event-types/{username}/public"),
@@ -1193,7 +1202,8 @@ export const get_BookingsController_getBooking = {
   response: GetBookingOutput,
 };
 
-export type get_BookingsController_getBookingForReschedule = typeof get_BookingsController_getBookingForReschedule;
+export type get_BookingsController_getBookingForReschedule =
+  typeof get_BookingsController_getBookingForReschedule;
 export const get_BookingsController_getBookingForReschedule = {
   method: z.literal("GET"),
   path: z.literal("/v2/bookings/{bookingUid}/reschedule"),
@@ -1221,7 +1231,8 @@ export const post_BookingsController_cancelBooking = {
   response: z.unknown(),
 };
 
-export type post_BookingsController_createRecurringBooking = typeof post_BookingsController_createRecurringBooking;
+export type post_BookingsController_createRecurringBooking =
+  typeof post_BookingsController_createRecurringBooking;
 export const post_BookingsController_createRecurringBooking = {
   method: z.literal("POST"),
   path: z.literal("/v2/bookings/recurring"),
@@ -1234,7 +1245,8 @@ export const post_BookingsController_createRecurringBooking = {
   response: z.unknown(),
 };
 
-export type post_BookingsController_createInstantBooking = typeof post_BookingsController_createInstantBooking;
+export type post_BookingsController_createInstantBooking =
+  typeof post_BookingsController_createInstantBooking;
 export const post_BookingsController_createInstantBooking = {
   method: z.literal("POST"),
   path: z.literal("/v2/bookings/instant"),
@@ -1336,7 +1348,7 @@ export type Endpoint<TConfig extends DefaultEndpoint = DefaultEndpoint> = {
 type Fetcher = (
   method: Method,
   url: string,
-  parameters?: EndpointParameters | undefined,
+  parameters?: EndpointParameters | undefined
 ) => Promise<Endpoint["response"]>;
 
 type RequiredKeys<T> = {

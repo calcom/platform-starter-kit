@@ -27,7 +27,9 @@ export const BookingsTable = (props: {
 }) => {
   // send this ref to: rable-row-hoverable element
   // then use it in order-details element to read the currently hovered event
-  const [selectedElement, setSelectedElement] = useState<GetBookingsDataEntry>(props.bookings.currentWeek[0]);
+  const [selectedElement, setSelectedElement] = useState<GetBookingsDataEntry | null | undefined>(
+    props.bookings?.currentWeek?.[0] ?? null
+  );
   const [selectedTab, setSelectedTab] = useState<"week" | "month" | "year">("week");
   const tabs = [
     { label: "Week", value: "week" },
@@ -287,7 +289,8 @@ export const BookingsTable = (props: {
                     className="h-6 w-6"
                     onClick={() =>
                       setSelectedElement((prev) => {
-                        const currentIndex = bookings.findIndex((booking) => booking.id === prev.id);
+                        if (!prev) return bookings[0] ?? null;
+                        const currentIndex = bookings?.findIndex((booking) => booking.id === prev.id);
                         return bookings[currentIndex - 1];
                       })
                     }
@@ -306,7 +309,8 @@ export const BookingsTable = (props: {
                     className="h-6 w-6"
                     onClick={() =>
                       setSelectedElement((prev) => {
-                        const currentIndex = bookings.findIndex((booking) => booking.id === prev.id);
+                        if (!prev) return bookings[0] ?? null;
+                        const currentIndex = bookings.findIndex((booking) => booking.id === prev?.id);
                         return bookings[currentIndex + 1];
                       })
                     }

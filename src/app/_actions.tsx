@@ -1,5 +1,6 @@
 "use server";
 
+import { type LoginFormState } from "./login/_components/login";
 import { LoginSchema, SignupSchema, auth, signIn, unstable_update } from "@/auth";
 import { type User } from "@prisma/client";
 import { AuthError } from "next-auth";
@@ -8,7 +9,7 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 import { db } from "prisma/client";
 import { z } from "zod";
 
-export async function signInWithCredentials(_prevState: { error?: string | null }, formData: FormData) {
+export async function signInWithCredentials(_prevState: LoginFormState, formData: FormData) {
   try {
     const credentials = LoginSchema.safeParse({
       email: formData.get("email"),
@@ -22,6 +23,7 @@ export async function signInWithCredentials(_prevState: { error?: string | null 
     }
 
     await signIn("credentials", credentials.data);
+    return { error: null };
   } catch (error) {
     if (isRedirectError(error)) throw error;
 
@@ -30,6 +32,7 @@ export async function signInWithCredentials(_prevState: { error?: string | null 
         case "CredentialsSignin":
           return { error: "Invalid credentials." };
         default:
+          console.error("Uncaught error signing in (AuthError): ", error);
           return { error: "Something went wrong." };
       }
     }
@@ -61,6 +64,7 @@ export async function signUpWithCredentials(_prevState: { error?: string | null 
     }
 
     await signIn("credentials", credentials.data);
+    return { error: null };
   } catch (error) {
     if (isRedirectError(error)) throw error;
 
@@ -69,6 +73,7 @@ export async function signUpWithCredentials(_prevState: { error?: string | null 
         case "CredentialsSignin":
           return { error: "Invalid credentials." };
         default:
+          console.error("Uncaught error signing in (AuthError): ", error);
           return { error: "Something went wrong." };
       }
     }

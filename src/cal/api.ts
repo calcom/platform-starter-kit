@@ -84,7 +84,7 @@ export const cal = (input: { user: SDKInput }) =>
 
       // [@calcom] This means the token has expired, we refresh it and retry the request (re-assigns to res & json)
       if (res.status === 498) {
-        if (!dbUser.calRefreshToken) {
+        if (!dbUser.calRefreshToken || !dbUser.calAccountId) {
           console.warn(
             `[Cal SDK] Unable to use the Cal API: The user ${dbUser.id} has no refresh token for Cal set and the access token has expired.`
           );
@@ -115,7 +115,7 @@ export const cal = (input: { user: SDKInput }) =>
         });
 
         // if the retry with fresh tokens didn't work, we log the fetch debug info (not throwing, so that we return the error to the application)
-        if (!retryRes.ok) {
+        if (!retryRes.res.ok) {
           console.error(
             `[Cal SDK] Unable to fetch cal api on endpoint '${fullUrl.pathname}' after the refreshFlow: Invalid response from Cal with fresh tokens.`
           );
@@ -123,13 +123,19 @@ export const cal = (input: { user: SDKInput }) =>
 
         // re-assign the variables so that the outer closure can use it, we're done with 498 handling
         dbUser = _updatedUser;
-        res = retryRes;
+        res = retryRes.res;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        json = await res.json();
+        json = retryRes.json;
       }
 
       // [@calcom] This means the used token has been rotated, but the token we used is outdated (ie our DB *could* be out-of-sync), let's force-refresh:
       if (res.status === 403) {
+        if (!dbUser.calAccountId) {
+          console.warn(
+            `[Cal SDK] Unable to use the Cal API: The user ${dbUser.id} has no refresh token for Cal set and the access token has expired.`
+          );
+          throw new Error(`[Cal SDK] Unauthorized`);
+        }
         const forceRefreshData = await forceRefresh({ calAccountId: dbUser.calAccountId });
         // if the force-refresh doesn't work, we have to throw an error, it's a dead end
         if (forceRefreshData.status === "error") throw new Error(`[Cal SDK] Application Error`);
@@ -145,7 +151,7 @@ export const cal = (input: { user: SDKInput }) =>
           },
         });
         // if the retry with fresh tokens didn't work, we log the fetch debug info (not throwing, so that we return the error to the application)
-        if (!retryRes.ok) {
+        if (!retryRes.res.ok) {
           console.error(
             `
           
@@ -157,9 +163,9 @@ export const cal = (input: { user: SDKInput }) =>
 
         // re-assign the variables so that the outer closure can use it, we're done with 403 handling
         dbUser = _updatedUser;
-        res = retryRes;
+        res = retryRes.res;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        json = await res.json();
+        json = retryRes.json;
       }
 
       // apart from 498 & 403 (requires token rotation), we return all other responses as-is to show the error to the application consumer and/or end-user
@@ -168,7 +174,7 @@ export const cal = (input: { user: SDKInput }) =>
         console.warn(
           `[Cal SDK] Unable to fetch cal api on endpoint '${fullUrl.pathname}': Invalid response from Cal after attempting to fetch the token.
       
-      ${composeFetchLogs({ fetch: fetchParameters, res, json, cal: { id: dbUser.calAccountId } })}
+      ${composeFetchLogs({ fetch: fetchParameters, res, json, ...(dbUser.calAccountId && { cal: { id: dbUser.calAccountId } }) })}
       `
         );
       }
@@ -295,6 +301,8 @@ export const updateDbAndRetryFetch = async (input: {
     }),
     fetch(retryUrl.href, retryOptions),
   ]);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const retryJson = await retryRes.json();
 
   // if the retry with fresh tokens didn't work, we log the fetch debug info (not throwing, so that we return the error to the application)
   if (!retryRes.ok) {
@@ -303,11 +311,12 @@ export const updateDbAndRetryFetch = async (input: {
       
       [Cal SDK] Unable to fetch cal api on endpoint '${retryUrl.pathname}' after the forceRefresh: Invalid response from Cal with fresh tokens.
       
-      ${composeFetchLogs({ fetch: [retryUrl.href, retryOptions], res: retryRes, cal: { id: updatedUser.calAccountId } })}
+      ${composeFetchLogs({ fetch: [retryUrl.href, retryOptions], res: retryRes, json: retryJson, ...(updatedUser.calAccountId && { cal: { id: updatedUser.calAccountId } }) })}
       `
     );
   }
-  return [updatedUser, retryRes] as const;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return [updatedUser, { res: retryRes, json: retryJson }] as const;
 };
 
 /**

@@ -8,13 +8,22 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 
-type LoginFormState = {
-  error?: string | null;
-  inputErrors?: {
-    email?: string[];
-    password?: string[];
-  };
-};
+export type LoginFormState =
+  | {
+      inputErrors: {
+        email?: string[] | undefined;
+        password?: string[] | undefined;
+      };
+      error?: undefined;
+    }
+  | {
+      error: null;
+      inputErrors?: undefined;
+    }
+  | {
+      error: string;
+      inputErrors?: undefined;
+    };
 
 export function LoginForm() {
   const [formState, dispatch] = useFormState<LoginFormState, FormData>(signInWithCredentials, {
@@ -33,7 +42,7 @@ export function LoginForm() {
             <Label htmlFor="email">Email</Label>
             <Input id="email" name="email" type="email" placeholder="m@example.com" required />
             {formState?.inputErrors?.email ? (
-              <div className="text-red-700 text-sm font-medium" aria-live="polite">
+              <div className="text-sm font-medium text-red-700" aria-live="polite">
                 {formState.inputErrors.email[0]}
               </div>
             ) : null}
@@ -42,7 +51,7 @@ export function LoginForm() {
             <Label htmlFor="password">Password</Label>
             <Input id="password" name="password" type="password" required />
             {formState?.inputErrors?.password ? (
-              <div className="text-red-700 text-sm font-medium" aria-live="polite">
+              <div className="text-sm font-medium text-red-700" aria-live="polite">
                 {formState.inputErrors.password[0]}
               </div>
             ) : null}

@@ -23,7 +23,10 @@ import { use } from "react";
     }
     ```
 */
-export default function UseCalAtoms(props: { children: React.ReactNode; calAccessToken?: Promise<string> }) {
+export default function UseCalAtoms(props: {
+  children: React.ReactNode;
+  calAccessToken: Promise<string | null>;
+}) {
   const accessToken = use(props.calAccessToken);
   return (
     <CalProvider
@@ -32,7 +35,7 @@ export default function UseCalAtoms(props: { children: React.ReactNode; calAcces
         apiUrl: env.NEXT_PUBLIC_CAL_API_URL,
         refreshUrl: env.NEXT_PUBLIC_REFRESH_URL,
       }}
-      accessToken={accessToken}>
+      {...(accessToken && { accessToken: accessToken })}>
       {props.children}
     </CalProvider>
   );
