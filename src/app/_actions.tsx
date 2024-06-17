@@ -22,7 +22,7 @@ export async function signInWithCredentials(_prevState: LoginFormState, formData
       };
     }
 
-    await signIn("credentials", credentials.data);
+    await signIn("credentials", formData);
     return { error: null };
   } catch (error) {
     if (isRedirectError(error)) throw error;
@@ -63,7 +63,7 @@ export async function signUpWithCredentials(_prevState: { error?: string | null 
       };
     }
 
-    await signIn("credentials", credentials.data);
+    await signIn("credentials", formData);
     return { error: null };
   } catch (error) {
     if (isRedirectError(error)) throw error;

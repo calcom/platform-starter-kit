@@ -172,7 +172,7 @@ export const cal = (input: { user: SDKInput }) =>
       // but first, let's log the initial request if it failed
       if (!res.ok) {
         console.warn(
-          `[Cal SDK] Unable to fetch cal api on endpoint '${fullUrl.pathname}': Invalid response from Cal after attempting to fetch the token.
+          `[Cal SDK] Unable to fetch cal api on endpoint '${fullUrl.pathname}': Invalid response from Cal.
       
       ${composeFetchLogs({ fetch: fetchParameters, res, json, ...(dbUser.calAccountId && { cal: { id: dbUser.calAccountId } }) })}
       `
@@ -500,7 +500,8 @@ export type CalErrorResponse = {
 
 export const calHeaders = {
   "x-cal-secret-key": env.CAL_SECRET,
-  "cal-api-version": "2024-05-21",
+  // "cal-api-version": "2024-05-21", 06-11 -> latest version & 07-15 is the previous
+  "cal-api-version": "2024-06-11", // 06-11 -> latest version & 07-15 is the previous
   Origin: new URL(env.NEXT_PUBLIC_REFRESH_URL).origin ?? "http://localhost:3000",
   // ⚠️ NestJS requires this header otherwise it won't consume the body
   "Content-type": "application/json",
