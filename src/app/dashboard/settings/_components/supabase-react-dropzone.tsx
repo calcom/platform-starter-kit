@@ -8,7 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 import { User } from "lucide-react";
 import Image from "next/image";
 import type StorageFileApi from "node_modules/.pnpm/@supabase+storage-js@2.6.0/node_modules/@supabase/storage-js/src/packages/StorageFileApi";
-import React, { type SyntheticEvent, useState } from "react";
+import React, { type SyntheticEvent, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
 type SupabaseStorage = (typeof StorageFileApi)["prototype"];
@@ -20,10 +20,13 @@ export default function SupabaseReactDropzone({
   userId: string;
   userInitials?: string;
 }) {
-  const [error, setError] = useState<SyntheticEvent<HTMLImageElement, Event> | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState<"idle" | "loading" | "error" | "success">("idle");
+
   const supabaseBrowserClient = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
   const [avatar, setAvatar] = useState<string | null>(`avatars/${userId}`);
+  useEffect(() => {
+    setStatus("idle");
+  }, [avatar]);
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: {
@@ -64,23 +67,21 @@ export default function SupabaseReactDropzone({
 
   return (
     <div className="mx-auto grid w-full gap-2">
-      {avatar && !error && (
-        <Avatar>
-          <Image
-            alt="Expert image"
-            className="aspect-square rounded-md object-cover"
-            src={avatar}
-            height="64"
-            width="64"
-            onLoadingComplete={() => setIsLoading(false)}
-            onError={setError}
-          />
-        </Avatar>
-      )}
-      {error && (
-        <Avatar>
-          <User className="size-full" />
-        </Avatar>
+      {status === "error" ? (
+        <div className="aspect-square size-16 rounded-md bg-muted" />
+      ) : status === "loading" || !avatar ? (
+        <Skeleton className="aspect-square size-16 rounded-md" />
+      ) : (
+        <Image
+          alt="Expert image"
+          className="aspect-square rounded-md object-cover"
+          src={avatar}
+          height="64"
+          width="64"
+          onLoadingComplete={() => setStatus("success")}
+          onLoad={() => setStatus("loading")}
+          onError={() => setStatus("error")}
+        />
       )}
       <div {...getRootProps({ className: cn("dropzone border-dashed border p-8 rounded-md") })}>
         <input {...getInputProps()} />
