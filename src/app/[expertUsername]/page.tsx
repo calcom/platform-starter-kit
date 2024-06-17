@@ -1,6 +1,7 @@
 import { ExpertBooker } from "./_components/expert-booker";
 import { db } from "prisma/client";
 
+export const dynamic = "force-dynamic";
 export default async function ExpertDetails({ params }: { params: { expertUsername: string } }) {
   const expert = await db.user.findUnique({
     where: { username: params.expertUsername },
