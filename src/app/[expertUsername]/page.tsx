@@ -1,4 +1,5 @@
 import { ExpertBooker } from "./_components/expert-booker";
+import Image from "next/image";
 import { db } from "prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -15,13 +16,13 @@ export default async function ExpertDetails({ params }: { params: { expertUserna
     <div className="flex flex-1 flex-col items-center gap-4 overflow-auto">
       <div className="flex w-full flex-col justify-between gap-4 rounded-md bg-muted/50 px-8 py-4  sm:px-10 lg:flex-row lg:px-12">
         <div className="flex items-center gap-x-6">
-          {/* <Image
+          <Image
             alt="Expert image"
             className="aspect-square rounded-md object-cover"
-            src="https://picsum.photos/200"
+            src={`avatars/${expert.id}`}
             height="64"
             width="64"
-          /> */}
+          />
           <div>
             <h1 className="text-2xl font-semibold capitalize leading-none tracking-tight">{expert.name}</h1>
           </div>

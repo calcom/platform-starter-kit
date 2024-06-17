@@ -11,10 +11,6 @@ export default async function DashboardSettingsProfile() {
   if (!expert) {
     return <div>Not logged in</div>;
   }
-  const expertInitials = expert.name
-    ?.split(" ")
-    .map((namePart) => namePart.slice(0, 1))
-    .join("");
 
   return (
     <Card>
@@ -23,7 +19,7 @@ export default async function DashboardSettingsProfile() {
           <div className="mx-auto mt-4 grid w-full gap-2">
             <h2 className="text-3xl font-semibold">Image</h2>
           </div>
-          <SupabaseReactDropzone userId={expert.id} userInitials={expertInitials} />
+          <SupabaseReactDropzone userId={expert.id} />
           <div className="mx-auto mt-4 grid w-full gap-2">
             <h2 className="text-3xl font-semibold">Name</h2>
           </div>

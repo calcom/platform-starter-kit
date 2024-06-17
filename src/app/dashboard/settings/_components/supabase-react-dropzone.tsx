@@ -1,25 +1,17 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { env } from "@/env";
-import { cn } from "@/lib/utils";
+import slugify, { cn } from "@/lib/utils";
 import { createClient } from "@supabase/supabase-js";
-import { User } from "lucide-react";
 import Image from "next/image";
 import type StorageFileApi from "node_modules/.pnpm/@supabase+storage-js@2.6.0/node_modules/@supabase/storage-js/src/packages/StorageFileApi";
-import React, { type SyntheticEvent, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
 type SupabaseStorage = (typeof StorageFileApi)["prototype"];
 type FileBody = Parameters<SupabaseStorage["uploadToSignedUrl"]>[2];
-export default function SupabaseReactDropzone({
-  userId,
-  userInitials,
-}: {
-  userId: string;
-  userInitials?: string;
-}) {
+export default function SupabaseReactDropzone({ userId }: { userId: string; userInitials?: string }) {
   const [status, setStatus] = useState<"idle" | "loading" | "error" | "success">("idle");
 
   const supabaseBrowserClient = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
@@ -32,6 +24,8 @@ export default function SupabaseReactDropzone({
     accept: {
       "image/jpeg": [],
       "image/png": [],
+      // avif as well:
+      "image/avif": [],
     },
     onDropAccepted: async (acceptedFiles) => {
       setAvatar(null);
@@ -43,7 +37,7 @@ export default function SupabaseReactDropzone({
         .from("avatars")
         .uploadToSignedUrl(path, token, acceptedFiles[0] as FileBody);
       if (typeof data?.fullPath === "string") {
-        setAvatar(data?.fullPath);
+        setAvatar(`${data?.fullPath}?filename=${encodeURIComponent(slugify(acceptedFiles[0].path))}`);
       }
     },
   });
@@ -86,7 +80,7 @@ export default function SupabaseReactDropzone({
       <div {...getRootProps({ className: cn("dropzone border-dashed border p-8 rounded-md") })}>
         <input {...getInputProps()} />
         <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
-        <em>(Only *.jpeg and *.png images will be accepted)</em>
+        <em>(Only *.jpeg, *.png and *.avif images will be accepted)</em>
       </div>
     </div>
   );
