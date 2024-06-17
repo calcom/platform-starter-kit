@@ -1,5 +1,6 @@
 import EventTypeCreateForm from "./event-type-create";
 import { ButtonSubmit } from "@/app/_components/submit-button";
+import { auth } from "@/auth";
 import { cal } from "@/cal/api";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,11 @@ import { PlusCircle, Video } from "lucide-react";
 import { Fragment } from "react";
 
 export default async function DashboardSettingsBookingEvents() {
-  const getEventTypes = await cal.get("/v2/event-types");
+  const sesh = await auth();
+  if (!sesh?.user.id) {
+    return <div>Not logged in</div>;
+  }
+  const getEventTypes = await cal({ user: { id: sesh?.user.id } }).get("/v2/event-types");
   if (getEventTypes.status === "error") {
     console.error("[dashboard/settings/booking-events/page.tsx] Error fetching event types", getEventTypes);
     // TODO debug this error

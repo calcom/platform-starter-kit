@@ -10,7 +10,7 @@
     "isolatedModules": true,
 
     /* Strictness */
-    "strict": false,
+    "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
     "moduleResolution": "Bundler",

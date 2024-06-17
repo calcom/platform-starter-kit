@@ -10,7 +10,7 @@
     "postinstall": "prisma generate",
     "lint": "NODE_OPTIONS='--max-old-space-size=4096' next lint --fix",
     "start": "next start",
-    "cal:generate": "openapi-endpoint-trimmer -u https://raw.githubusercontent.com/calcom/cal.com/51428087ef0a20f4d775fccbd3a34c2d885aed2b/apps/api/v2/swagger/documentation.json -p /v2/bookings,/v2/event-types,/refresh,/force-refresh -o ./src/cal/__generated/cal-sdk.yml && typed-openapi ./src/cal/__generated/cal-sdk.yml --r zod -o ./src/cal/__generated/cal-sdk.ts",
+    "cal:generate": "openapi-endpoint-trimmer -u https://raw.githubusercontent.com/calcom/cal.com/51428087ef0a20f4d775fccbd3a34c2d885aed2b/apps/api/v2/swagger/documentation.json -p /v2/bookings,/v2/event-types,/v2/schedules,/v2/oauth-clients,/v2/oauth -o ./src/cal/__generated/cal-sdk.yml && typed-openapi ./src/cal/__generated/cal-sdk.yml --r zod -o ./src/cal/__generated/cal-sdk.ts",
     "typecheck": "tsc --noEmit"
   },
   "prisma": {

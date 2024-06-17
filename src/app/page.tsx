@@ -1,7 +1,8 @@
 import { Results } from "./_components/home/results";
 import SignupCard from "./_components/home/signup-card";
+import { ButtonSubmit } from "./_components/submit-button";
 import { budgetOptions, categoryOptions, frameworkOptions, languageOptions } from "./_hardcoded";
-import { SignedIn, SignedOut } from "@/auth";
+import { SignedIn, SignedOut, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { type FilterOption, type User } from "@prisma/client";
 import { LogIn } from "lucide-react";
@@ -42,12 +43,23 @@ export default async function Home() {
         <div>
           <SignedIn>
             {(_user) => (
-              <Link href="/dashboard">
-                <Button className="w-full">
-                  Dashboard
-                  <LogIn className="ml-1 size-4" />
-                </Button>
-              </Link>
+              <div className="flex gap-2">
+                <form
+                  action={async () => {
+                    "use server";
+                    await signOut({ redirectTo: "/" });
+                  }}>
+                  <ButtonSubmit className="w-full" variant="outline">
+                    Logout
+                  </ButtonSubmit>
+                </form>
+                <Link href="/dashboard">
+                  <Button className="w-full">
+                    Dashboard
+                    <LogIn className="ml-1 size-4" />
+                  </Button>
+                </Link>
+              </div>
             )}
           </SignedIn>
           <SignedOut>

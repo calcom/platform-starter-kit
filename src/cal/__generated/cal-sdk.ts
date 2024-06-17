@@ -810,6 +810,197 @@ export const CancelBookingInput = z.object({
 export type ReserveSlotInput = z.infer<typeof ReserveSlotInput>;
 export const ReserveSlotInput = z.object({});
 
+export type get_OAuthClientUsersController_getManagedUsers = typeof get_OAuthClientUsersController_getManagedUsers;
+export const get_OAuthClientUsersController_getManagedUsers = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/oauth-clients/{clientId}/users"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+  }),
+  response: GetManagedUsersOutput,
+};
+
+export type post_OAuthClientUsersController_createUser = typeof post_OAuthClientUsersController_createUser;
+export const post_OAuthClientUsersController_createUser = {
+  method: z.literal("POST"),
+  path: z.literal("/v2/oauth-clients/{clientId}/users"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+    body: CreateManagedUserInput,
+  }),
+  response: CreateManagedUserOutput,
+};
+
+export type get_OAuthClientUsersController_getUserById = typeof get_OAuthClientUsersController_getUserById;
+export const get_OAuthClientUsersController_getUserById = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/oauth-clients/{clientId}/users/{userId}"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+      userId: z.number(),
+    }),
+  }),
+  response: GetManagedUserOutput,
+};
+
+export type patch_OAuthClientUsersController_updateUser = typeof patch_OAuthClientUsersController_updateUser;
+export const patch_OAuthClientUsersController_updateUser = {
+  method: z.literal("PATCH"),
+  path: z.literal("/v2/oauth-clients/{clientId}/users/{userId}"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+      userId: z.number(),
+    }),
+    body: UpdateManagedUserInput,
+  }),
+  response: GetManagedUserOutput,
+};
+
+export type delete_OAuthClientUsersController_deleteUser = typeof delete_OAuthClientUsersController_deleteUser;
+export const delete_OAuthClientUsersController_deleteUser = {
+  method: z.literal("DELETE"),
+  path: z.literal("/v2/oauth-clients/{clientId}/users/{userId}"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+      userId: z.number(),
+    }),
+  }),
+  response: GetManagedUserOutput,
+};
+
+export type post_OAuthClientUsersController_forceRefresh = typeof post_OAuthClientUsersController_forceRefresh;
+export const post_OAuthClientUsersController_forceRefresh = {
+  method: z.literal("POST"),
+  path: z.literal("/v2/oauth-clients/{clientId}/users/{userId}/force-refresh"),
+  parameters: z.object({
+    path: z.object({
+      userId: z.number(),
+      clientId: z.string(),
+    }),
+  }),
+  response: KeysResponseDto,
+};
+
+export type post_OAuthClientsController_createOAuthClient = typeof post_OAuthClientsController_createOAuthClient;
+export const post_OAuthClientsController_createOAuthClient = {
+  method: z.literal("POST"),
+  path: z.literal("/v2/oauth-clients"),
+  parameters: z.object({
+    body: CreateOAuthClientInput,
+  }),
+  response: CreateOAuthClientResponseDto,
+};
+
+export type get_OAuthClientsController_getOAuthClients = typeof get_OAuthClientsController_getOAuthClients;
+export const get_OAuthClientsController_getOAuthClients = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/oauth-clients"),
+  parameters: z.never(),
+  response: GetOAuthClientsResponseDto,
+};
+
+export type get_OAuthClientsController_getOAuthClientById = typeof get_OAuthClientsController_getOAuthClientById;
+export const get_OAuthClientsController_getOAuthClientById = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/oauth-clients/{clientId}"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+  }),
+  response: GetOAuthClientResponseDto,
+};
+
+export type patch_OAuthClientsController_updateOAuthClient = typeof patch_OAuthClientsController_updateOAuthClient;
+export const patch_OAuthClientsController_updateOAuthClient = {
+  method: z.literal("PATCH"),
+  path: z.literal("/v2/oauth-clients/{clientId}"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+    body: UpdateOAuthClientInput,
+  }),
+  response: GetOAuthClientResponseDto,
+};
+
+export type delete_OAuthClientsController_deleteOAuthClient = typeof delete_OAuthClientsController_deleteOAuthClient;
+export const delete_OAuthClientsController_deleteOAuthClient = {
+  method: z.literal("DELETE"),
+  path: z.literal("/v2/oauth-clients/{clientId}"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+  }),
+  response: GetOAuthClientResponseDto,
+};
+
+export type get_OAuthClientsController_getOAuthClientManagedUsersById =
+  typeof get_OAuthClientsController_getOAuthClientManagedUsersById;
+export const get_OAuthClientsController_getOAuthClientManagedUsersById = z.object({
+  method: z.literal("GET"),
+  path: z.literal("/v2/oauth-clients/{clientId}/managed-users"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+  }),
+  response: GetManagedUsersOutput,
+});
+
+export type post_OAuthFlowController_authorize = typeof post_OAuthFlowController_authorize;
+export const post_OAuthFlowController_authorize = {
+  method: z.literal("POST"),
+  path: z.literal("/v2/oauth/{clientId}/authorize"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+    body: OAuthAuthorizeInput,
+  }),
+  response: z.unknown(),
+};
+
+export type post_OAuthFlowController_exchange = typeof post_OAuthFlowController_exchange;
+export const post_OAuthFlowController_exchange = {
+  method: z.literal("POST"),
+  path: z.literal("/v2/oauth/{clientId}/exchange"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+    header: z.object({
+      Authorization: z.string(),
+    }),
+    body: ExchangeAuthorizationCodeInput,
+  }),
+  response: KeysResponseDto,
+};
+
+export type post_OAuthFlowController_refreshAccessToken = typeof post_OAuthFlowController_refreshAccessToken;
+export const post_OAuthFlowController_refreshAccessToken = {
+  method: z.literal("POST"),
+  path: z.literal("/v2/oauth/{clientId}/refresh"),
+  parameters: z.object({
+    path: z.object({
+      clientId: z.string(),
+    }),
+    header: z.object({
+      "x-cal-secret-key": z.string(),
+    }),
+    body: RefreshTokenInput,
+  }),
+  response: KeysResponseDto,
+};
+
 export type post_EventTypesController_createEventType = typeof post_EventTypesController_createEventType;
 export const post_EventTypesController_createEventType = {
   method: z.literal("POST"),
@@ -892,6 +1083,69 @@ export const get_EventTypesController_getPublicEventTypes = {
     }),
   }),
   response: GetEventTypesPublicOutput,
+};
+
+export type post_SchedulesController_createSchedule = typeof post_SchedulesController_createSchedule;
+export const post_SchedulesController_createSchedule = {
+  method: z.literal("POST"),
+  path: z.literal("/v2/schedules"),
+  parameters: z.object({
+    body: CreateScheduleInput,
+  }),
+  response: CreateScheduleOutput,
+};
+
+export type get_SchedulesController_getSchedules = typeof get_SchedulesController_getSchedules;
+export const get_SchedulesController_getSchedules = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/schedules"),
+  parameters: z.never(),
+  response: GetSchedulesOutput,
+};
+
+export type get_SchedulesController_getDefaultSchedule = typeof get_SchedulesController_getDefaultSchedule;
+export const get_SchedulesController_getDefaultSchedule = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/schedules/default"),
+  parameters: z.never(),
+  response: GetDefaultScheduleOutput,
+};
+
+export type get_SchedulesController_getSchedule = typeof get_SchedulesController_getSchedule;
+export const get_SchedulesController_getSchedule = {
+  method: z.literal("GET"),
+  path: z.literal("/v2/schedules/{scheduleId}"),
+  parameters: z.object({
+    path: z.object({
+      scheduleId: z.number(),
+    }),
+  }),
+  response: GetScheduleOutput,
+};
+
+export type patch_SchedulesController_updateSchedule = typeof patch_SchedulesController_updateSchedule;
+export const patch_SchedulesController_updateSchedule = {
+  method: z.literal("PATCH"),
+  path: z.literal("/v2/schedules/{scheduleId}"),
+  parameters: z.object({
+    path: z.object({
+      scheduleId: z.string(),
+    }),
+    body: UpdateScheduleInput,
+  }),
+  response: UpdateScheduleOutput,
+};
+
+export type delete_SchedulesController_deleteSchedule = typeof delete_SchedulesController_deleteSchedule;
+export const delete_SchedulesController_deleteSchedule = {
+  method: z.literal("DELETE"),
+  path: z.literal("/v2/schedules/{scheduleId}"),
+  parameters: z.object({
+    path: z.object({
+      scheduleId: z.number(),
+    }),
+  }),
+  response: DeleteScheduleOutput,
 };
 
 export type get_BookingsController_getBookings = typeof get_BookingsController_getBookings;
@@ -995,35 +1249,56 @@ export const post_BookingsController_createInstantBooking = {
 
 // <EndpointByMethod>
 export const EndpointByMethod = {
+  get: {
+    "/v2/oauth-clients/{clientId}/users": get_OAuthClientUsersController_getManagedUsers,
+    "/v2/oauth-clients/{clientId}/users/{userId}": get_OAuthClientUsersController_getUserById,
+    "/v2/oauth-clients": get_OAuthClientsController_getOAuthClients,
+    "/v2/oauth-clients/{clientId}": get_OAuthClientsController_getOAuthClientById,
+    "/v2/oauth-clients/{clientId}/managed-users": get_OAuthClientsController_getOAuthClientManagedUsersById,
+    "/v2/event-types": get_EventTypesController_getEventTypes,
+    "/v2/event-types/{eventTypeId}": get_EventTypesController_getEventType,
+    "/v2/event-types/{username}/{eventSlug}/public": get_EventTypesController_getPublicEventType,
+    "/v2/event-types/{username}/public": get_EventTypesController_getPublicEventTypes,
+    "/v2/schedules": get_SchedulesController_getSchedules,
+    "/v2/schedules/default": get_SchedulesController_getDefaultSchedule,
+    "/v2/schedules/{scheduleId}": get_SchedulesController_getSchedule,
+    "/v2/bookings": get_BookingsController_getBookings,
+    "/v2/bookings/{bookingUid}": get_BookingsController_getBooking,
+    "/v2/bookings/{bookingUid}/reschedule": get_BookingsController_getBookingForReschedule,
+  },
   post: {
+    "/v2/oauth-clients/{clientId}/users": post_OAuthClientUsersController_createUser,
+    "/v2/oauth-clients/{clientId}/users/{userId}/force-refresh": post_OAuthClientUsersController_forceRefresh,
+    "/v2/oauth-clients": post_OAuthClientsController_createOAuthClient,
+    "/v2/oauth/{clientId}/authorize": post_OAuthFlowController_authorize,
+    "/v2/oauth/{clientId}/exchange": post_OAuthFlowController_exchange,
+    "/v2/oauth/{clientId}/refresh": post_OAuthFlowController_refreshAccessToken,
     "/v2/event-types": post_EventTypesController_createEventType,
+    "/v2/schedules": post_SchedulesController_createSchedule,
     "/v2/bookings": post_BookingsController_createBooking,
     "/v2/bookings/{bookingId}/cancel": post_BookingsController_cancelBooking,
     "/v2/bookings/recurring": post_BookingsController_createRecurringBooking,
     "/v2/bookings/instant": post_BookingsController_createInstantBooking,
   },
-  get: {
-    "/v2/event-types": get_EventTypesController_getEventTypes,
-    "/v2/event-types/{eventTypeId}": get_EventTypesController_getEventType,
-    "/v2/event-types/{username}/{eventSlug}/public": get_EventTypesController_getPublicEventType,
-    "/v2/event-types/{username}/public": get_EventTypesController_getPublicEventTypes,
-    "/v2/bookings": get_BookingsController_getBookings,
-    "/v2/bookings/{bookingUid}": get_BookingsController_getBooking,
-    "/v2/bookings/{bookingUid}/reschedule": get_BookingsController_getBookingForReschedule,
-  },
   patch: {
+    "/v2/oauth-clients/{clientId}/users/{userId}": patch_OAuthClientUsersController_updateUser,
+    "/v2/oauth-clients/{clientId}": patch_OAuthClientsController_updateOAuthClient,
     "/v2/event-types/{eventTypeId}": patch_EventTypesController_updateEventType,
+    "/v2/schedules/{scheduleId}": patch_SchedulesController_updateSchedule,
   },
   delete: {
+    "/v2/oauth-clients/{clientId}/users/{userId}": delete_OAuthClientUsersController_deleteUser,
+    "/v2/oauth-clients/{clientId}": delete_OAuthClientsController_deleteOAuthClient,
     "/v2/event-types/{eventTypeId}": delete_EventTypesController_deleteEventType,
+    "/v2/schedules/{scheduleId}": delete_SchedulesController_deleteSchedule,
   },
 };
 export type EndpointByMethod = typeof EndpointByMethod;
 // </EndpointByMethod>
 
 // <EndpointByMethod.Shorthands>
-export type PostEndpoints = EndpointByMethod["post"];
 export type GetEndpoints = EndpointByMethod["get"];
+export type PostEndpoints = EndpointByMethod["post"];
 export type PatchEndpoints = EndpointByMethod["patch"];
 export type DeleteEndpoints = EndpointByMethod["delete"];
 export type AllEndpoints = EndpointByMethod[keyof EndpointByMethod];
@@ -1083,15 +1358,6 @@ export class ApiClient {
     return this;
   }
 
-  // <ApiClient.post>
-  post<Path extends keyof PostEndpoints, TEndpoint extends PostEndpoints[Path]>(
-    path: Path,
-    ...params: MaybeOptionalArg<z.infer<TEndpoint["parameters"]>>
-  ): Promise<z.infer<TEndpoint["response"]>> {
-    return this.fetcher("post", this.baseUrl + path, params[0]) as Promise<z.infer<TEndpoint["response"]>>;
-  }
-  // </ApiClient.post>
-
   // <ApiClient.get>
   get<Path extends keyof GetEndpoints, TEndpoint extends GetEndpoints[Path]>(
     path: Path,
@@ -1100,6 +1366,15 @@ export class ApiClient {
     return this.fetcher("get", this.baseUrl + path, params[0]) as Promise<z.infer<TEndpoint["response"]>>;
   }
   // </ApiClient.get>
+
+  // <ApiClient.post>
+  post<Path extends keyof PostEndpoints, TEndpoint extends PostEndpoints[Path]>(
+    path: Path,
+    ...params: MaybeOptionalArg<z.infer<TEndpoint["parameters"]>>
+  ): Promise<z.infer<TEndpoint["response"]>> {
+    return this.fetcher("post", this.baseUrl + path, params[0]) as Promise<z.infer<TEndpoint["response"]>>;
+  }
+  // </ApiClient.post>
 
   // <ApiClient.patch>
   patch<Path extends keyof PatchEndpoints, TEndpoint extends PatchEndpoints[Path]>(

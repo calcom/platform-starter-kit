@@ -1,10 +1,7 @@
 import { authConfig } from "./config.edge";
+import { signUp } from "@/cal/auth";
 import { env } from "@/env";
-
-/**
- * [@calcom] 1️⃣ Set up NextAuth's Credentials provider by importing `withCal`
- */
-import { type CalAccount, type User } from "@prisma/client";
+import { type Prisma, type User, type CalAccount } from "@prisma/client";
 import NextAuth from "next-auth";
 import type { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
@@ -14,6 +11,9 @@ import { cache } from "react";
 import "server-only";
 import { z } from "zod";
 
+// would've loved to use webcrypto apis (supported on edge as well), but: TypeError: randomBytes is not a function
+// globalThis.crypto ??= import("node:crypto").then((m) => m.webcrypto);
+// const Crypto = globalThis.crypto;
 async function hash(password: string) {
   return new Promise<string>((resolve, reject) => {
     const salt = randomBytes(16).toString("hex");
@@ -40,6 +40,7 @@ async function compare(password: string, hash: string) {
   });
 }
 
+type UserAfterSignUp = User & { calAccount?: CalAccount };
 const {
   auth: uncachedAuth,
   handlers: { GET, POST },
@@ -71,11 +72,18 @@ const {
           return null;
         }
 
-        let user: User | null = null;
+        let user: UserAfterSignUp | null = null;
         try {
           user = await db.user.findUnique({
             where: { email: credentials.data.email },
           });
+          console.log(
+            `[Auth.Credentials] Attempting to sign in with email ${credentials.data.email} -- is this actually correct??`
+          );
+          console.log(`[Auth.Credentials] User found? ${JSON.stringify(user, null, 2)}
+          
+          if (user): ${!!user}`);
+
           if (user) {
             // if user exists, this comes from our login page, let's check the password
             console.info(`User ${user.id} attempted login with password`);
@@ -144,6 +152,11 @@ const {
                 email: credentials.data.email,
               },
             });
+            if (!user) {
+              console.error(`[auth] Unable to create user with email ${credentials.data.email}`);
+              return null;
+            }
+
             // now that we have the userId, connect the user to the filters:
             const selectedFilterOptions = [
               { filterOpdtionFieldIds: signupData.data.budgets, filterCategoryFieldId: "budgets" },
@@ -151,19 +164,44 @@ const {
               { filterOpdtionFieldIds: signupData.data.categories, filterCategoryFieldId: "categories" },
               { filterOpdtionFieldIds: signupData.data.frameworks, filterCategoryFieldId: "frameworks" },
               { filterOpdtionFieldIds: signupData.data.languages, filterCategoryFieldId: "languages" },
-            ].map(({ filterOpdtionFieldIds, filterCategoryFieldId }) => {
-              return filterOpdtionFieldIds.map((fieldId) => ({
-                filterCategoryFieldId,
-                filterOptionFieldId: fieldId,
-                userId: user.id,
-              }));
-            });
+            ]
+              .map(({ filterOpdtionFieldIds, filterCategoryFieldId }) => {
+                return filterOpdtionFieldIds.map((fieldId) => {
+                  if (!user?.id) return null;
+                  return {
+                    filterCategoryFieldId,
+                    filterOptionFieldId: fieldId,
+                    userId: user.id,
+                  };
+                });
+              })
+              // to filter out any null values:
+              .filter(Boolean) as Prisma.FilterOptionsOnUserCreateManyInput[][];
             const data = selectedFilterOptions.flat();
-            await db.filterOptionsOnUser.createMany({
-              data,
-            });
 
-            return user;
+            console.log(
+              `[Auth.Credentials] Creating filter options for user ${user.id} along with the Cal signup`
+            );
+            const [_, toCreate] = await Promise.all([
+              db.filterOptionsOnUser.createMany({
+                data,
+              }),
+              // 👇 [@calcom] the `signUp` function creates a managed user with the cal platform api and handles basic setup (such as creating a default schedule)
+              signUp({
+                email: credentials.data.email,
+                name: signupData.data.name,
+                user: { id: user.id }, // we don't have the user id yet, so we'll use a placeholder
+              }),
+              // 👆 [@calcom]
+            ]);
+
+            console.log(
+              `[Auth.Credentials] Created filter options for user ${user.id} along with the Cal signup. Updating hte dv before returning the user...`
+            );
+            // update the user with the cal account info:
+            user = await db.user.update({ where: { id: user.id }, data: toCreate });
+
+            return user satisfies UserAfterSignUp;
           }
         } catch (e) {
           console.error(e);
@@ -190,7 +228,7 @@ export const currentUserWithCalAccount = cache(async () => {
   const sesh = await auth();
   if (!sesh?.user.id) throw new Error("somehting's wrong here");
   return db.calAccount.findUnique({
-    where: { email: sesh.user.email.replace("@", `+${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}@`) },
+    where: { email: sesh?.user?.email?.replace("@", `+${env.NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID}@`) },
   });
 });
 
@@ -206,10 +244,10 @@ export async function SignedOut(props: { children: React.ReactNode }) {
 
 export async function CurrentUser(props: { children: (props: User) => React.ReactNode }) {
   const user = await currentUser();
-  console.log(`[Auth] CurrentUser -> ${JSON.stringify(user)}`);
-  return <>{props.children(user)}</>;
+
+  return !!user ? <>{props.children(user)}</> : null;
 }
 export async function CalAccount(props: { children: (props: CalAccount) => React.ReactNode }) {
   const calAccount = await currentUserWithCalAccount();
-  return <>{props.children(calAccount)}</>;
+  return !!calAccount ? <>{props.children(calAccount)}</> : null;
 }
