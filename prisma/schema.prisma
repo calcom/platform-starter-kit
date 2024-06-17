@@ -5,10 +5,12 @@ datasource db {
   provider  = "postgresql"
   url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
+  schemas   = ["prisma"]
 }
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 // Necessary for Next auth
@@ -30,6 +32,7 @@ model Account {
   createdAt DateTime? @default(now())
 
   @@unique([provider, providerAccountId])
+  @@schema("prisma")
 }
 
 model Session {
@@ -40,6 +43,8 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime? @default(now())
+
+  @@schema("prisma")
 }
 
 model User {
@@ -60,6 +65,8 @@ model User {
 
   createdAt             DateTime?             @default(now())
   selectedFilterOptions FilterOptionsOnUser[]
+
+  @@schema("prisma")
 }
 
 model CalAccount {
@@ -75,6 +82,8 @@ model CalAccount {
   user              User?
 
   createdAt DateTime? @default(now())
+
+  @@schema("prisma")
 }
 
 model VerificationToken {
@@ -85,6 +94,7 @@ model VerificationToken {
   createdAt DateTime? @default(now())
 
   @@unique([identifier, token])
+  @@schema("prisma")
 }
 
 model FilterOption {
@@ -106,6 +116,7 @@ model FilterOption {
   // we define the fieldId & filterCategoryId as unique, so that we can define the many:many between User & Filter on multiple fields (improve query performance)
   @@unique([fieldId, filterCategoryFieldId])
   @@index([fieldId, filterCategoryFieldId])
+  @@schema("prisma")
 }
 
 model FilterOptionsOnUser {
@@ -121,4 +132,5 @@ model FilterOptionsOnUser {
   // we define the fieldId & filterCategoryId as unique, so that we can define the many:many between User & Filter on multiple fields (improve query performance)
   @@unique([userId, filterOptionFieldId, filterCategoryFieldId])
   @@index([userId, filterOptionFieldId, filterCategoryFieldId])
+  @@schema("prisma")
 }

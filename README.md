@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <p align="center">
   <a href="https://github.com/calcom/cal.com">
-   <img src="https://user-images.githubusercontent.com/8019099/210054112-5955e812-a76e-4160-9ddd-58f2c72f1cce.png" alt="Logo">
+   <img src="https://github.com/calcom/platform-starter-kit/assets/8019099/6f0a8337-6d18-42de-aa00-44a57764e19b" alt="Logo">
   </a>
 
   <h3 align="center">Cal.com Platform Starter Kit</h3>
@@ -28,7 +28,7 @@
 
 # Platform Starter Kit Example
 
-Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com Atoms. It was built using the [T3 Stack](https://create.t3.gg/) with [Supabase](https://supabase.com/) as the Postgres Database host.
+Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com Atoms. It was built using the [T3 Stack](https://create.t3.gg/) with [Supabase](https://supabase.com/) as the Postgres Database and Image Storage host.
 
 ## Deploy your own
 
@@ -99,6 +99,14 @@ pnpm db:init
 pnpm db:seed # Will throw an error if DB is already seeded, which you can ignore.
 ```
 
+Prisma will create a `_prisma_migrations` table on the `public` database schema. In Supabase, the public schema is exposed via the API by default. To secure the table, navigate to the [Table Editor](https://supabase.com/dashboard/project/_/editor), click on "RLS diasbaled" > "Enable RLS for this table".
+
+Alternatively, you can run the follow SQL statement on your database, e.g. via the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) in the Supabase Dashboard:
+
+```sql
+ALTER TABLE "public"."_prisma_migrations" ENABLE ROW LEVEL SECURITY;
+```
+
 _4.2 Authentication_
 
 Generate a NextAuth secret and add it to your `.env` file:
@@ -143,6 +151,7 @@ If you are not familiar with the different technologies used in this project, pl
 
 - [Cal.com Platform](https://cal.com/platform)
 - [Next.js](https://nextjs.org)
+- [Supabase](https://supabase.com)
 - [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)

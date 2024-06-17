@@ -14,8 +14,10 @@ export async function GET(request: Request) {
     } = session;
     // Generate signed upload url to use on client.
     const supabaseAdmin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
-    await supabaseAdmin.storage.from("avatars").remove([id]);
-    const { data, error } = await supabaseAdmin.storage.from("avatars").createSignedUploadUrl(id);
+
+    const { data, error } = await supabaseAdmin.storage
+      .from("avatars")
+      .createSignedUploadUrl(id, { upsert: true });
     console.log(error);
     if (error) throw error;
 
