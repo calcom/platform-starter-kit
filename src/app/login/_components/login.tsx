@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 
-
 type LoginFormState = {
   error?: string | null;
   inputErrors?: {
