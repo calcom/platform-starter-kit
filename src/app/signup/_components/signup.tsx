@@ -1,6 +1,6 @@
 "use client";
 
-import { signInWithCredentials } from "@/app/_actions";
+import { signUpWithCredentials } from "@/app/_actions";
 import { FancyMultiSelect, type Option } from "@/app/_components/multi-select";
 import { AddonFieldInput, AddonFieldPrefix } from "@/app/signup/_components/input";
 import { Button } from "@/components/ui/button";
@@ -13,13 +13,27 @@ import Link from "next/link";
 import { useFormState } from "react-dom";
 import { uniqueBy, prop } from "remeda";
 
+type TSignUpFormState = {
+  error?: string | null;
+  inputErrors?: {
+    name?: string[];
+    username?: string[];
+    email?: string[];
+    password?: string[];
+    bio?: string[];
+    categories?: string[];
+    capabilities?: string[];
+    frameworks?: string[];
+    budgets?: string[];
+    languages?: string[];
+    regions?: string[];
+  };
+};
+
 export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOption> }) => {
-  const [error, dispatch] = useFormState<{ error?: string | null }>(
-    signInWithCredentials as (state: {
-      error?: string | null | undefined;
-    }) => { error?: string | null | undefined } | Promise<{ error?: string | null | undefined }>,
-    { error: null }
-  );
+  const [formState, dispatch] = useFormState<TSignUpFormState, FormData>(signUpWithCredentials, {
+    error: null,
+  });
 
   const filtersByCategory = uniqueBy(filterOptions, prop("filterCategoryFieldId"));
 
@@ -35,20 +49,40 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
               <Input id="name" name="name" placeholder="John Doe" required />
+              {formState?.inputErrors?.name ? (
+                <div className="text-sm font-medium text-red-700" aria-live="polite">
+                  {formState.inputErrors.name[0]}
+                </div>
+              ) : null}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="username">Username</Label>
               <AddonFieldPrefix prefix="site.com/">
                 <AddonFieldInput id="username" name="username" placeholder="john-doe" required />
               </AddonFieldPrefix>
+              {formState?.inputErrors?.username ? (
+                <div className="text-sm font-medium text-red-700" aria-live="polite">
+                  {formState.inputErrors.username[0]}
+                </div>
+              ) : null}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+              {formState?.inputErrors?.email ? (
+                <div className="text-sm font-medium text-red-700" aria-live="polite">
+                  {formState.inputErrors.email[0]}
+                </div>
+              ) : null}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" name="password" type="password" />
+              {formState?.inputErrors?.password ? (
+                <div className="text-sm font-medium text-red-700" aria-live="polite">
+                  {formState.inputErrors.password[0]}
+                </div>
+              ) : null}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="bio">Bio</Label>
@@ -59,6 +93,11 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                 name="bio"
                 maxLength={500}
               />
+              {formState?.inputErrors?.bio ? (
+                <div className="text-sm font-medium text-red-700" aria-live="polite">
+                  {formState.inputErrors.bio[0]}
+                </div>
+              ) : null}
             </div>
             {filtersByCategory.map(({ filterCategoryFieldId, filterCategoryLabel }) => (
               <div className="grid gap-2" key={filterCategoryFieldId}>
@@ -79,8 +118,19 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   id={filterCategoryFieldId.toLowerCase()}
                 />
+                {formState?.inputErrors?.[filterCategoryFieldId] ? (
+                  <div className="text-sm font-medium text-red-700" aria-live="polite">
+                    {formState.inputErrors?.[filterCategoryFieldId]?.[0]}
+                  </div>
+                ) : null}
               </div>
             ))}
+
+            {formState?.error ? (
+              <div className="text-sm font-medium text-red-700" aria-live="polite">
+                {formState.error}
+              </div>
+            ) : null}
             <input hidden name="redirectTo" value="/dashboard/getting-started" readOnly />
             <Button type="submit" className="w-full">
               Create an account
