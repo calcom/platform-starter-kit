@@ -1,5 +1,5 @@
 import { authConfig } from "./config.edge";
-import { credentialsSchema } from "@/cal/utils";
+import {  loginSchema, signUpSchema } from "@/cal/utils";
 import { env } from "@/env";
 
 /**
@@ -57,7 +57,7 @@ const {
     Credentials({
       name: "Credentials",
       authorize: async (c) => {
-        const credentials = credentialsSchema.safeParse(c);
+        const credentials = loginSchema.safeParse(c);
 
         if (!credentials.success) {
           console.error(
@@ -88,38 +88,8 @@ const {
             return user;
           } else {
             // if user doesn't exist, this comes from our signup page w/ additional fields
-            const signupData = z
-              .object({
-                username: z.string().min(1).max(32),
-                name: z.string().min(1).max(32),
-                bio: z.string().min(1).max(500),
-                // for all sidebaritems, let's create the zod schema:
-                categories: z.preprocess((val) => {
-                  if (typeof val !== "string") return val; // should error
-                  return JSON.parse(val);
-                }, z.array(z.string())),
-                capabilities: z.preprocess((val) => {
-                  if (typeof val !== "string") return val; // should error
-                  return JSON.parse(val);
-                }, z.array(z.string())),
-                frameworks: z.preprocess((val) => {
-                  if (typeof val !== "string") return val; // should error
-                  return JSON.parse(val);
-                }, z.array(z.string())),
-                budgets: z.preprocess((val) => {
-                  if (typeof val !== "string") return val; // should error
-                  return JSON.parse(val);
-                }, z.array(z.string())),
-                languages: z.preprocess((val) => {
-                  if (typeof val !== "string") return val; // should error
-                  return JSON.parse(val);
-                }, z.array(z.string())),
-                regions: z.preprocess((val) => {
-                  if (typeof val !== "string") return val; // should error
-                  return JSON.parse(val);
-                }, z.array(z.string())),
-              })
-              .safeParse(c);
+            const signupData = signUpSchema.safeParse(c);
+
             if (!signupData.success) {
               console.error(
                 `[auth] Invalid sign in submission because of missing signup data: ${signupData.error.errors
