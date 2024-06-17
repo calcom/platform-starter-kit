@@ -56,6 +56,6 @@ INSERT INTO "public"."_prisma_migrations" ("id", "checksum", "finished_at", "mig
 --
 -- Data for Name: buckets; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
 --
-
-INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
-	('avatars', 'avatars', NULL, '2024-06-14 11:51:12.750831+00', '2024-06-14 11:51:12.750831+00', true, false, NULL, '{image/jpeg,image/png}', NULL);
+-- commenting out as this currently doesn't work with vercel integration
+-- INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
+-- 	('avatars', 'avatars', NULL, '2024-06-14 11:51:12.750831+00', '2024-06-14 11:51:12.750831+00', true, false, NULL, '{image/jpeg,image/png}', NULL);
