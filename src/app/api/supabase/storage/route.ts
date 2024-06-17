@@ -17,6 +17,7 @@ export async function GET(request: Request) {
 
     const { data, error } = await supabaseAdmin.storage
       .from("avatars")
+      // @ts-expect-error Looks like the supabase types don't expect an options bag here (ts: expected 1 argument, but got 2)
       .createSignedUploadUrl(id, { upsert: true });
     console.log(error);
     if (error) throw error;

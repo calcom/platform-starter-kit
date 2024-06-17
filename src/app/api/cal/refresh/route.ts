@@ -32,6 +32,9 @@ export const GET = NextAuth(authConfig).auth(async function GET(request) {
   }
 
   try {
+    if (!user.calAccount || !user.calRefreshToken) {
+      throw new Error(`[Cal Refresh] User with id ${user.id} does not have a calAccount or a refresh token.`);
+    }
     /** [@calcom] Attempt to refresh the token via the refresh flow
      */
     const refreshFlow = await refreshTokens({
@@ -53,6 +56,9 @@ export const GET = NextAuth(authConfig).auth(async function GET(request) {
         // calAccessTokenExpiresAt: body.data.accessTokenExpiresAt,
       },
     });
+    if (!updatedDb.calAccessToken || !updatedDb.calRefreshToken) {
+      throw new Error(`[Cal Refresh] Unable to update user with id ${user.id} with the new tokens.`);
+    }
 
     /** [@calcom] You have to return the accessToken back to calcom/atoms api for future refresh requests. */
     return new Response(

@@ -71,7 +71,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               ctaLink="https://go.cal.com/starter-kit"
               ctaText="Code on GitHub"
             />
-            <UseCalAtoms calAccessToken={currentUser().then((dbUser) => dbUser?.calAccessToken ?? undefined)}>
+            <UseCalAtoms
+              calAccessToken={currentUser().then((dbUser) => dbUser?.calAccessToken ?? null) ?? null}>
               {children}
             </UseCalAtoms>
           </div>

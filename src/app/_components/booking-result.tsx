@@ -50,9 +50,9 @@ export const BookingResult = (props: {
     ? stripCalOAuthClientIdFromText(bookingPrevious?.data?.title)
     : null;
 
-  const when = `${dayjs(booking.startTime).format("dddd, MMMM DD YYYY @ h:mma")} (${booking.user.timeZone})`;
+  const when = `${dayjs(booking.startTime).format("dddd, MMMM DD YYYY @ h:mma")} (${booking?.user?.timeZone})`;
   const formerWhen = bookingPrevious.data
-    ? `${dayjs(bookingPrevious.data.startTime).format("dddd, MMMM DD YYYY @ h:mma")} (${bookingPrevious.data.user.timeZone})`
+    ? `${dayjs(bookingPrevious.data.startTime).format("dddd, MMMM DD YYYY @ h:mma")} (${bookingPrevious?.data?.user?.timeZone})`
     : null;
 
   const who = {
@@ -78,7 +78,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
     <Card className="w-full max-w-lg">
       <CardHeader className="space-y-4 px-8">
         <div className="flex items-center justify-center space-x-2">
-          {bookingStatus.toLowerCase() === "cancelled" && (
+          {bookingStatus?.toLowerCase() === "cancelled" && (
             <div className="flex flex-col items-center space-y-4">
               <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-destructive/50">
                 <X className="size-6 text-destructive" />
@@ -86,7 +86,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
               <CardTitle className="text-2xl">Meeting Cancelled</CardTitle>
             </div>
           )}
-          {bookingStatus.toLowerCase() === "accepted" && (
+          {bookingStatus?.toLowerCase() === "accepted" && (
             <div className="flex flex-col items-center space-y-4">
               <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-success">
                 <Check className="size-6 text-green-600" />
@@ -108,7 +108,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
               <span
                 className={cn(
                   "text-muted-foreground",
-                  bookingStatus.toLowerCase() === "cancelled" && "line-through"
+                  bookingStatus?.toLowerCase() === "cancelled" && "line-through"
                 )}>
                 {what}
               </span>
@@ -121,7 +121,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
               <span
                 className={cn(
                   "text-muted-foreground",
-                  bookingStatus.toLowerCase() === "cancelled" && "line-through"
+                  bookingStatus?.toLowerCase() === "cancelled" && "line-through"
                 )}>
                 {when}
               </span>
@@ -132,7 +132,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                 <li
                   className={cn(
                     "text-muted-foreground",
-                    bookingStatus.toLowerCase() === "cancelled" && "line-through"
+                    bookingStatus?.toLowerCase() === "cancelled" && "line-through"
                   )}>
                   {who.host}
                 </li>
@@ -141,7 +141,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                     key={idx}
                     className={cn(
                       "text-muted-foreground",
-                      bookingStatus.toLowerCase() === "cancelled" && "line-through"
+                      bookingStatus?.toLowerCase() === "cancelled" && "line-through"
                       // // if the attendee is not in the previous booking, we'll highlight them
                       // formerWho?.attendees?.findIndex((formerAttendee) => formerAttendee === attendee) ===
                       //   -1 && "font-semibold italic"
@@ -202,11 +202,11 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                     <Link
                       className={cn(
                         "inline-flex items-center gap-1",
-                        bookingStatus.toLowerCase() === "cancelled" && "line-through",
-                        bookingStatus.toLowerCase() === "cancelled" && "cursor-not-allowed"
+                        bookingStatus?.toLowerCase() === "cancelled" && "line-through",
+                        bookingStatus?.toLowerCase() === "cancelled" && "cursor-not-allowed"
                       )}
                       href={
-                        bookingStatus.toLowerCase() === "cancelled"
+                        bookingStatus?.toLowerCase() === "cancelled"
                           ? "#"
                           : (booking?.metadata as { videoCallUrl?: string })?.videoCallUrl ?? "#"
                       }>
@@ -230,7 +230,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
                 <span
                   className={cn(
                     "text-muted-foreground",
-                    bookingStatus.toLowerCase() === "cancelled" && "line-through"
+                    bookingStatus?.toLowerCase() === "cancelled" && "line-through"
                   )}>
                   {booking.description}
                 </span>
@@ -241,7 +241,7 @@ ${stripCalOAuthClientIdFromEmail(previousAttendee.email)}`
         <Separator className="mt-8" />
       </CardContent>
       <CardFooter className="flex flex-col px-8">
-        {bookingStatus.toLowerCase() === "cancelled" ? (
+        {bookingStatus?.toLowerCase() === "cancelled" ? (
           <div>
             <span>Want to book {booking?.user?.name}?</span>
             <span>

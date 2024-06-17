@@ -70,13 +70,13 @@ model User {
 }
 
 model CalAccount {
-  id                Int    @id
-  username          String @unique
-  email             String @unique
+  id                Int     @id
+  username          String? @unique
+  email             String  @unique
   timeZone          String
   weekStart         String
   createdDate       String
-  timeFormat        Int
+  timeFormat        Int?
   defaultScheduleId Int?
   // expires   DateTime
   user              User?

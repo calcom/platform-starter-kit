@@ -20,6 +20,17 @@ declare module "next-auth/jwt" {
   }
 }
 
+const SessionUpdateSchema = z.object({
+  user: z.object({
+    // default fields
+    name: z.string().optional(),
+    email: z.string().optional(),
+    picture: z.string().optional(),
+    // augmented fields
+    username: z.string().optional(),
+  }),
+});
+
 export const authConfig = {
   logger: {
     debug: (message, metadata) => console.debug(message, { metadata }),
@@ -36,35 +47,22 @@ export const authConfig = {
       }
       return false;
     },
-    jwt: async ({ token, user, trigger, session }) => {
-      let dbUser: User | null;
-      // if this is a new user, sign them up to Cal
-      if (!token.accessToken && trigger === "signUp") {
-        // 👇 [@calcom] the `signUp` function creates a managed user with the cal platform api and handles basic setup (such as creating a default schedule)
-        const toUpdate = await signUp({
-          email: user.email,
-          name: user.name,
-        });
-        // 👆 [@calcom]
-
-        // persist cal data to our db:
-        dbUser = await db.user.update({ where: { id: user.id }, data: toUpdate });
+    jwt: async ({ token, user, trigger, session, account }) => {
+      if (user) {
+        // update the token with the user's data
+        token.sub = user.id;
+        token.email = user.email;
+        token.username = (user as User).username ?? undefined;
+        token.name = user.name;
       }
+
+      let dbUser: User | null = null;
       // if this is an update, let's update the token with the provided user data
       if (trigger === "update") {
-        const updateSessionValidation = z
-          .object({
-            user: z.object({
-              // default fields
-              name: z.string().optional(),
-              email: z.string().optional(),
-              picture: z.string().optional(),
-              // augmented fields
-              username: z.string().optional(),
-            }),
-          })
-          .parse(session);
-        const keysToUpdate = Object.keys(updateSessionValidation.user);
+        const updateSessionValidation = SessionUpdateSchema.parse(session);
+        const keysToUpdate = Object.keys(updateSessionValidation.user) as Array<
+          keyof z.infer<typeof SessionUpdateSchema.shape.user>
+        >;
         for (const key of keysToUpdate) {
           console.info(
             `
@@ -84,22 +82,13 @@ export const authConfig = {
             // picture: token.picture,
           },
         });
-      }
-      if (user) {
-        // update the token with the user's data
-        token.sub = user.id;
-        token.email = user.email;
-        token.username = (user as User).username;
-        token.name = user.name;
-      }
-
-      if (dbUser) {
         // update the token with the user's data
         token.sub = dbUser.id;
         token.email = dbUser.email;
-        token.username = dbUser.username;
+        token.username = dbUser.username ?? undefined;
         token.name = dbUser.name;
       }
+
       return token;
     },
 
@@ -122,6 +111,7 @@ export const authConfig = {
       }
       return session;
     },
+
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");

@@ -3,9 +3,12 @@
 import { env } from "@/env";
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
+import type StorageFileApi from "node_modules/.pnpm/@supabase+storage-js@2.6.0/node_modules/@supabase/storage-js/src/packages/StorageFileApi";
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
+type SupabaseStorage = (typeof StorageFileApi)["prototype"];
+type FileBody = Parameters<SupabaseStorage["uploadToSignedUrl"]>[2];
 export default function SupabaseReactDropzone({ userId }: { userId?: string } = {}) {
   const supabaseBrowserClient = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
   const [avatar, setAvatar] = useState<string | null>(userId ? `avatars/${userId}` : null);
@@ -24,10 +27,10 @@ export default function SupabaseReactDropzone({ userId }: { userId?: string } = 
 
       const { data, error } = await supabaseBrowserClient.storage
         .from("avatars")
-        .uploadToSignedUrl(path, token, acceptedFiles[0]);
+        .uploadToSignedUrl(path, token, acceptedFiles[0] as FileBody);
       // console.log({ data, error });
-      if(typeof data.fullPath === "string"){
-        setAvatar(data.fullPath);
+      if (typeof data?.fullPath === "string") {
+        setAvatar(data?.fullPath);
       }
     },
   });

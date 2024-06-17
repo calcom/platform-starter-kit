@@ -118,8 +118,10 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   id={filterCategoryFieldId.toLowerCase()}
                 />
+                {/* @ts-expect-error TODO: Fix the types here */}
                 {formState?.inputErrors?.[filterCategoryFieldId] ? (
                   <div className="text-sm font-medium text-red-700" aria-live="polite">
+                    {/* @ts-expect-error TODO: Fix the types here */}
                     {formState.inputErrors?.[filterCategoryFieldId]?.[0]}
                   </div>
                 ) : null}

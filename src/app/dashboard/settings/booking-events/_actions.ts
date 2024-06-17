@@ -11,7 +11,7 @@ export default async function createEventType(
   formData: FormData
 ) {
   const sesh = await auth();
-  if (!sesh.user.id) {
+  if (!sesh?.user.id) {
     console.log("[_actions] Unauthorized user edit", formData);
     return { error: "Unauthorized" };
   }
@@ -37,7 +37,7 @@ export default async function createEventType(
     return { error: "Invalid form data" };
   }
 
-  const res = await cal.post("/v2/event-types", {
+  const res = await cal({ user: { id: sesh?.user.id } }).post("/v2/event-types", {
     body: input.data.body,
   });
   if (res.status === "error") {

@@ -25,13 +25,13 @@ export default function ResultsCard({
   query,
 }: {
   slug: string;
-  image: string;
+  image?: string;
   title: string;
   description: string;
   query?: string;
 }) {
-  const queryIndexTitle = title.toLowerCase().indexOf(query?.toLowerCase());
-  const queryIndexDescription = description.toLowerCase().indexOf(query?.toLowerCase());
+  const queryIndexTitle = title.toLowerCase().indexOf(query?.toLowerCase() ?? "");
+  const queryIndexDescription = description.toLowerCase().indexOf(query?.toLowerCase() ?? "");
 
   return (
     <Link href={"/" + slug}>
@@ -88,8 +88,8 @@ export function Results(props: {
     .filter((expert) => {
       if (!query) return true;
       return (
-        expert.name.toLowerCase().includes(query?.toLowerCase()) ||
-        expert.bio.toLowerCase().includes(query?.toLowerCase())
+        expert?.name?.toLowerCase().includes(query?.toLowerCase()) ||
+        expert?.bio?.toLowerCase().includes(query?.toLowerCase())
       );
     })
     // this is the filter search:
@@ -200,14 +200,14 @@ export function Results(props: {
                       ) => (
                         <ResultsCard
                           key={username}
-                          slug={username}
+                          slug={username ?? ""}
                           image={
                             // image ??
                             props.images[idx]
                           }
-                          title={name}
-                          description={bio}
-                          query={query}
+                          title={name ?? "Your title"}
+                          description={bio ?? "Your bio"}
+                          query={query ?? undefined}
                         />
                       )
                     )
@@ -230,7 +230,7 @@ export function Results(props: {
                               <Label className="text-right">Filters</Label>
                               <p className="col-span-3 max-w-lg text-balance text-sm capitalize leading-relaxed">
                                 {Object.keys(filters ?? {}).length
-                                  ? Object.entries(filters)
+                                  ? Object.entries(filters ?? {})
                                       .map(([filterCategory, filterValues]) => {
                                         return `${filterCategory}: ${filterValues.join(", ")}`;
                                       })

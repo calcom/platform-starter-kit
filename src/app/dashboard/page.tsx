@@ -28,7 +28,7 @@ export default async function Dashboard() {
 
   const bookingResponses = await Promise.all(
     filters.map((filter) =>
-      cal.get("/v2/bookings", {
+      cal({ user: { id: sesh?.user.id } }).get("/v2/bookings", {
         query: { "filters[status]": filter, cursor: 0, limit: 20 },
       })
     )

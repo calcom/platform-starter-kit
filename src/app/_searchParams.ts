@@ -11,7 +11,7 @@ import { z } from "zod";
 export const renderingOptions = ["server", "client"] as const;
 export type RenderingOptions = (typeof renderingOptions)[number];
 function nonEmptyArray<ElementType>(arr: Array<ElementType>): [ElementType, ...ElementType[]] {
-  return [arr[0], ...arr.slice(1)];
+  return [arr[0]!, ...arr.slice(1)];
 }
 
 const categoriesEnum = z.enum(nonEmptyArray(categoryOptions.flatMap((option) => option.fieldValue)));

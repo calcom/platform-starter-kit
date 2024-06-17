@@ -22,7 +22,9 @@ export const ExpertBooker = (
   const router = useRouter();
   const searchParams = useSearchParams();
   const rescheduleUid = searchParams.get("rescheduleUid") ?? undefined;
-  const { isLoading: isLoadingEvents, data: eventTypes } = useEventTypesPublic(props.calAccount.username);
+  const { isLoading: isLoadingEvents, data: eventTypes } = useEventTypesPublic(
+    props.calAccount.username ?? ""
+  );
   if (!props.calAccount.username) {
     return <div className="w-full text-center">Sorry. We couldn&apos;t find this experts&apos; user.</div>;
   }

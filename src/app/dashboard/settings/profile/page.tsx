@@ -1,13 +1,14 @@
 import ExpertEditForm from "../_components/expert-edit";
 import SupabaseReactDropzone from "../_components/supabase-react-dropzone";
-import ExpertBooker from "@/app/[expertUsername]/_components/expert-booker";
 import { currentUser } from "@/auth";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 export default async function DashboardSettingsProfile() {
   const expert = await currentUser();
+  if (!expert) {
+    return <div>Not logged in</div>;
+  }
 
   return (
     <Card>
@@ -17,7 +18,7 @@ export default async function DashboardSettingsProfile() {
           <div className="flex w-full flex-col justify-between gap-4 rounded-md bg-muted/50 px-6 py-4 lg:flex-row">
             <div className="flex items-center gap-x-6">
               <div>
-                <ExpertEditForm id="name" name="name" placeholder={expert.name} />
+                <ExpertEditForm id="name" name="name" placeholder={expert.name ?? "Your name"} />
               </div>
             </div>
           </div>
@@ -25,7 +26,7 @@ export default async function DashboardSettingsProfile() {
             <h2 className="text-3xl font-semibold">About Us</h2>
           </div>
           <div className="mx-auto mt-4 grid w-full gap-2">
-            <ExpertEditForm id="bio" name="bio" placeholder={expert.bio} />
+            <ExpertEditForm id="bio" name="bio" placeholder={expert.bio ?? "Your Bio"} />
           </div>
           <div className="mx-auto mt-4 grid w-full gap-2">
             <h2 className="text-3xl font-semibold">Availability</h2>
