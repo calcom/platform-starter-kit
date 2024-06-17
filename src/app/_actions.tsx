@@ -1,7 +1,6 @@
 "use server";
 
-import { auth, signIn, unstable_update } from "@/auth";
-import { loginSchema, signUpSchema } from "@/cal/utils";
+import { LoginSchema, SignupSchema, auth, signIn, unstable_update } from "@/auth";
 import { type User } from "@prisma/client";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -11,7 +10,7 @@ import { z } from "zod";
 
 export async function signInWithCredentials(_prevState: { error?: string | null }, formData: FormData) {
   try {
-    const credentials = loginSchema.safeParse({
+    const credentials = LoginSchema.safeParse({
       email: formData.get("email"),
       password: formData.get("password"),
     });
@@ -41,7 +40,7 @@ export async function signInWithCredentials(_prevState: { error?: string | null 
 
 export async function signUpWithCredentials(_prevState: { error?: string | null }, formData: FormData) {
   try {
-    const credentials = signUpSchema.safeParse({
+    const credentials = SignupSchema.safeParse({
       name: formData.get("name"),
       username: formData.get("username"),
       email: formData.get("email"),
@@ -84,7 +83,7 @@ export async function expertEdit(
 ) {
   console.log("[_actions] Updating expert with form data: ", formData);
   const sesh = await auth();
-  if (!sesh.user.id) {
+  if (!sesh?.user.id) {
     console.log("[_actions] Unauthorized user edit", formData);
     return { error: "Unauthorized" };
   }
@@ -104,11 +103,16 @@ export async function expertEdit(
   }
 
   const key = Object.keys(userEdit.data)[0];
+  if (!key) {
+    console.error("[_actions] Invalid form data", formData);
+    return { error: "Invalid form data" };
+  }
   let user: User | null;
   try {
     user = await db.user.update({
       where: { id: sesh.user.id },
       data: {
+        // @ts-expect-error - key as "name" | "bio" didn't work -- not sure why
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         [key]: userEdit.data[key],
       },
@@ -120,5 +124,6 @@ export async function expertEdit(
   revalidatePath("/dashboard/settings/profile");
   await unstable_update({ user: { name: user.name } });
 
+  // @ts-expect-error - key as "name" | "bio" didn't work -- not sure why
   return { success: `Successfully updated your ${key} to: '${userEdit.data[key]}'.` };
 }
