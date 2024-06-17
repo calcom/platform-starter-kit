@@ -8,13 +8,19 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 
+
+type LoginFormState = {
+  error?: string | null;
+  inputErrors?: {
+    email?: string[];
+    password?: string[];
+  };
+};
+
 export function LoginForm() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, dispatch] = useFormState<{ error?: string | null }>(
-    // @ts-expect-error - unsure why the types are wrong here?
-    signInWithCredentials,
-    { error: null }
-  );
+  const [formState, dispatch] = useFormState<LoginFormState, FormData>(signInWithCredentials, {
+    error: null,
+  });
 
   return (
     <form action={dispatch}>
@@ -27,12 +33,23 @@ export function LoginForm() {
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+            {formState?.inputErrors?.email ? (
+              <div className="text-red-700 text-sm font-medium" aria-live="polite">
+                {formState.inputErrors.email[0]}
+              </div>
+            ) : null}
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
             <Input id="password" name="password" type="password" required />
+            {formState?.inputErrors?.password ? (
+              <div className="text-red-700 text-sm font-medium" aria-live="polite">
+                {formState.inputErrors.password[0]}
+              </div>
+            ) : null}
           </div>
           <input hidden name="redirectTo" value="/dashboard/getting-started" readOnly />
+          {!!formState?.error && <p className="text-sm font-medium text-red-900">{formState.error}</p>}
         </CardContent>
         <CardFooter>
           <div className="flex w-full flex-col">

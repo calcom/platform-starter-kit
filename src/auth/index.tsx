@@ -1,4 +1,5 @@
 import { authConfig } from "./config.edge";
+import { credentialsSchema } from "@/cal/utils";
 import { env } from "@/env";
 
 /**
@@ -56,12 +57,7 @@ const {
     Credentials({
       name: "Credentials",
       authorize: async (c) => {
-        const credentials = z
-          .object({
-            email: z.string().min(1).max(42),
-            password: z.string().min(6).max(32),
-          })
-          .safeParse(c);
+        const credentials = credentialsSchema.safeParse(c);
 
         if (!credentials.success) {
           console.error(

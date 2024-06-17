@@ -1,6 +1,7 @@
 "use server";
 
 import { auth, signIn, unstable_update } from "@/auth";
+import { credentialsSchema } from "@/cal/utils";
 import { type User } from "@prisma/client";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -10,6 +11,17 @@ import { z } from "zod";
 
 export async function signInWithCredentials(_prevState: { error?: string | null }, formData: FormData) {
   try {
+    const credentials = credentialsSchema.safeParse({
+      email: formData.get('email'),
+      password: formData.get('password'),
+    });
+
+    if(!credentials.success){
+      return {
+        inputErrors: credentials.error.flatten().fieldErrors,
+      }
+    }
+
     await signIn("credentials", formData);
   } catch (error) {
     if (isRedirectError(error)) throw error;
