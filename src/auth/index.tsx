@@ -140,7 +140,7 @@ const {
                 username: signupData.data.username,
                 name: signupData.data.name,
                 hashedPassword: await hash(credentials.data.password),
-                bio: signupData.data.bio,
+                // bio: signupData.data.bio ?? null,
                 email: credentials.data.email,
               },
             });

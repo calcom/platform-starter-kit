@@ -84,7 +84,7 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                 </div>
               ) : null}
             </div>
-            <div className="grid gap-2">
+            {/* <div className="grid gap-2">
               <Label htmlFor="bio">Bio</Label>
               <Textarea
                 placeholder="Tell us a little bit about yourself"
@@ -98,8 +98,8 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                   {formState.inputErrors.bio[0]}
                 </div>
               ) : null}
-            </div>
-            {filtersByCategory.map(({ filterCategoryFieldId, filterCategoryLabel }) => (
+            </div> */}
+            {/* {filtersByCategory.map(({ filterCategoryFieldId, filterCategoryLabel }) => (
               <div className="grid gap-2" key={filterCategoryFieldId}>
                 <Label htmlFor="email">{filterCategoryLabel}</Label>
                 <FancyMultiSelect
@@ -126,7 +126,7 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                   </div>
                 ) : null}
               </div>
-            ))}
+            ))} */}
 
             {formState?.error ? (
               <div className="text-sm font-medium text-red-700" aria-live="polite">

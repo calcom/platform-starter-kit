@@ -48,13 +48,13 @@ export async function signUpWithCredentials(_prevState: { error?: string | null 
       username: formData.get("username"),
       email: formData.get("email"),
       password: formData.get("password"),
-      bio: formData.get("bio"),
-      categories: formData.get("categories"),
-      capabilities: formData.get("capabilities"),
-      frameworks: formData.get("frameworks"),
-      budgets: formData.get("budgets"),
-      languages: formData.get("languages"),
-      regions: formData.get("regions"),
+      // bio: formData.get("bio"),
+      // categories: formData.get("categories"),
+      // capabilities: formData.get("capabilities"),
+      // frameworks: formData.get("frameworks"),
+      // budgets: formData.get("budgets"),
+      // languages: formData.get("languages"),
+      // regions: formData.get("regions"),
     });
 
     if (!credentials.success) {
