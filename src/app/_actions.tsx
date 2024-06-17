@@ -41,7 +41,6 @@ export async function signInWithCredentials(_prevState: { error?: string | null 
 
 export async function signUpWithCredentials(_prevState: { error?: string | null }, formData: FormData) {
   try {
-    console.log("formData", formData);
     const credentials = signUpSchema.safeParse({
       name: formData.get("name"),
       username: formData.get("username"),

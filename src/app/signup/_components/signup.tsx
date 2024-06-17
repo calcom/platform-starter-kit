@@ -37,8 +37,6 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
 
   const filtersByCategory = uniqueBy(filterOptions, prop("filterCategoryFieldId"));
 
-  console.log("formState", formState);
-
   return (
     <form action={dispatch}>
       <Card className="mx-auto max-w-sm">
