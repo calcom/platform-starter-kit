@@ -66,8 +66,7 @@ export default function SupabaseReactDropzone({
 
   return (
     <div className="mx-auto grid w-full gap-2">
-      {isLoading && <Skeleton className="size-16" />}
-      {avatar && (
+      {avatar && !error && (
         <Avatar>
           <Image
             alt="Expert image"
@@ -78,7 +77,6 @@ export default function SupabaseReactDropzone({
             onLoadingComplete={() => setIsLoading(false)}
             onError={setError}
           />
-          <AvatarFallback>{userInitials?.toLocaleUpperCase() ?? <User className="size-16" />}</AvatarFallback>
         </Avatar>
       )}
       {error && (
