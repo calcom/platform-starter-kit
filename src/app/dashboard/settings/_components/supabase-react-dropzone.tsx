@@ -17,7 +17,7 @@ export default function SupabaseReactDropzone({ userId }: { userId?: string } = 
     },
     onDropAccepted: async (acceptedFiles) => {
       setAvatar(null);
-      console.log(acceptedFiles);
+      // console.log(acceptedFiles);
       const { path, token }: { path: string; token: string } = await fetch("/api/supabase/storage").then(
         (res) => res.json()
       );
@@ -25,8 +25,10 @@ export default function SupabaseReactDropzone({ userId }: { userId?: string } = 
       const { data, error } = await supabaseBrowserClient.storage
         .from("avatars")
         .uploadToSignedUrl(path, token, acceptedFiles[0]);
-      console.log({ data, error });
-      setAvatar(data.fullPath);
+      // console.log({ data, error });
+      if(typeof data.fullPath === "string"){
+        setAvatar(data.fullPath);
+      }
     },
   });
 
@@ -51,7 +53,7 @@ export default function SupabaseReactDropzone({ userId }: { userId?: string } = 
     <div className="mx-auto mt-4 grid w-full gap-2">
       <div {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
         <em>(Only *.jpeg and *.png images will be accepted)</em>
       </div>
 

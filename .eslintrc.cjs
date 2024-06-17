@@ -21,6 +21,7 @@ const config = {
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
@@ -38,9 +39,7 @@ const config = {
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
-        checksVoidReturn: {
-          attributes: false,
-        },
+        checksVoidReturn: false,
       },
     ],
   },
