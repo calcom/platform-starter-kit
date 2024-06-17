@@ -9,7 +9,9 @@ import { db } from "prisma/client";
 import React, { Suspense } from "react";
 
 export default async function Home() {
-  const experts = await db.user.findMany({ include: { selectedFilterOptions: true } });
+  const experts = await db.user.findMany({
+    include: { selectedFilterOptions: { include: { filterOption: true } } },
+  });
 
   return (
     <React.Fragment>

@@ -14,6 +14,7 @@ import { ListFilter, Loader } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useQueryState, parseAsString, parseAsJson } from "nuqs";
+import { type db } from "prisma/client";
 import { Fragment, type ReactEventHandler, useState, type SyntheticEvent } from "react";
 import React, { Suspense } from "react";
 import { Balancer } from "react-wrap-balancer";
@@ -93,11 +94,14 @@ export default function ResultsCard({
     </Link>
   );
 }
-
-export function Results(props: {
-  experts: Array<Partial<User> & { filterOptions: Array<FilterOption> }>;
-  signedOut: JSX.Element;
-}) {
+type UsersWithFilterOptions = Awaited<
+  ReturnType<
+    typeof db.user.findMany<{
+      include: { selectedFilterOptions: { include: { filterOption: true } } };
+    }>
+  >
+>;
+export function Results(props: { experts: UsersWithFilterOptions; signedOut: JSX.Element }) {
   const [query] = useQueryState("q", parseAsString);
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const [filters] = useQueryState("f", parseAsJson(filterSearchParamSchema.parse));
@@ -115,12 +119,12 @@ export function Results(props: {
     // this is the filter search:
     .filter((expert) => {
       if (!filters) return true;
-      const expertSelectedOptions = expert.filterOptions;
+      const expertSelectedOptions = expert.selectedFilterOptions ?? [];
       // if we have filters selected, let's only show the experts who have all the selected filters:
       return Object.entries(filters).every(([_filterCategoryFieldId, filterValues]) => {
         if (!filterValues) return true;
         return filterValues.every((filterValue) =>
-          expertSelectedOptions.find((option) => option.fieldValue === filterValue)
+          expertSelectedOptions.find((option) => option.filterOption.fieldValue === filterValue)
         );
       });
     });
