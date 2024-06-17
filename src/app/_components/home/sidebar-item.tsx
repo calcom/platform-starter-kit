@@ -37,8 +37,6 @@ export default function SidebarItem({
           ];
           const newCategoryFilter = { [category]: newSelectedIds };
 
-          console.log("newCategoryFilter", newCategoryFilter);
-
           const { [category]: _, ...withoutCurrentCategory } = newCategoryFilter; // remove current category from filters
 
           // include new category filter if there are selected ids

@@ -59,7 +59,6 @@ export default async function DashboardSettingsBookingEvents() {
       id: 2,
     },
   ];
-  // console.log("eventTypes:", JSON.stringify(eventTypes, null, 2));
   return (
     <Fragment>
       <div className="flex items-center">

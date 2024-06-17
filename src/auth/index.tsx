@@ -107,12 +107,6 @@ const {
           user = await db.user.findUnique({
             where: { email: credentials.data.email },
           });
-          console.log(
-            `[Auth.Credentials] Attempting to sign in with email ${credentials.data.email} -- is this actually correct??`
-          );
-          console.log(`[Auth.Credentials] User found? ${JSON.stringify(user, null, 2)}
-          
-          if (user): ${!!user}`);
 
           if (user) {
             // if user exists, this comes from our login page, let's check the password
@@ -126,7 +120,6 @@ const {
               console.debug(`User ${user.id} attempted login with bad password`);
               return null;
             }
-            console.log("[auth.Credentials.authorize] User signed in successfully, returning user");
             return user;
           } else {
             // if user doesn't exist, this comes from our signup page w/ additional fields
@@ -178,9 +171,6 @@ const {
               .filter(Boolean) as Prisma.FilterOptionsOnUserCreateManyInput[][];
             const data = selectedFilterOptions.flat();
 
-            console.log(
-              `[Auth.Credentials] Creating filter options for user ${user.id} along with the Cal signup`
-            );
             const [_, toCreate] = await Promise.all([
               db.filterOptionsOnUser.createMany({
                 data,
@@ -194,9 +184,6 @@ const {
               // 👆 [@calcom]
             ]);
 
-            console.log(
-              `[Auth.Credentials] Created filter options for user ${user.id} along with the Cal signup. Updating hte dv before returning the user...`
-            );
             // update the user with the cal account info:
             user = await db.user.update({ where: { id: user.id }, data: toCreate });
 

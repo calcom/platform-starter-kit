@@ -32,7 +32,6 @@ export default function SupabaseReactDropzone({
     },
     onDropAccepted: async (acceptedFiles) => {
       setAvatar(null);
-      // console.log(acceptedFiles);
       const { path, token }: { path: string; token: string } = await fetch("/api/supabase/storage").then(
         (res) => res.json()
       );
@@ -40,7 +39,6 @@ export default function SupabaseReactDropzone({
       const { data, error } = await supabaseBrowserClient.storage
         .from("avatars")
         .uploadToSignedUrl(path, token, acceptedFiles[0] as FileBody);
-      // console.log({ data, error });
       if (typeof data?.fullPath === "string") {
         setAvatar(data?.fullPath);
       }
