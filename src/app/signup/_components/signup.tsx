@@ -57,7 +57,7 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
             </div>
             <div className="grid gap-2">
               <Label htmlFor="username">Username</Label>
-              <AddonFieldPrefix prefix="site.com/">
+              <AddonFieldPrefix prefix="experts.cal.com/">
                 <AddonFieldInput id="username" name="username" placeholder="john-doe" required />
               </AddonFieldPrefix>
               {formState?.inputErrors?.username ? (
