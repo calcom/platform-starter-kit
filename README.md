@@ -12,6 +12,8 @@
     <br />
     <a href="https://experts.cal.com"><strong>Demo</strong></a>
     ·
+    <a href="https://www.youtube.com/watch?v=wwo07ghiNn4"><strong>Video Tutorial</strong></a>
+    ·
     <a href="https://cal.com/docs/platform"><strong>Docs</strong></a>
     ·
     <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalcom%2Fplatform-starter-kit%2Ftree%2Fmain&env=NEXT_PUBLIC_REFRESH_URL,AUTH_SECRET,AUTH_TRUST_HOST,NEXT_PUBLIC_CAL_OAUTH_CLIENT_ID,NEXT_PUBLIC_CAL_API_URL,CAL_SECRET&envDescription=You%20can%20see%20how%20to%20populate%20the%20environment%20variables%20in%20our%20starter%20example%20→&envLink=https%3A%2F%2Fgithub.com%2Fcalcom%2Fplatform-starter-kit%2Ftree%2Fmain%2F.env.example&project-name=cal-platform-starter&repository-name=cal-platform-starter&demo-title=Cal.com%20Experts&demo-description=A%20marketplace%20to%20book%20appointments%20with%20experts&demo-url=https%3A%2F%2Fexperts.cal.com&demo-image=https%3A%2F%2Fgithub.com%2Fcalcom%2Fplatform-starter-kit%2Fassets%2F8019099%2F2e58f8da-a110-4a45-b9a4-dcffb45f9baa&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fcalcom%2Fplatform-starter-kit%2Ftree%2Fmain"><strong>Deploy on Vercel</strong></a>
