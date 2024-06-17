@@ -11,12 +11,22 @@ export default async function DashboardSettingsProfile() {
   if (!expert) {
     return <div>Not logged in</div>;
   }
+  const expertInitials = expert.name
+    ?.split(" ")
+    .map((namePart) => namePart.slice(0, 1))
+    .join("");
 
   return (
     <Card>
       <CardContent className="mt-4">
         <div className="flex flex-1 flex-col items-center gap-4 overflow-auto">
-          <SupabaseReactDropzone userId={expert.id} />
+          <div className="mx-auto mt-4 grid w-full gap-2">
+            <h2 className="text-3xl font-semibold">Image</h2>
+          </div>
+          <SupabaseReactDropzone userId={expert.id} userInitials={expertInitials} />
+          <div className="mx-auto mt-4 grid w-full gap-2">
+            <h2 className="text-3xl font-semibold">Name</h2>
+          </div>
           <div className="flex w-full flex-col justify-between gap-4 rounded-md bg-muted/50 px-6 py-4 lg:flex-row">
             <div className="flex items-center gap-x-6">
               <div>
