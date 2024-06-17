@@ -8,36 +8,57 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import { type FilterOption, type User } from "@prisma/client";
 import { ListFilter, Loader } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useQueryState, parseAsString, parseAsJson } from "nuqs";
-import { Fragment } from "react";
+import { Fragment, type ReactEventHandler, useState, type SyntheticEvent } from "react";
 import React, { Suspense } from "react";
 import { Balancer } from "react-wrap-balancer";
 import { prop, uniqueBy } from "remeda";
 
 export default function ResultsCard({
   slug,
-  image,
+  userId,
   title,
   description,
   query,
 }: {
   slug: string;
-  image?: string;
+  userId?: string;
   title: string;
   description: string;
   query?: string;
 }) {
   const queryIndexTitle = title.toLowerCase().indexOf(query?.toLowerCase() ?? "");
   const queryIndexDescription = description.toLowerCase().indexOf(query?.toLowerCase() ?? "");
+  const [error, setError] = useState<SyntheticEvent<HTMLImageElement, Event> | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <Link href={"/" + slug}>
+    <Link href={"/" + slug} className="col-span-1 flex">
       <Card className="mx-auto overflow-hidden transition-all ease-in-out hover:rotate-1 hover:scale-105 hover:shadow-lg">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={image} alt={title} />
+        <div
+          className={cn(
+            "h-[265px] w-[380px] rounded-md",
+            error && "bg-muted",
+            isLoading && "animate-pulse bg-muted"
+          )}>
+          {!error && (
+            <Image
+              src={`avatars/${userId}?width=380&height=265`}
+              alt={title}
+              className="h-full w-full rounded-md object-cover"
+              height={265}
+              width={380}
+              objectFit="cover"
+              onLoadingComplete={() => setIsLoading(false)}
+              onError={setError}
+            />
+          )}
+        </div>
         <CardHeader>
           <CardTitle className="text-xl">
             {/* this highlights the search query for the title */}
@@ -75,7 +96,6 @@ export default function ResultsCard({
 
 export function Results(props: {
   experts: Array<Partial<User> & { filterOptions: Array<FilterOption> }>;
-  images: Array<string>;
   signedOut: JSX.Element;
 }) {
   const [query] = useQueryState("q", parseAsString);
@@ -121,7 +141,7 @@ export function Results(props: {
           <Suspense
             fallback={
               <div className="relative h-max w-full max-w-sm place-self-center">
-                <div className=" absolute inset-0 z-40 grid rounded-2xl bg-slate-900 text-white">
+                <div className="absolute inset-0 z-40 grid rounded-2xl bg-slate-900 text-white">
                   <Loader className="z-50 animate-spin place-self-center" />
                 </div>
               </div>
@@ -185,32 +205,19 @@ export function Results(props: {
                 ))}
               </aside>
               <main className="w-full p-4 pt-0">
-                <div className="block grid-cols-3 gap-4 space-x-2 md:grid">
+                <div className="grid grid-cols-1 gap-4 space-x-2 md:grid-cols-3">
                   {!query && props.signedOut}
                   {experts.length ? (
-                    experts.map(
-                      (
-                        {
-                          username,
-                          name,
-                          bio,
-                          // , image
-                        },
-                        idx
-                      ) => (
-                        <ResultsCard
-                          key={username}
-                          slug={username ?? ""}
-                          image={
-                            // image ??
-                            props.images[idx]
-                          }
-                          title={name ?? "Your title"}
-                          description={bio ?? "Your bio"}
-                          query={query ?? undefined}
-                        />
-                      )
-                    )
+                    experts.map(({ username, name, bio, id }) => (
+                      <ResultsCard
+                        key={username}
+                        slug={username ?? ""}
+                        userId={id ?? ""}
+                        title={name ?? "Your title"}
+                        description={bio ?? "Your bio"}
+                        query={query ?? undefined}
+                      />
+                    ))
                   ) : (
                     <Card className="mx-auto flex items-center">
                       <div>
