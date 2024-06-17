@@ -209,7 +209,7 @@ export function Results(props: { experts: UsersWithFilterOptions; signedOut: JSX
                 ))}
               </aside>
               <main className="w-full p-4 pt-0">
-                <div className="grid grid-cols-1 gap-4 space-x-2 md:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 space-x-2 md:grid-cols-3 2xl:grid-cols-4">
                   {!query && props.signedOut}
                   {experts.length ? (
                     experts.map(({ username, name, bio, id }) => (
