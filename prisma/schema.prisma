@@ -1,5 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
 
 datasource db {
   provider  = "postgresql"
@@ -8,129 +10,115 @@ datasource db {
   schemas   = ["prisma"]
 }
 
-generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
-}
-
-// Necessary for Next auth
 model Account {
-  id                String  @id @default(cuid())
+  id                String    @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? // @db.Text
-  access_token      String? // @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? // @db.Text
+  id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime? @default(now())
+  createdAt         DateTime? @default(now())
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@schema("prisma")
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
+  id           String    @id @default(cuid())
+  sessionToken String    @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime? @default(now())
+  createdAt    DateTime? @default(now())
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@schema("prisma")
 }
 
 model User {
-  id              String      @id @default(cuid())
-  name            String?
-  username        String?     @unique
-  bio             String?
-  email           String?     @unique
-  emailVerified   DateTime?
-  hashedPassword  String?
-  image           String?
-  accounts        Account[]
-  sessions        Session[]
-  calAccount      CalAccount? @relation(fields: [calAccountId], references: [id], onDelete: Cascade)
-  calAccountId    Int?        @unique
-  calAccessToken  String?     @unique
-  calRefreshToken String?     @unique
-
+  id                    String                @id @default(cuid())
+  name                  String?
+  username              String?               @unique
+  bio                   String?
+  email                 String?               @unique
+  emailVerified         DateTime?
+  hashedPassword        String?
+  image                 String?
+  calAccountId          Int?                  @unique
+  calAccessToken        String?               @unique
+  calRefreshToken       String?               @unique
   createdAt             DateTime?             @default(now())
+  status                UserStatus            @default(PENDING)
+  accounts              Account[]
   selectedFilterOptions FilterOptionsOnUser[]
+  sessions              Session[]
+  calAccount            CalAccount?           @relation(fields: [calAccountId], references: [id], onDelete: Cascade)
 
   @@schema("prisma")
 }
 
 model CalAccount {
-  id                Int     @id
-  username          String? @unique
-  email             String  @unique
+  id                Int       @id
+  username          String?   @unique
+  email             String    @unique
   timeZone          String
   weekStart         String
   createdDate       String
   timeFormat        Int?
   defaultScheduleId Int?
-  // expires   DateTime
+  createdAt         DateTime? @default(now())
   user              User?
-
-  createdAt DateTime? @default(now())
 
   @@schema("prisma")
 }
 
 model VerificationToken {
   identifier String
-  token      String   @unique
+  token      String    @unique
   expires    DateTime
-
-  createdAt DateTime? @default(now())
+  createdAt  DateTime? @default(now())
 
   @@unique([identifier, token])
   @@schema("prisma")
 }
 
 model FilterOption {
-  fieldId    String    @unique
-  fieldValue String
-  fieldLabel String
-  createdAt  DateTime? @default(now())
-
-  // FilterOption table can have multiple users, so that a user can have multiple filters
-  // User ∞ : ∞ FilterOption allows us to query directly on the user though user.filterValues.findMany({ where: { filterFieldId: 'budget' } })
-  selectedByUsers FilterOptionsOnUser[]
-
-  // NB(richard): this is basically a hard-coded 1:many between FilterOption & FilterCategory
-  // I wanted to avoid defining the parent table explicitly to keep things simple but have the the `@@unique` constraint to ensure that we can migrate data to a proper parent table later
+  fieldId               String                @unique
+  fieldValue            String
+  fieldLabel            String
+  createdAt             DateTime?             @default(now())
   filterCategoryFieldId String
   filterCategoryValue   String
   filterCategoryLabel   String
+  selectedByUsers       FilterOptionsOnUser[]
 
-  // we define the fieldId & filterCategoryId as unique, so that we can define the many:many between User & Filter on multiple fields (improve query performance)
   @@unique([fieldId, filterCategoryFieldId])
   @@index([fieldId, filterCategoryFieldId])
   @@schema("prisma")
 }
 
 model FilterOptionsOnUser {
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  filterOption          FilterOption @relation(fields: [filterOptionFieldId, filterCategoryFieldId], references: [fieldId, filterCategoryFieldId])
+  userId                String
   filterOptionFieldId   String
   filterCategoryFieldId String
+  createdAt             DateTime?    @default(now())
+  filterOption          FilterOption @relation(fields: [filterOptionFieldId, filterCategoryFieldId], references: [fieldId, filterCategoryFieldId])
+  user                  User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime? @default(now())
-
-  // we define the fieldId & filterCategoryId as unique, so that we can define the many:many between User & Filter on multiple fields (improve query performance)
   @@unique([userId, filterOptionFieldId, filterCategoryFieldId])
   @@index([userId, filterOptionFieldId, filterCategoryFieldId])
+  @@schema("prisma")
+}
+
+enum UserStatus {
+  APPROVED
+  PENDING
+
   @@schema("prisma")
 }

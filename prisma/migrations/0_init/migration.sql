@@ -1,6 +1,9 @@
 -- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "prisma";
 
+-- CreateEnum
+CREATE TYPE "prisma"."UserStatus" AS ENUM ('APPROVED', 'PENDING');
+
 -- CreateTable
 CREATE TABLE "prisma"."Account" (
     "id" TEXT NOT NULL,
@@ -45,6 +48,7 @@ CREATE TABLE "prisma"."User" (
     "calAccessToken" TEXT,
     "calRefreshToken" TEXT,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "status" "prisma"."UserStatus" NOT NULL DEFAULT 'PENDING',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -52,12 +56,12 @@ CREATE TABLE "prisma"."User" (
 -- CreateTable
 CREATE TABLE "prisma"."CalAccount" (
     "id" INTEGER NOT NULL,
-    "username" TEXT NOT NULL,
+    "username" TEXT,
     "email" TEXT NOT NULL,
     "timeZone" TEXT NOT NULL,
     "weekStart" TEXT NOT NULL,
     "createdDate" TEXT NOT NULL,
-    "timeFormat" INTEGER NOT NULL,
+    "timeFormat" INTEGER,
     "defaultScheduleId" INTEGER,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
@@ -149,7 +153,8 @@ ALTER TABLE "prisma"."Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY 
 ALTER TABLE "prisma"."User" ADD CONSTRAINT "User_calAccountId_fkey" FOREIGN KEY ("calAccountId") REFERENCES "prisma"."CalAccount"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "prisma"."FilterOptionsOnUser" ADD CONSTRAINT "FilterOptionsOnUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "prisma"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "prisma"."FilterOptionsOnUser" ADD CONSTRAINT "FilterOptionsOnUser_filterOptionFieldId_filterCategoryFiel_fkey" FOREIGN KEY ("filterOptionFieldId", "filterCategoryFieldId") REFERENCES "prisma"."FilterOption"("fieldId", "filterCategoryFieldId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "prisma"."FilterOptionsOnUser" ADD CONSTRAINT "FilterOptionsOnUser_filterOptionFieldId_filterCategoryFiel_fkey" FOREIGN KEY ("filterOptionFieldId", "filterCategoryFieldId") REFERENCES "prisma"."FilterOption"("fieldId", "filterCategoryFieldId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "prisma"."FilterOptionsOnUser" ADD CONSTRAINT "FilterOptionsOnUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "prisma"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+

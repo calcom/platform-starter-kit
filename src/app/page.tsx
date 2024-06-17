@@ -10,6 +10,7 @@ import React, { Suspense } from "react";
 
 export default async function Home() {
   const experts = await db.user.findMany({
+    where: { status: "APPROVED" },
     include: { selectedFilterOptions: { include: { filterOption: true } } },
   });
 
