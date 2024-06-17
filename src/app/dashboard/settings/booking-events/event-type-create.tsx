@@ -22,7 +22,7 @@ export default function EventTypeCreateForm({
       {isPendingAction ? (
         <DialogDescription>Saving...</DialogDescription>
       ) : "success" in state && state.success ? (
-        <DialogDescription>{state.success}</DialogDescription>
+        <DialogDescription>{state.success} You can close the dialog now.</DialogDescription>
       ) : "error" in state && state.error ? (
         <DialogDescription>{state.error.replace("'", "&rsquo;")}</DialogDescription>
       ) : (

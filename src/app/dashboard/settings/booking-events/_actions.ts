@@ -60,5 +60,5 @@ export default async function createEventType(
 
   const permalink = String(formData.get("permalink"));
   permalink && revalidatePath(permalink);
-  return { success: `Event type '${res.data.title}' created successfully` };
+  return { success: `Event type '${res.data.title}' created successfully.` };
 }
