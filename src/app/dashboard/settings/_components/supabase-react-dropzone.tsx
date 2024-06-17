@@ -37,6 +37,8 @@ export default function SupabaseReactDropzone({ userId }: { userId: string; user
         .from("avatars")
         .uploadToSignedUrl(path, token, acceptedFiles[0] as FileBody);
       if (typeof data?.fullPath === "string") {
+        // @ts-expect-error acceptedFiles isn't typed
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setAvatar(`${data?.fullPath}?filename=${encodeURIComponent(slugify(acceptedFiles[0].path))}`);
       }
     },
