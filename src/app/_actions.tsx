@@ -1,7 +1,7 @@
 "use server";
 
 import { type LoginFormState } from "./login/_components/login";
-import { LoginSchema, SignupSchema, auth, signIn, unstable_update } from "@/auth";
+import { LoginSchema, SignupSchema, auth, signIn, unstable_update, FiltersSchema } from "@/auth";
 import { type User } from "@prisma/client";
 import { type Prisma } from "@prisma/client";
 import { AuthError } from "next-auth";
@@ -9,33 +9,6 @@ import { revalidatePath } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { db } from "prisma/client";
 import { z } from "zod";
-
-export const FiltersSchema = z.object({
-  categories: z.preprocess((val) => {
-    if (typeof val !== "string") return val; // should error
-    return JSON.parse(val);
-  }, z.array(z.string())),
-  capabilities: z.preprocess((val) => {
-    if (typeof val !== "string") return val; // should error
-    return JSON.parse(val);
-  }, z.array(z.string())),
-  frameworks: z.preprocess((val) => {
-    if (typeof val !== "string") return val; // should error
-    return JSON.parse(val);
-  }, z.array(z.string())),
-  budgets: z.preprocess((val) => {
-    if (typeof val !== "string") return val; // should error
-    return JSON.parse(val);
-  }, z.array(z.string())),
-  languages: z.preprocess((val) => {
-    if (typeof val !== "string") return val; // should error
-    return JSON.parse(val);
-  }, z.array(z.string())),
-  regions: z.preprocess((val) => {
-    if (typeof val !== "string") return val; // should error
-    return JSON.parse(val);
-  }, z.array(z.string())),
-});
 
 export async function signInWithCredentials(_prevState: LoginFormState, formData: FormData) {
   try {
@@ -73,6 +46,8 @@ export async function addUserFilters(_prevState: { error?: string | null }, form
   try {
     const sesh = await auth();
 
+    if (!sesh?.user?.id) return { error: "User not logged in " };
+
     const filters = FiltersSchema.safeParse({
       categories: formData.get("categories"),
       capabilities: formData.get("capabilities"),
@@ -81,6 +56,7 @@ export async function addUserFilters(_prevState: { error?: string | null }, form
       languages: formData.get("languages"),
       regions: formData.get("regions"),
     });
+
     if (!filters.success) {
       return {
         inputErrors: filters.error.flatten().fieldErrors,
@@ -96,7 +72,6 @@ export async function addUserFilters(_prevState: { error?: string | null }, form
     ]
       .map(({ filterOpdtionFieldIds, filterCategoryFieldId }) => {
         return filterOpdtionFieldIds.map((fieldId) => {
-          if (!sesh?.user?.id) return null;
           return {
             filterCategoryFieldId,
             filterOptionFieldId: fieldId,
@@ -109,9 +84,27 @@ export async function addUserFilters(_prevState: { error?: string | null }, form
 
     const data = selectedFilterOptions.flat();
 
-    await db.filterOptionsOnUser.createMany({
-      data,
-    });
+    const createOrUpdateFilterPromises: Array<Promise<any>> = [];
+
+    for (const filter of data) {
+      createOrUpdateFilterPromises.push(
+        db.filterOptionsOnUser.upsert({
+          where: {
+            userId_filterOptionFieldId_filterCategoryFieldId: {
+              userId: filter.userId,
+              filterOptionFieldId: filter.filterOptionFieldId,
+              filterCategoryFieldId: filter.filterCategoryFieldId,
+            },
+          },
+          update: filter,
+          create: filter,
+        })
+      );
+    }
+
+    await Promise.all(createOrUpdateFilterPromises);
+
+    return { success: true };
   } catch (err) {
     throw err;
   }
