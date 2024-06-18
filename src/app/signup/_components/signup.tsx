@@ -8,10 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { type FilterOption } from "@prisma/client";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { uniqueBy, prop } from "remeda";
 
 type TSignUpFormState = {
   error?: string | null;
@@ -34,8 +32,6 @@ export const SignupForm = () => {
   const [formState, dispatch] = useFormState<TSignUpFormState, FormData>(signUpWithCredentials, {
     error: null,
   });
-
-  // const filtersByCategory = uniqueBy(filterOptions, prop("filterCategoryFieldId"));
 
   return (
     <form action={dispatch}>

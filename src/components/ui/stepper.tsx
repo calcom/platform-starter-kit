@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Button } from "./button";
 import { Collapsible, CollapsibleContent } from "./collapsible";
 import { cn } from "@/lib/utils";
@@ -149,6 +150,7 @@ type StepItem = {
   description?: string;
   icon?: IconType;
   optional?: boolean;
+  onNextClick?: () => void;
 };
 
 interface StepOptions {
@@ -565,7 +567,9 @@ const VerticalStep = React.forwardRef<HTMLDivElement, VerticalStepProps>((props,
       data-active={active}
       data-clickable={clickable || !!onClickStep}
       data-invalid={localIsError}
-      onClick={() => !!onClickStep ? onClickStep(index || 0, setStep) : onClickStepGeneral?.(index || 0, setStep)}>
+      onClick={() =>
+        !!onClickStep ? onClickStep(index || 0, setStep) : onClickStepGeneral?.(index || 0, setStep)
+      }>
       <div
         data-vertical={true}
         data-active={active}
