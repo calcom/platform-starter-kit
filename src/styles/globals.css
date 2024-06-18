@@ -93,6 +93,16 @@
   transition: background-color 0.3s ease-in-out;
 }
 
+.custom-grid {
+  display: grid;
+  grid-template-areas: "meta main timeslots" "meta main timeslots";
+  width: calc(var(--booker-meta-width) + var(--booker-main-width) + var(--booker-timeslots-width));
+  grid-template-columns: var(--booker-meta-width) 1fr var(--booker-timeslots-width);
+  grid-template-rows: 1fr 0fr;
+  min-height: 450px;
+  height: auto;
+}
+
 @layer base {
   * {
     @apply border-border;

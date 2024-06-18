@@ -54,6 +54,7 @@ export const ExpertBooker = (
         );
       }}
       rescheduleUid={rescheduleUid}
+      customClassNames={{bookerContainer:"custom-grid"}}
     />
   );
 };
