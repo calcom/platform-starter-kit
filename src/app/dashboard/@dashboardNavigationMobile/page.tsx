@@ -1,4 +1,5 @@
 import { dashboardNavigationData } from "../data";
+import { Logo } from "@/app/_components/universal/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -7,9 +8,10 @@ export default function DashboardNavigationMobileDefault() {
   const pathname = "/dashboard";
   return (
     <nav className="grid gap-6 text-lg font-medium">
-      <Link href="/dashboard" className="group h-10 shrink-0 font-display text-lg font-semibold md:text-base">
-        Cal.com <span className="font-display text-xs">®</span>
-      </Link>
+      <Logo
+        href="/dashboard"
+        className="group h-10 shrink-0 font-display text-lg font-semibold md:text-base"
+      />
       {dashboardNavigationData.map((navigationItem) => {
         return (
           <Link
