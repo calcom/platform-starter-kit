@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { useStepper } from "@/components/ui/stepper";
 import { type FilterOption } from "@prisma/client";
 import { useEffect } from "react";
-import { useFormStatus } from "react-dom";
 import { useFormState } from "react-dom";
 import { uniqueBy, prop } from "remeda";
 
@@ -27,9 +26,6 @@ const UserFilters = ({ filterOptions }: { filterOptions: Array<FilterOption> }) 
     error: null,
   });
   const { isDisabledStep, prevStep, nextStep } = useStepper();
-  const { pending } = useFormStatus();
-  console.log("pending", pending);
-  console.log("formState", formState);
 
   const filtersByCategory = uniqueBy(filterOptions, prop("filterCategoryFieldId"));
 

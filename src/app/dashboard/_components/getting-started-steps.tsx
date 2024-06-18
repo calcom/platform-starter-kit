@@ -2,7 +2,7 @@
 
 import ConnectCalendarStep from "./connect-calendar-step";
 import UserFilters from "./user-filters-step";
-import UserDetailsStep from "./user-filters-step";
+import UserDetailsStep from "./user-details-step";
 import { Step, Stepper, type StepItem } from "@/components/ui/stepper";
 import { type FilterOption } from "@prisma/client";
 

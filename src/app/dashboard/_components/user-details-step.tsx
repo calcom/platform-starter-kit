@@ -27,7 +27,7 @@ const UserDetailsStep = ({ userId }: { userId: string }) => {
   }, [userDetailsFormState]);
 
   return (
-    <form action={dispatch}>
+    <form className="mt-10" action={dispatch}>
       <SupabaseReactDropzone userId={userId ?? "clxj4quka0000gebuthdxi1cp"} />
       <div>
         <Label htmlFor="bio">Bio</Label>
