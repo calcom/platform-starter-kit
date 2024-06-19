@@ -17,7 +17,6 @@ import { type Metadata } from "next";
 import { AxiomWebVitals } from "next-axiom";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-import { Suspense } from "react";
 import { Toaster } from "sonner";
 
 const interFont = Inter({ subsets: ["latin"], variable: "--font-inter", preload: true, display: "swap" });
@@ -56,7 +55,6 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  /** [@calcom] We're fetching the user's database info inside our session callback in auth */
   return (
     /** [@calcom] Ensure to set the diretion (either 'ltr' or 'rtl') since the calcom/atoms use their styles */
     <html lang="en" dir="ltr">
@@ -69,7 +67,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               title="Build your own marketplace"
               description="Use our Platform Starter Kit to go live in 15 minutes."
               ctaLink="https://go.cal.com/starter-kit"
-              ctaText="Code on GitHub"
             />
             <UseCalAtoms
               calAccessToken={currentUser().then((dbUser) => dbUser?.calAccessToken ?? null) ?? null}>
