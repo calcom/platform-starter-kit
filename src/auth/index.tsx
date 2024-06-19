@@ -81,7 +81,7 @@ export const SignupSchema = LoginSchema.merge(
 
 type UserAfterSignUp = User & { calAccount?: CalAccount };
 const {
-  auth: uncachedAuth,
+  auth,
   handlers: { GET, POST },
   signIn,
   signOut,
@@ -172,11 +172,8 @@ const {
   ],
 });
 
-export { signIn, signOut, GET, POST, unstable_update, uncachedAuth };
+export { signIn, signOut, GET, POST, unstable_update, auth };
 
-export const auth = cache(async () => {
-  return await uncachedAuth();
-});
 export const currentUser = cache(async () => {
   const sesh = await auth();
   if (!sesh?.user.id) return null;
