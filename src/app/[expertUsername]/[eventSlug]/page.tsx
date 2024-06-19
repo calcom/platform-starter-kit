@@ -82,6 +82,7 @@ export default async function BookerPage({
               name: expert.name,
               username: expert.username,
             }}
+            eventSlug={eventType.data?.slug}
             customClassNames={{ bookerContainer: "custom-grid border" }}
           />
         )}
