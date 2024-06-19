@@ -150,7 +150,7 @@ export function Results(props: { experts: UsersWithFilterOptions; signedOut: JSX
                 </div>
               </div>
             }>
-            <div className="block max-h-[80vh] sm:flex">
+            <div className="block sm:flex">
               <div className="flex items-center gap-2 p-4">
                 <Sheet>
                   <SheetTrigger asChild>
