@@ -62,7 +62,7 @@ export default function SupabaseReactDropzone({ userId }: { userId: string; user
   // ));
 
   return (
-    <div className="mx-auto grid w-full gap-2">
+    <div className="mx-auto grid w-full gap-4">
       {status === "error" ? (
         <div className="aspect-square size-16 rounded-md bg-muted" />
       ) : status === "loading" || !avatar ? (
@@ -79,10 +79,14 @@ export default function SupabaseReactDropzone({ userId }: { userId: string; user
           onError={() => setStatus("error")}
         />
       )}
-      <div {...getRootProps({ className: cn("dropzone border-dashed border p-8 rounded-md") })}>
+      <div
+        {...getRootProps({
+          className: cn(
+            "dropzone border-dashed border px-3 py-8 rounded-md hover:border-foreground/40 cursor-pointer"
+          ),
+        })}>
         <input {...getInputProps()} />
-        <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
-        <em>(Only *.jpeg, *.png and *.avif images will be accepted)</em>
+        <p className="text-sm text-muted-foreground">Only *.jpeg, *.png and *.avif images will be accepted</p>
       </div>
     </div>
   );

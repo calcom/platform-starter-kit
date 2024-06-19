@@ -33,7 +33,7 @@ export default async function Layout({
           <div className="hidden border-r bg-muted/40 md:block">
             <div className="sticky top-0 z-40 flex h-full max-h-screen flex-col gap-2">
               <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                <Logo href="/dashboard" />
+                <Logo />
               </div>
               <div className="flex-1">{dashboardNavigationDesktop}</div>
             </div>

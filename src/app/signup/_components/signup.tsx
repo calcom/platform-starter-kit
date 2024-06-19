@@ -1,17 +1,13 @@
 "use client";
 
 import { signUpWithCredentials } from "@/app/_actions";
-import { FancyMultiSelect, type Option } from "@/app/_components/multi-select";
 import { AddonFieldInput, AddonFieldPrefix } from "@/app/signup/_components/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { type FilterOption } from "@prisma/client";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { uniqueBy, prop } from "remeda";
 
 type TSignUpFormState = {
   error?: string | null;
@@ -30,12 +26,10 @@ type TSignUpFormState = {
   };
 };
 
-export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOption> }) => {
+export const SignupForm = () => {
   const [formState, dispatch] = useFormState<TSignUpFormState, FormData>(signUpWithCredentials, {
     error: null,
   });
-
-  const filtersByCategory = uniqueBy(filterOptions, prop("filterCategoryFieldId"));
 
   return (
     <form action={dispatch}>
@@ -84,49 +78,6 @@ export const SignupForm = ({ filterOptions }: { filterOptions: Array<FilterOptio
                 </div>
               ) : null}
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                placeholder="Tell us a little bit about yourself"
-                className="resize-none"
-                id="bio"
-                name="bio"
-                maxLength={500}
-              />
-              {formState?.inputErrors?.bio ? (
-                <div className="text-sm font-medium text-red-700" aria-live="polite">
-                  {formState.inputErrors.bio[0]}
-                </div>
-              ) : null}
-            </div>
-            {filtersByCategory.map(({ filterCategoryFieldId, filterCategoryLabel }) => (
-              <div className="grid gap-2" key={filterCategoryFieldId}>
-                <Label htmlFor="email">{filterCategoryLabel}</Label>
-                <FancyMultiSelect
-                  options={filterOptions
-                    .filter((filterOption) => filterOption.filterCategoryLabel === filterCategoryLabel)
-                    .map(
-                      (filterOption) =>
-                        ({
-                          label: filterOption.fieldLabel,
-                          value: filterOption.fieldValue,
-                        }) satisfies Option
-                    )}
-                  placeholder={`Select your ${filterCategoryLabel.toLowerCase()}`}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  name={filterCategoryFieldId.toLowerCase()}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  id={filterCategoryFieldId.toLowerCase()}
-                />
-                {/* @ts-expect-error TODO: Fix the types here */}
-                {formState?.inputErrors?.[filterCategoryFieldId] ? (
-                  <div className="text-sm font-medium text-red-700" aria-live="polite">
-                    {/* @ts-expect-error TODO: Fix the types here */}
-                    {formState.inputErrors?.[filterCategoryFieldId]?.[0]}
-                  </div>
-                ) : null}
-              </div>
-            ))}
 
             {formState?.error ? (
               <div className="text-sm font-medium text-red-700" aria-live="polite">

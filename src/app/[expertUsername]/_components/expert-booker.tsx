@@ -14,18 +14,16 @@ type BookerProps = Parameters<typeof Booker>[number];
 export const ExpertBooker = (
   props: {
     className?: string;
-    calAccessToken?: User["calAccessToken"];
-    calAccount: CalAccount;
-    expert: User;
+    calAccount: Pick<CalAccount, "username">;
+    expert: Pick<User, "name" | "username">;
   } & Partial<BookerProps>
 ) => {
+  const { className, calAccount, expert, ...rest } = props;
   const router = useRouter();
   const searchParams = useSearchParams();
   const rescheduleUid = searchParams.get("rescheduleUid") ?? undefined;
-  const { isLoading: isLoadingEvents, data: eventTypes } = useEventTypesPublic(
-    props.calAccount.username ?? ""
-  );
-  if (!props.calAccount.username) {
+  const { isLoading: isLoadingEvents, data: eventTypes } = useEventTypesPublic(calAccount.username ?? "");
+  if (!calAccount.username) {
     return <div className="w-full text-center">Sorry. We couldn&apos;t find this experts&apos; user.</div>;
   }
   if (isLoadingEvents) {
@@ -37,24 +35,22 @@ export const ExpertBooker = (
   }
   if (!eventTypes?.length) {
     return (
-      <div className="w-full text-center">
-        Sorry. Unable to load ${props.expert.name}&apos;s availabilities.
-      </div>
+      <div className="w-full text-center">Sorry. Unable to load ${expert.name}&apos;s availabilities.</div>
     );
   }
 
   return (
     <Booker
       eventSlug={eventTypes[0]?.slug ?? ""}
-      username={props.calAccount.username}
+      username={calAccount.username}
       onCreateBookingSuccess={(booking) => {
         toast.success("Booking successful! ");
         router.push(
-          `/${props.expert.username}/booking/${booking.data.uid}${booking.data.fromReschedule ? `?${new URLSearchParams({ fromReschedule: booking.data.fromReschedule }).toString()}` : ""}`
+          `/${expert.username}/booking/${booking.data.uid}${booking.data.fromReschedule ? `?${new URLSearchParams({ fromReschedule: booking.data.fromReschedule }).toString()}` : ""}`
         );
       }}
       rescheduleUid={rescheduleUid}
-      customClassNames={{bookerContainer:"custom-grid"}}
+      {...rest}
     />
   );
 };
