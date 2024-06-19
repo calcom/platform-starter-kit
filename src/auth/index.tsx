@@ -39,42 +39,46 @@ async function compare(password: string, hash: string) {
     });
   });
 }
+
 export const LoginSchema = z.object({
   email: z.string().min(1).max(42),
   password: z.string().min(6).max(32),
 });
+
+export const FiltersSchema = z.object({
+  categories: z.preprocess((val) => {
+    if (typeof val !== "string") return val; // should error
+    return JSON.parse(val);
+  }, z.array(z.string())),
+  capabilities: z.preprocess((val) => {
+    if (typeof val !== "string") return val; // should error
+    return JSON.parse(val);
+  }, z.array(z.string())),
+  frameworks: z.preprocess((val) => {
+    if (typeof val !== "string") return val; // should error
+    return JSON.parse(val);
+  }, z.array(z.string())),
+  budgets: z.preprocess((val) => {
+    if (typeof val !== "string") return val; // should error
+    return JSON.parse(val);
+  }, z.array(z.string())),
+  languages: z.preprocess((val) => {
+    if (typeof val !== "string") return val; // should error
+    return JSON.parse(val);
+  }, z.array(z.string())),
+  regions: z.preprocess((val) => {
+    if (typeof val !== "string") return val; // should error
+    return JSON.parse(val);
+  }, z.array(z.string())),
+});
+
 export const SignupSchema = LoginSchema.merge(
   z.object({
     username: z.string().min(1).max(32),
     name: z.string().min(1).max(32),
-    bio: z.string().min(1).max(500),
-    // for all sidebaritems, let's create the zod schema:
-    categories: z.preprocess((val) => {
-      if (typeof val !== "string") return val; // should error
-      return JSON.parse(val);
-    }, z.array(z.string())),
-    capabilities: z.preprocess((val) => {
-      if (typeof val !== "string") return val; // should error
-      return JSON.parse(val);
-    }, z.array(z.string())),
-    frameworks: z.preprocess((val) => {
-      if (typeof val !== "string") return val; // should error
-      return JSON.parse(val);
-    }, z.array(z.string())),
-    budgets: z.preprocess((val) => {
-      if (typeof val !== "string") return val; // should error
-      return JSON.parse(val);
-    }, z.array(z.string())),
-    languages: z.preprocess((val) => {
-      if (typeof val !== "string") return val; // should error
-      return JSON.parse(val);
-    }, z.array(z.string())),
-    regions: z.preprocess((val) => {
-      if (typeof val !== "string") return val; // should error
-      return JSON.parse(val);
-    }, z.array(z.string())),
   })
 );
+
 type UserAfterSignUp = User & { calAccount?: CalAccount };
 const {
   auth: uncachedAuth,
@@ -140,7 +144,6 @@ const {
                 username: signupData.data.username,
                 name: signupData.data.name,
                 hashedPassword: await hash(credentials.data.password),
-                bio: signupData.data.bio,
                 email: credentials.data.email,
               },
             });
@@ -149,40 +152,11 @@ const {
               return null;
             }
 
-            // now that we have the userId, connect the user to the filters:
-            const selectedFilterOptions = [
-              { filterOpdtionFieldIds: signupData.data.budgets, filterCategoryFieldId: "budgets" },
-              { filterOpdtionFieldIds: signupData.data.capabilities, filterCategoryFieldId: "capabilities" },
-              { filterOpdtionFieldIds: signupData.data.categories, filterCategoryFieldId: "categories" },
-              { filterOpdtionFieldIds: signupData.data.frameworks, filterCategoryFieldId: "frameworks" },
-              { filterOpdtionFieldIds: signupData.data.languages, filterCategoryFieldId: "languages" },
-            ]
-              .map(({ filterOpdtionFieldIds, filterCategoryFieldId }) => {
-                return filterOpdtionFieldIds.map((fieldId) => {
-                  if (!user?.id) return null;
-                  return {
-                    filterCategoryFieldId,
-                    filterOptionFieldId: fieldId,
-                    userId: user.id,
-                  };
-                });
-              })
-              // to filter out any null values:
-              .filter(Boolean) as Prisma.FilterOptionsOnUserCreateManyInput[][];
-            const data = selectedFilterOptions.flat();
-
-            const [_, toCreate] = await Promise.all([
-              db.filterOptionsOnUser.createMany({
-                data,
-              }),
-              // 👇 [@calcom] the `signUp` function creates a managed user with the cal platform api and handles basic setup (such as creating a default schedule)
-              signUp({
-                email: credentials.data.email,
-                name: signupData.data.name,
-                user: { id: user.id }, // we don't have the user id yet, so we'll use a placeholder
-              }),
-              // 👆 [@calcom]
-            ]);
+            const toCreate = await signUp({
+              email: credentials.data.email,
+              name: signupData.data.name,
+              user: { id: user.id }, // we don't have the user id yet, so we'll use a placeholder
+            });
 
             // update the user with the cal account info:
             user = await db.user.update({ where: { id: user.id }, data: toCreate });
