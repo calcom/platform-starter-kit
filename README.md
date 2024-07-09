@@ -38,6 +38,12 @@ Cal.com Platform Starter Kit showcases the new Cal.com Platform API and Cal.com 
 
 ## How to use
 
+```bash
+npx @calcom/starter-kit my-platform
+```
+
+OR
+
 **1. Clone the repository**
 
 HTTPS:
