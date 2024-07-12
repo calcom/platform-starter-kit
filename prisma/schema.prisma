@@ -89,7 +89,7 @@ model VerificationToken {
 }
 
 model FilterOption {
-  fieldId               String                @unique
+  fieldId               String                @id @unique
   fieldValue            String
   fieldLabel            String
   createdAt             DateTime?             @default(now())
