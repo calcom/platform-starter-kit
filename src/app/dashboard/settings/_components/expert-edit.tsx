@@ -2,7 +2,7 @@
 
 import { expertEdit } from "@/app/_actions";
 import { ButtonSubmit } from "@/app/_components/submit-button";
-import { CardDescription, CardFooter } from "@/components/ui/card";
+import { CardDescription } from "@/components/ui/card";
 import { Input, type InputProps } from "@/components/ui/input";
 import { Textarea, type TextareaProps } from "@/components/ui/textarea";
 import { useActionState } from "react";
@@ -36,11 +36,9 @@ export default function ExpertEditForm(props: InputProps | TextareaProps) {
           Provide a new {props.name} and hit save to reflect the changes on your public page.
         </CardDescription>
       )}
-      <CardFooter className="border-t px-6 py-4">
-        <ButtonSubmit size="sm" variant="default">
-          Save
-        </ButtonSubmit>
-      </CardFooter>
+      <ButtonSubmit size="sm" variant="default">
+        Save
+      </ButtonSubmit>
     </form>
   );
 }
