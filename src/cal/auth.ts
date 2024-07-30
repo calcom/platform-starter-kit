@@ -31,7 +31,14 @@ export async function signUp({ email, name, user }: CreateManagedUserInput & { u
       connectOrCreate: {
         where: { id: userCreation.data.user.id },
         create: {
-          ...userCreation.data.user,
+          id: userCreation.data.user.id,
+          email: userCreation.data.user.email,
+          username: userCreation.data.user.username,
+          timeZone: userCreation.data.user.timeZone,
+          weekStart: userCreation.data.user.weekStart,
+          createdDate: userCreation.data.user.createdDate,
+          timeFormat: userCreation.data.user.timeFormat,
+          defaultScheduleId: userCreation.data.user.defaultScheduleId,
         },
       },
     },
