@@ -1,12 +1,8 @@
 import ExpertEditForm from "../_components/expert-edit";
 import SupabaseReactDropzone from "../_components/supabase-react-dropzone";
-import { ButtonSubmit } from "@/app/_components/submit-button";
 import { currentUser } from "@/auth";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { Info } from "lucide-react";
-import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -42,11 +38,6 @@ export default async function DashboardSettingsProfile() {
         <CardContent>
           <ExpertEditForm id="name" name="name" placeholder={expert.name ?? "Your name"} />
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <ButtonSubmit size="sm" variant="default">
-            Save
-          </ButtonSubmit>
-        </CardFooter>
       </Card>
       <Card x-chunk="dashboard-04-chunk-2">
         <CardHeader>
@@ -58,11 +49,6 @@ export default async function DashboardSettingsProfile() {
         <CardContent>
           <ExpertEditForm id="bio" name="bio" placeholder={expert.bio ?? "Your Bio"} />
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <ButtonSubmit size="sm" variant="default">
-            Save
-          </ButtonSubmit>
-        </CardFooter>
       </Card>
     </div>
   );

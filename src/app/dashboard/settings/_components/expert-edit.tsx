@@ -1,6 +1,7 @@
 "use client";
 
 import { expertEdit } from "@/app/_actions";
+import { ButtonSubmit } from "@/app/_components/submit-button";
 import { CardDescription } from "@/components/ui/card";
 import { Input, type InputProps } from "@/components/ui/input";
 import { Textarea, type TextareaProps } from "@/components/ui/textarea";
@@ -35,6 +36,9 @@ export default function ExpertEditForm(props: InputProps | TextareaProps) {
           Provide a new {props.name} and hit save to reflect the changes on your public page.
         </CardDescription>
       )}
+      <ButtonSubmit size="sm" variant="default">
+        Save
+      </ButtonSubmit>
     </form>
   );
 }
