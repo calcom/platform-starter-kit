@@ -1,6 +1,6 @@
 "use client";
 
-import createEventType from "./_actions";
+import { createEventType } from "./_actions";
 import { DialogDescription } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useActionState } from "react";

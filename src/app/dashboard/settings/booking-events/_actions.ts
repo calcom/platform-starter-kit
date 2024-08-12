@@ -6,7 +6,7 @@ import { cal } from "@/cal/api";
 import { revalidatePath } from "next/cache";
 import { type z } from "zod";
 
-export default async function createEventType(
+export async function createEventType(
   _prevState: { error: null | string } | { success: null | string },
   formData: FormData
 ) {
@@ -60,5 +60,37 @@ export default async function createEventType(
 
   const permalink = String(formData.get("permalink"));
   permalink && revalidatePath(permalink);
+  return { success: `Event type '${res.data.title}' created successfully.` };
+}
+
+export async function deleteEventType(
+  _prevState: { error: null | string } | { success: null | string },
+  eventTypeId: number
+) {
+  const sesh = await auth();
+  if (!sesh?.user.id) {
+    console.log("[_actions] Unauthorized user delete");
+    return { error: "Unauthorized" };
+  }
+
+  const res = await cal({ user: { id: sesh?.user.id } }).delete(`/v2/event-types/{eventTypeId}`, {
+    path: { eventTypeId },
+  });
+  if (res.status === "error") {
+    console.error(
+      `[_actions] Error deleting event type for user with id '${sesh.user.id}'. Bad response from Cal Platform API
+      
+        -- REQUEST DETAILS --
+        Endpoint URL: DELETE /v2/event-types/{eventTypeId}
+
+        -- RESPONSE DETAILS --
+        responseStatus: ${JSON.stringify(res.status)}
+        
+        responseData: ${JSON.stringify(res.data)}
+      `
+    );
+    return { error: "Unable to delete the booking event (something went wrong)." };
+  }
+
   return { success: `Event type '${res.data.title}' created successfully.` };
 }
