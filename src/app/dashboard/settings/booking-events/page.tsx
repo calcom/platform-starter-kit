@@ -1,4 +1,5 @@
 import EventTypeCreateForm from "./event-type-create";
+import { EventTypeDelete } from "./event-type-delete";
 import { ButtonSubmit } from "@/app/_components/submit-button";
 import { auth } from "@/auth";
 import { cal } from "@/cal/api";
@@ -13,11 +14,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { PlusCircle, Video } from "lucide-react";
+import { MoreHorizontal, PlusCircle, Video } from "lucide-react";
 import { Fragment } from "react";
 
 export default async function DashboardSettingsBookingEvents() {
@@ -191,8 +198,7 @@ export default async function DashboardSettingsBookingEvents() {
                     ))}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">{eventType.length}</TableCell>
-                  {/* TODO: Add CRUD on Event Types */}
-                  {/* <TableCell>
+                  <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button aria-haspopup="true" size="icon" variant="ghost">
@@ -202,11 +208,10 @@ export default async function DashboardSettingsBookingEvents() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
+                        <EventTypeDelete eventTypeId={eventType.id} />
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </TableCell> */}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
