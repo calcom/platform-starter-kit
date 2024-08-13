@@ -69,7 +69,7 @@ export async function deleteEventType(
 ) {
   const sesh = await auth();
   if (!sesh?.user.id) {
-    console.log("[_actions] Unauthorized user delete");
+    console.error("[_actions] Unauthorized user delete");
     return { error: "Unauthorized" };
   }
 
